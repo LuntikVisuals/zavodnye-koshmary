@@ -4,7 +4,7 @@ name: Publish release (one-time bootstrap)
 # so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
 # This workflow decodes it, verifies SHA-256, creates the release with the APK,
 # removes the payload and syncs gh-pages with main.
-# It does NOT build or sign anything. v1.0 and v2.0 were published the same way.
+# It does NOT build or sign anything. v1.0, v2.0 and v2.1 were published the same way.
 
 on:
   push:
@@ -31,33 +31,36 @@ jobs:
           mkdir -p /tmp/p
           base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
           echo "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
-          echo "e3ec134cadef949114ad60a0efde2fc302479d5f998ccce6c3ceb3276077d463  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
+          echo "76c48f221cc200685664353d1a2fecba723384cc68df7375ed77ac3b4d367af6  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v2.1 with APK
+      - name: Create release v3.0 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v2.1 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
+          gh release view v3.0 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 2.1 (раньше — «Заводные Кошмары»): сюжет и записки.
+          «Windup Wonderland» 3.0 — большое обновление.
 
-          - Игра переименована в **Windup Wonderland**. Пакет, ссылки и имя файла APK прежние — ставится поверх.
-          - Новое место действия: американский семейный центр развлечений «Windup Wonderland» (Brunville, Ohio). Меньше мистики, больше реальной техники.
-          - Персонажи с английскими именами. Выжившие: Mara «Spark» Ellis, Danny «Courier» Brooks, Lydia «Doc» Hayes, Glen «Shade» Turner, Casey «Lens» Morgan, Paul «Pops» Grant. Аниматроники: Chorister, Ranger, Announcer, Midnight, Moloch, а также Springtrap и Freddy (фан-трибьют). Способности, характеристики и цены прежние.
-          - Раздел **«История»** в главном меню: 8 страниц хроники — от открытия центра в 1986 году до ночи 13 ноября 1993 года и сервера под сценой.
-          - **10 записок на карте** (памятки, накладная, журналы охраны, дневник Winslow, письмо подрядчика, распечатка сервера). Выжившие подбирают их во время ночи; найденные сохраняются и читаются в «Истории».
-          - Сохранения 2.0 и 1.0 переносятся автоматически: монеты, статистика, открытые и выбранные персонажи.
+          - **Двери можно держать:** зажми «Действие» у закрытой двери. Аниматронику приходится ломать дверь несколько секунд, держать тяжело — тратится выносливость. Аниматроник может проломить дверь или пойти в обход. Боты тоже держат двери.
+          - **Новая карта «Парк»:** колесо обозрения, карусель, автодром, дом страха, кассы, фуд-корт, тир, мастерская, техтоннели, 7 генераторов и двое ворот. В лобби: «Пиццерия», «Парк» или «Чередовать».
+          - **Записки** светятся в темноте и показываются значком на краю экрана; за ночь 2–3 записки; счётчик «Записки N/10».
+          - **Профиль:** уровень, титулы, жуткие рамки (цепи, треснувшее стекло, когти, неон, искрящие провода, маска в темноте, глитч терминала, тыквы…) и до 2 значков.
+          - **Достижения**, **магазин** с предложениями дня, **пропуск** на 30 дней (50 уровней, ежедневные задания, бесплатная и «Золотая» линия — только за монеты из игры).
+          - **Рейтинг:** ранги Новичок, Сторож, Механик, Охотник, Кошмар, Легенда парка; боты сильнее с рангом.
+          - **Мастерство** каждого персонажа до 50; каждые 10 уровней — **Мейнстоун** с эксклюзивным скином и значком.
+          - **Хэллоуин** (до 15 ноября): собирай тыквы в тёмном парке и прячься от Джейсона Вурхиза. Тыквенная лавка: Jason (выживший класса «Боец») — 250 тыкв, скины «Тыква Фредди» и «Тыква Спрингтрап» — по 120 тыкв, тыквенная рамка — 60.
+          - Сохранения 2.1, 2.0 и 1.0 переносятся автоматически (монеты, персонажи, записки, настройки).
 
-          Неофициальная бесплатная фан-игра. Без доната и рекламы. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.
+          Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 3 / versionName 2.1. Подписан тем же ключом, что и 1.0 и 2.0, — ставится поверх.
-          SHA-256: e3ec134cadef949114ad60a0efde2fc302479d5f998ccce6c3ceb3276077d463
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 4 / versionName 3.0. Подписан тем же ключом, что и 1.0, 2.0 и 2.1, — ставится поверх.
+          SHA-256: 76c48f221cc200685664353d1a2fecba723384cc68df7375ed77ac3b4d367af6
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v2.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v2.1" --notes-file /tmp/notes.md
+          gh release create v3.0 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.0" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -66,12 +69,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v2.1 bootstrap payload (APK published in Release v2.1)"
+          git commit -m "Remove v3.0 bootstrap payload (APK published in Release v3.0)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v2.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.0)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
