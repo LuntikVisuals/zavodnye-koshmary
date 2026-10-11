@@ -1,0 +1,34 @@
+plugins { id 'com.android.application' }
+def ksProps = new Properties()
+def ksFile = file('/workspace/apk-keys/keystore.properties')
+if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+android {
+    namespace 'com.luntikvisuals.zavodnyekoshmary'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'com.luntikvisuals.zavodnyekoshmary'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+    signingConfigs {
+        release {
+            if (ksFile.exists()) {
+                storeFile file(ksProps['storeFile'])
+                storePassword ksProps['storePassword']
+                keyAlias ksProps['keyAlias']
+                keyPassword ksProps['keyPassword']
+                enableV1Signing true
+                enableV2Signing true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
