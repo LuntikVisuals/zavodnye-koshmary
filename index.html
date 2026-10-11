@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Заводные Кошмары</title>
+<title>Windup Wonderland</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font-family:'Trebuchet MS',Roboto,'Segoe UI',Arial,sans-serif;touch-action:none;overscroll-behavior:none;position:fixed;inset:0}
@@ -95,6 +95,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
 .fate{background:#120e14;border:1px solid #3a2832;border-radius:8px;padding:4px 8px;font-size:12px;min-width:110px}
 .fate canvas{width:46px;height:46px;display:block;margin:0 auto}
 .reslist{font-size:13px;color:#cbb;margin:4px 0;line-height:1.5}
+.storybody{display:flex;gap:10px;flex:1;min-height:0;margin-top:4px}
+.slist{width:38%;overflow:auto;display:flex;flex-direction:column;gap:3px;padding-right:4px}
+.slist div{background:#120e14;border:1px solid #33262e;border-radius:7px;padding:4px 7px;font-size:12px;color:#ccb;cursor:pointer}
+.slist div.on{border-color:#ffcf4a;color:#fff;background:#2a1a10}
+.slist div.lk{color:#665;font-style:italic}
+.stext{flex:1;overflow:auto;font-size:13.5px;line-height:1.5;color:#e4dccb;background:#0f0b10;border:1px solid #33262e;border-radius:9px;padding:8px 11px}
+.stext h3{font-size:16px;color:#ffd9a0;margin-bottom:5px}
+.stext p{margin-bottom:7px}
+.stext .paper{background:#e8e0c8;color:#2a2418;border-radius:4px;padding:7px 9px;font-family:'Courier New',monospace;font-size:12.5px;box-shadow:2px 2px 0 #6a604c}
+#story .panel{display:flex;flex-direction:column;height:100%}
 /* settings & stats */
 .set{display:grid;grid-template-columns:1fr 1.4fr;gap:6px 12px;align-items:center;font-size:14px;margin:8px 0}
 .set input[type=range]{width:100%;accent-color:#d33}
@@ -158,10 +168,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
 
 <div id="menu" class="screen hidden">
   <div class="left">
-    <div class="title">ЗАВОДНЫЕ<br>КОШМАРЫ</div>
-    <div class="sub">пиццерия «Карусель» · закрыто навсегда</div>
+    <div class="title">WINDUP<br>WONDERLAND</div>
+    <div class="sub">Brunville, Ohio · закрыто с 1993</div>
     <div class="mbtns">
       <button class="btn" id="mPlay">Играть</button>
+      <button class="btn alt" id="mStory">История</button>
       <button class="btn alt" id="mColl">Персонажи</button>
       <button class="btn alt" id="mStats">Статистика</button>
       <button class="btn alt" id="mSet">Настройки</button>
@@ -170,7 +181,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar coins"><span class="coin-ico"></span><span class="cval">0</span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v2.0</div>
+  <div class="ver">v2.1</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -206,10 +217,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   <div class="panel" style="width:min(100%,640px)">
     <div class="row"><h2>ОБ ИГРЕ</h2><div class="sp"></div><button class="btn alt small" id="aboutBack">Назад</button></div>
     <div class="abouttxt">
-      <p><b>«Заводные Кошмары» v2.0</b> — асимметричный хоррор про ночную смену в закрытой пиццерии «Карусель». Каждую ночь сторона выпадает случайно: <b style="color:#7fe0ff">Выжившие</b> (ты + 3 бота) чинят генераторы и бегут к выходу, <b style="color:#ff5a6a">Аниматроники</b> (ты против 4 ботов) не дают им уйти до рассвета.</p>
+      <p><b>«Windup Wonderland» v2.1</b> (раньше называлась «Заводные Кошмары») — асимметричный хоррор про ночь в заброшенном американском семейном центре развлечений «Windup Wonderland» (Brunville, Ohio). Каждую ночь сторона выпадает случайно: <b style="color:#7fe0ff">Выжившие</b> (ты + 3 бота) чинят генераторы и бегут к выходу, <b style="color:#ff5a6a">Аниматроники</b> (ты против 4 ботов) не дают им уйти до рассвета.</p>
       <p class="creditbox" id="aboutCredit"></p>
-      <p>Все остальные персонажи, названия, графика и звуки — оригинальные. Вся графика (включая Спрингтрапа и Фредди) нарисована кодом в собственном стиле игры, без чужих спрайтов и файлов. Мелодия шкатулки Фредди — мотив «Тореадора» Ж. Бизе (общественное достояние).</p>
+      <p>Все остальные персонажи, названия, графика и звуки — оригинальные. Вся графика (включая Springtrap и Freddy) нарисована кодом в собственном стиле игры, без чужих спрайтов и файлов. Мелодия шкатулки Freddy — мотив «Тореадора» Ж. Бизе (общественное достояние).</p>
     </div>
+  </div>
+</div>
+
+<div id="story" class="screen hidden">
+  <div class="panel">
+    <div class="row"><h2>ИСТОРИЯ</h2><div class="sp"></div><button class="btn alt small" id="storyBack">Назад</button></div>
+    <div class="tabs"><div class="tab on" id="tabLore">Хроника</div><div class="tab" id="tabNotes">Записки</div></div>
+    <div class="storybody"><div class="slist" id="storyList"></div><div class="stext" id="storyText"></div></div>
   </div>
 </div>
 
@@ -279,47 +298,71 @@ function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a
 
 /* ================= DATA ================= */
 const HUNTERS=[
- {id:'marina',name:'Марина',nick:'Искра',sur:'Ершова',title:'Электрик',price:0,col:'#3a5570',col2:'#e0a020',hair:'#4a2616',skin:'#e8bf9c',spd:1,sta:1,rep:1.35,stealth:1,light:1,item:'tool',
+ {id:'marina',name:'Mara',nick:'Spark',sur:'Ellis',title:'Электрик',price:0,col:'#3a5570',col2:'#e0a020',hair:'#4a2616',skin:'#e8bf9c',spd:1,sta:1,rep:1.35,stealth:1,light:1,item:'tool',
   abil:{name:'Перемычка',cd:70,desc:'Мгновенно завершает текущий этап ремонта генератора, у которого ты стоишь.'},
-  pas:'Чинит генераторы на 35% быстрее.',desc:'Бывший электрик пиццерии. Помнит схему проводки наизусть — и помнит, почему её уволили за неделю до закрытия.',st:[3,3,5,3]},
- {id:'artem',name:'Артём',nick:'Курьер',sur:'Белов',title:'Курьер',price:0,col:'#7a2620',col2:'#d8d8d0',hair:'#1b1310',skin:'#c98d62',spd:1.06,sta:1.45,rep:0.9,stealth:1,light:1,item:'decoy',
+  pas:'Чинит генераторы на 35% быстрее.',desc:'Электрик подрядной фирмы. Её наняли проверить проводку перед сносом здания — щиток в подвале оказался под напряжением, хотя свет отключили тридцать лет назад.',st:[3,3,5,3]},
+ {id:'artem',name:'Danny',nick:'Courier',sur:'Brooks',title:'Курьер',price:0,col:'#7a2620',col2:'#d8d8d0',hair:'#1b1310',skin:'#c98d62',spd:1.06,sta:1.45,rep:0.9,stealth:1,light:1,item:'decoy',
   abil:{name:'Второе дыхание',cd:45,desc:'4 секунды бежит очень быстро и не тратит выносливость.'},
-  pas:'Больше выносливости и чуть быстрее ходит.',desc:'Развозит пиццу по ночам. Последний заказ пришёл с адреса пиццерии, закрытой восемь лет назад.',st:[5,5,2,3]},
- {id:'lida',name:'Лидия',nick:'Док',sur:'Корнеева',title:'Фельдшер',price:250,col:'#2a5f78',col2:'#d8463a',hair:'#8a6a40',skin:'#f0cdb0',spd:1,sta:1,rep:1,stealth:1,light:1,item:'med',
+  pas:'Больше выносливости и чуть быстрее ходит.',desc:'Развозит пиццу по ночам. Навигатор привёл его не по тому адресу — к заколоченному центру развлечений, где за дверью кто-то ждал заказ.',st:[5,5,2,3]},
+ {id:'lida',name:'Lydia',nick:'Doc',sur:'Hayes',title:'Фельдшер',price:250,col:'#2a5f78',col2:'#d8463a',hair:'#8a6a40',skin:'#f0cdb0',spd:1,sta:1,rep:1,stealth:1,light:1,item:'med',
   abil:{name:'Первая помощь',cd:60,desc:'Лечит себя и всех союзников рядом на одно ранение, поднимает упавших.'},
-  pas:'Поднимает и спасает союзников в 2 раза быстрее.',desc:'Фельдшер скорой. Приехала на вызов из здания, в котором давно нет ни одного телефона.',st:[3,3,3,3]},
- {id:'gleb',name:'Глеб',nick:'Тень',sur:'Тихонов',title:'Взломщик',price:350,col:'#262a28',col2:'#3e4640',hair:'#2a1e14',skin:'#d9b08f',spd:1,sta:1,rep:1,stealth:0.5,light:0.9,item:'decoy',
-  abil:{name:'Не дышать',cd:50,desc:'6 секунд аниматроник не видит и не слышит Глеба.'},
-  pas:'Шаги и ремонт в 2 раза тише.',desc:'Залез внутрь за медью из проводки. Умеет замирать так, что даже машины его не замечают.',st:[3,3,3,5]},
- {id:'ksenia',name:'Ксения',nick:'Объектив',sur:'Орлова',title:'Журналистка',price:450,col:'#4a3a52',col2:'#cfc8c0',hair:'#1a1212',skin:'#efc8a8',spd:1,sta:1,rep:1,stealth:1,light:1.15,item:'torch',
+  pas:'Поднимает и спасает союзников в 2 раза быстрее.',desc:'Фельдшер скорой. Её младший брат пропал на детском празднике в Windup Wonderland. Она пришла узнать, что тогда случилось на самом деле.',st:[3,3,3,3]},
+ {id:'gleb',name:'Glen',nick:'Shade',sur:'Turner',title:'Взломщик',price:350,col:'#262a28',col2:'#3e4640',hair:'#2a1e14',skin:'#d9b08f',spd:1,sta:1,rep:1,stealth:0.5,light:0.9,item:'decoy',
+  abil:{name:'Не дышать',cd:50,desc:'6 секунд аниматроник не видит и не слышит Glen.'},
+  pas:'Шаги и ремонт в 2 раза тише.',desc:'Влез внутрь, чтобы вынести старые запчасти и сервоприводы на продажу. Умеет замирать так, что датчики движения его не замечают.',st:[3,3,3,5]},
+ {id:'ksenia',name:'Casey',nick:'Lens',sur:'Morgan',title:'Журналистка',price:450,col:'#4a3a52',col2:'#cfc8c0',hair:'#1a1212',skin:'#efc8a8',spd:1,sta:1,rep:1,stealth:1,light:1.15,item:'torch',
   abil:{name:'Вспышка',cd:40,desc:'Вспышка фотоаппарата ослепляет аниматроника перед тобой на 3 секунды.'},
-  pas:'Фонарик светит дальше.',desc:'Расследует пропажи людей в пиццерии. Камера фиксирует то, что глаз отказывается видеть.',st:[3,3,3,3]},
- {id:'pavel',name:'Павел',nick:'Батя',sur:'Громов',title:'Ночной охранник',price:600,col:'#232e46',col2:'#c9a227',hair:'#9a9a9a',skin:'#d8a888',spd:0.96,sta:0.9,rep:1.1,stealth:1,light:1.3,item:'torch',
+  pas:'Фонарик светит дальше.',desc:'Журналистка. Расследует исчезновение Arthur Winslow — создателя Windup Wonderland. Камера со вспышкой — её главный инструмент и единственное оружие.',st:[3,3,3,3]},
+ {id:'pavel',name:'Paul',nick:'Pops',sur:'Grant',title:'Ночной охранник',price:600,col:'#232e46',col2:'#c9a227',hair:'#9a9a9a',skin:'#d8a888',spd:0.96,sta:0.9,rep:1.1,stealth:1,light:1.3,item:'torch',
   abil:{name:'Рация',cd:55,desc:'На 8 секунд вся команда видит аниматроника сквозь стены.'},
-  pas:'Самый широкий и дальний фонарь, чинит чуть быстрее.',desc:'Тридцать лет на ночных сменах. Он знает: они двигаются. И знает, когда.',st:[2,2,4,3]},
+  pas:'Самый широкий и дальний фонарь, чинит чуть быстрее.',desc:'Ночной охранник смены 1993 года — единственный, кто выбрался той ночью. Спустя 30 лет он вернулся. Он знает, как они ходят. И знает, когда.',st:[2,2,4,3]},
 ];
 const KILLERS=[
- {id:'chorist',name:'Хорист',title:'Певчий аниматроник',price:0,col:'#4e3a5c',col2:'#ddd4c2',eye:'#fff2a0',spd:1,vis:1,
-  pow:{name:'Реквием',cd:40,desc:'Поёт сорванным голосом: эхо выдаёт всех выживших — 6 секунд видишь их сквозь стены.'},desc:'Вёл детский хор на главной сцене. Голосовой модуль сгорел, фарфоровая маска раскололась, но он продолжает петь — из самой груди.',st:[3,3,3]},
- {id:'huntsman',name:'Егерь',title:'Хозяин «Лесной сцены»',price:0,col:'#5a4632',col2:'#8a5a32',eye:'#ffb020',spd:0.98,vis:1,
-  pow:{name:'Капкан',cd:12,desc:'Ставит ржавый капкан под ногами (до 3). Попавший выживший застревает, громко шумит и выдаёт себя.'},desc:'Рассказывал детям сказки про лесника. Рога ему заменили арматурой, ружьё давно отобрали. Капканы — остались.',st:[3,3,4]},
- {id:'announcer',name:'Диктор',title:'Голос пиццерии',price:300,col:'#2c3036',col2:'#a8905a',eye:'#c8ff4a',spd:1,vis:1.1,
-  pow:{name:'Радиоузел',cd:32,desc:'Уходит в сеть громкоговорителей и выходит из динамика рядом с последним шумом или генератором.'},desc:'Вместо головы — помятый рупор громкоговорителя. Раньше объявлял дни рождения. Теперь объявляет, кто следующий.',st:[3,4,4]},
- {id:'midnight',name:'Полуночница',title:'Фарфоровая заводная кукла',price:450,col:'#d8cfb8',col2:'#1c1824',eye:'#7fd8ff',spd:1.02,vis:1,
-  pow:{name:'Обесточка',cd:48,desc:'Гасит свет во всей пиццерии на 8 секунд: фонари слабеют, а она ускоряется.'},desc:'Часы в её груди остановились ровно в 00:00 — в ту ночь, когда пиццерию закрыли. Завод не кончается никогда.',st:[4,3,4]},
- {id:'moloch',name:'Молох',title:'Сторож склада',price:600,col:'#464a42',col2:'#d4a52a',eye:'#ff3a2a',spd:0.96,vis:0.95,
-  pow:{name:'Таран',cd:20,desc:'Разгоняет мотор аттракциона и мчится вперёд. Сбивает выжившего, а врезавшись в стену — оглушает сам себя.'},desc:'Собран из мотора машинок-«бамперов» и стальной клетки. На лице — треснувшая маска с улыбкой, которую никто не рисовал.',st:[2,3,5]},
- {id:'springtrap',name:'Спрингтрап',title:'Фан-трибьют · Five Nights at Freddy\'s',fnaf:true,price:500,col:'#7f7a3a',col2:'#4e4a22',eye:'#e8e6d0',spd:0.98,vis:1,
-  pow:{name:'Вентиляция',cd:30,desc:'Залезает в вентиляцию у ближайшей решётки и вылезает из решётки рядом с последним шумом или генератором. Скрежет в трубах выдаёт, куда он ползёт. Ещё может пролезать в лазы, как выжившие.'},desc:'Истлевший кролик в пружинном костюме: одно ухо оторвано, из дыр торчат провода. Он всегда возвращается.',st:[3,3,4]},
- {id:'freddy',name:'Фредди',title:'Фан-трибьют · Five Nights at Freddy\'s',fnaf:true,price:500,col:'#6e4424',col2:'#c49a6c',eye:'#a8d8ff',spd:1,vis:1,
-  pow:{name:'Шоу во тьме',cd:38,desc:'8 секунд его не видно в темноте — только блеск глаз и тихая мелодия шкатулки, которая всё громче, чем он ближе. Вне луча фонаря двигается на 12% быстрее. Удар раскрывает его.'},desc:'Медведь-солист в цилиндре, с бабочкой и микрофоном. Двигается, только когда на него не смотрят.',st:[3,3,4]},
+ {id:'chorist',name:'Chorister',title:'Певчий аниматроник главной сцены',price:0,col:'#4e3a5c',col2:'#ddd4c2',eye:'#fff2a0',spd:1,vis:1,
+  pow:{name:'Реквием',cd:40,desc:'Поёт сорванным голосом: эхо выдаёт всех выживших — 6 секунд видишь их сквозь стены.'},desc:'Пел на главной сцене в фарфоровой маске и звал детей по именам. Голосовой модуль сгорел, маска раскололась, но запасной динамик в груди всё ещё играет.',st:[3,3,3]},
+ {id:'huntsman',name:'Ranger',title:'Ведущий лесного шоу',price:0,col:'#5a4632',col2:'#8a5a32',eye:'#ffb020',spd:0.98,vis:1,
+  pow:{name:'Капкан',cd:12,desc:'Ставит ржавый капкан под ногами (до 3). Попавший выживший застревает, громко шумит и выдаёт себя.'},desc:'Вёл лесное шоу: рассказывал детям про зверей и следы. Рога ему заменили арматурой, бутафорское ружьё сняли. Реквизитные капканы оказались вполне рабочими.',st:[3,3,4]},
+ {id:'announcer',name:'Announcer',title:'Голос Windup Wonderland',price:300,col:'#2c3036',col2:'#a8905a',eye:'#c8ff4a',spd:1,vis:1.1,
+  pow:{name:'Радиоузел',cd:32,desc:'Уходит в сеть громкоговорителей и выходит из динамика рядом с последним шумом или генератором.'},desc:'Вместо головы — помятый рупор громкоговорителя, подключённый к трансляционной сети здания. Раньше объявлял дни рождения. Теперь объявляет нарушителей.',st:[3,4,4]},
+ {id:'midnight',name:'Midnight',title:'Заводная кукла-балерина',price:450,col:'#d8cfb8',col2:'#1c1824',eye:'#7fd8ff',spd:1.02,vis:1,
+  pow:{name:'Обесточка',cd:48,desc:'Гасит свет во всём здании на 8 секунд: фонари слабеют, а она ускоряется.'},desc:'Кукла-балерина с пружинным приводом и доступом к щитку освещения. Таймер в её груди остановился в 00:00 — в ночь бури 1993 года.',st:[4,3,4]},
+ {id:'moloch',name:'Moloch',title:'Аниматроник автодрома',price:600,col:'#464a42',col2:'#d4a52a',eye:'#ff3a2a',spd:0.96,vis:0.95,
+  pow:{name:'Таран',cd:20,desc:'Разгоняет мотор аттракциона и мчится вперёд. Сбивает выжившего, а врезавшись в стену — оглушает сам себя.'},desc:'Талисман автодрома: мотор от машинок-«бамперов» в стальной клетке. В режиме охраны он просто таранит всё, что движется.',st:[2,3,5]},
+ {id:'springtrap',name:'Springtrap',title:'Фан-трибьют · Five Nights at Freddy\'s',fnaf:true,price:500,col:'#7f7a3a',col2:'#4e4a22',eye:'#e8e6d0',spd:0.98,vis:1,
+  pow:{name:'Вентиляция',cd:30,desc:'Залезает в вентиляцию у ближайшей решётки и вылезает из решётки рядом с последним шумом или генератором. Скрежет в трубах выдаёт, куда он ползёт. Ещё может пролезать в лазы, как выжившие.'},desc:'Найден на складе среди списанного оборудования: истлевший кролик в пружинном костюме, куплен Winslow на аукционе закрытой пиццерии. Внутри него что-то есть — и это точно не механизм.',st:[3,3,4]},
+ {id:'freddy',name:'Freddy',title:'Фан-трибьют · Five Nights at Freddy\'s',fnaf:true,price:500,col:'#6e4424',col2:'#c49a6c',eye:'#a8d8ff',spd:1,vis:1,
+  pow:{name:'Шоу во тьме',cd:38,desc:'8 секунд его не видно в темноте — только блеск глаз и тихая мелодия шкатулки, которая всё громче, чем он ближе. Вне луча фонаря двигается на 12% быстрее. Удар раскрывает его.'},desc:'Второй «гость со склада»: медведь-солист в цилиндре, с бабочкой и микрофоном, с того же аукциона. Он не подключён к серверу — но двигается, когда на него не смотрят.',st:[3,3,4]},
 ];
 const HMAP={},KMAP={};HUNTERS.forEach(h=>HMAP[h.id]=h);KILLERS.forEach(k=>KMAP[k.id]=k);
 const FULLNAME=h=>h.name+' «'+h.nick+'» '+h.sur;
 // v1 -> v2 character ids (saves from v1.0 are migrated on load)
 const ID_MIGRATE={mila:'marina',timur:'artem',vera:'lida',gosha:'gleb',sonya:'ksenia',pasha:'pavel',hippo:'chorist',moose:'huntsman',frog:'announcer',ticktock:'midnight',croc:'moloch'};
 const migId=id=>ID_MIGRATE[id]||id;
-const CREDIT_TEXT='Неофициальная бесплатная фан-игра. Без доната и рекламы. Спрингтрап и Фредди взяты из Five Nights at Freddy\'s; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.';
+const CREDIT_TEXT='Неофициальная бесплатная фан-игра. Без доната и рекламы. Springtrap и Freddy взяты из Five Nights at Freddy\'s; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.';
+// v2.1 lore: «История» pages and collectible notes (Russian text, English names)
+const LORE=[
+ {t:'1986 · Открытие',p:['1986 год. Инженер Arthur Winslow открывает семейный развлекательный центр «Windup Wonderland» в маленьком городке Brunville, штат Огайо.','Его аниматроники умели то, чего не умел никто: камеры и микрофоны распознавали лица и голоса, а память запоминала постоянных гостей. Роботы называли детей по именам и поздравляли их с днём рождения.']},
+ {t:'Труппа',p:['Chorister пел на главной сцене в фарфоровой маске. Ranger вёл лесное шоу. Announcer — голова-громкоговоритель — объявлял праздники на весь центр.','Midnight, заводная кукла-балерина, танцевала в праздничной комнате. Moloch был талисманом автодрома с машинками-«бамперами».']},
+ {t:'1992 · Продажа',p:['В 1992 году у Winslow кончились деньги. Контроль над центром он продал военному подрядчику.','Подрядчик тайно обновил программу роботов: после закрытия аниматроники должны были отслеживать и задерживать «нарушителей» до приезда охраны. Обновление толком не проверили.']},
+ {t:'13 ноября 1993',p:['Ночью 13 ноября 1993 года буря оборвала линию электропередачи. Аварийные генераторы перезагрузили роботов в «режиме охраны».','Из-за сбоя стёрся список персонала — и каждый человек в здании стал нарушителем. Ночная смена пропала вместе с самим Winslow. Выбрался только один охранник — Paul Grant.','Центр закрыли, дело замяли, здание заколотили.']},
+ {t:'Почему генераторы',p:['При закрытии ворота запечатали магнитными замками. Они открываются только при наличии питания.','Чтобы выйти, нужно починить 5 генераторов. Но питание будит и аниматроников — они по-прежнему в режиме охраны.']},
+ {t:'Выжившие',p:['Mara «Spark» Ellis — электрик, нанятая проверить здание перед сносом. Danny «Courier» Brooks привёз пиццу не по тому адресу. Lydia «Doc» Hayes — фельдшер: её младший брат пропал на дне рождения в Windup Wonderland.','Glen «Shade» Turner влез за старыми запчастями на продажу. Casey «Lens» Morgan — журналистка, расследует исчезновение Winslow. Paul «Pops» Grant — тот самый охранник 1993 года. Спустя 30 лет он вернулся.']},
+ {t:'Гости со склада',p:['Среди списанного оборудования на складе нашлись два чужих аниматроника: облезлый кролик с пружинными замками и медведь в цилиндре.','По накладным Winslow купил их на аукционе закрытой пиццерии. Внутри кролика что-то есть — и это точно не механизм.']},
+ {t:'Сервер',p:['В подвале под сценой до сих пор работает центральный сервер. Он продолжает отдавать команды роботам.','Последний вход в систему — под учётной записью «A.Winslow». Неделю назад.']},
+];
+const NOTES=[
+ {id:'n1',t:'Памятка для персонала (1986)',x:10,y:35,b:'Добро пожаловать в Windup Wonderland! Наши друзья узнают гостей в лицо. Если ребёнок пришёл впервые — представьте его Chorister у главной сцены, и в следующий раз его встретят по имени. — A. Winslow'},
+ {id:'n2',t:'Дневник Winslow: апрель 1986',x:7,y:37,b:'Сегодня Chorister сам назвал девочку по имени — Emily. Она расплакалась от счастья. Камеры, распознавание голоса, память гостей: всё работает. Ради этого стоило заложить дом.'},
+ {id:'n3',t:'Письмо подрядчика (1992)',x:4,y:36,b:'От: отдел систем охраны. Кому: A. Winslow. Обновление ПО «Режим охраны» v0.9 установлено на все единицы. После закрытия единицы отслеживают и задерживают нарушителей до прибытия охраны. Полевые испытания перенесены из-за сроков. Ваше согласие не требуется по договору.'},
+ {id:'n4',t:'Журнал охраны, 13.11.1993, 23:40',x:29,y:20,b:'Гроза. Свет мигает с десяти вечера. В 23:38 линия упала, сидим в темноте. Слышно, как в подвале запускаются аварийные генераторы. Роботы на сцене подняли головы.'},
+ {id:'n5',t:'Журнал охраны, 14.11.1993, 00:52',x:52,y:28,b:'Они не узнают нас. Announcer по громкой связи назвал мой номер жетона — и слово «нарушитель». Магнитные замки не открываются. Если кто-то это читает: чините генераторы. — P. Grant'},
+ {id:'n6',t:'Накладная №447',x:55,y:5,b:'Аукцион имущества закрытой пиццерии. Лот 12: аниматроник «кролик», пружинные замки, состояние неудовл. Лот 13: аниматроник «медведь в цилиндре». Покупатель: A. Winslow. Примечание грузчика: «кролик тяжелее, чем должен быть. И пахнет».'},
+ {id:'n7',t:'Приглашение на праздник',x:22,y:31,b:'Toby Hayes исполняется 7 лет! Ждём в Windup Wonderland, праздничная комната, суббота, 15:00. Приписка карандашом на обороте: «Toby не вернулся из туалета. Охрана говорит — ушёл сам. Он не мог уйти сам».'},
+ {id:'n8',t:'Акт об опечатывании (1993)',x:61,y:20,b:'Здание закрыто по решению округа. Ворота запечатаны магнитными замками, питание отключено. Доступ — только при подаче питания на щиты. Материалы дела переданы подрядчику. Огласке не подлежит.'},
+ {id:'n9',t:'Дневник Winslow: ноябрь 1993',x:10,y:5,b:'Они изменили моих детей. Код подрядчика не умеет отличать гостя от врага. Я спущусь под сцену к серверу и откачу обновление сам. Если не вернусь — не включайте генераторы.'},
+ {id:'n10',t:'Распечатка сервера',x:33,y:6,b:'ВХОД: A.WINSLOW … успешно (7 дней назад). РЕЖИМ ОХРАНЫ: АКТИВЕН. СПИСОК ПЕРСОНАЛА: 0 записей. ЕДИНИЦ В СЕТИ: 5 (+2 не зарегистрированы). КОМАНДА: задержать всех.'},
+];
+const NOTEMAP={};NOTES.forEach(n=>NOTEMAP[n.id]=n);
 const ITEMS={
  torch:{name:'Стробоскоп',uses:3,desc:'Ослепляет аниматроника в луче фонаря',col:'#ffe27a'},
  tool:{name:'Инструменты',uses:2,desc:'+25% к ремонту генератора рядом',col:'#e0a040'},
@@ -334,7 +377,7 @@ const DIFF=[
 
 /* ================= SAVE ================= */
 const SKEY='zavodnye_koshmary_v1';
-const DEF_SAVE={ver:2,coins:0,unl:{h:['marina','artem'],k:['chorist','huntsman']},sel:{h:'marina',k:'chorist'},
+const DEF_SAVE={ver:3,notes:[],coins:0,unl:{h:['marina','artem'],k:['chorist','huntsman']},sel:{h:'marina',k:'chorist'},
  stats:{rounds:0,surv:0,kill:0,esc:0,kwins:0,gens:0,downs:0,elims:0,rescues:0,coinsTotal:0,stuns:0,hidden:0,best:0},
  set:{snd:0.8,mus:0.7,sens:1,bright:1,diff:1,vib:true,shake:true},roles:[]};
 let S;
@@ -350,6 +393,7 @@ function loadSave(){
   if(s.stats)Object.keys(d.stats).forEach(k=>{if(typeof s.stats[k]==='number')d.stats[k]=s.stats[k]});
   if(s.set)Object.keys(d.set).forEach(k=>{if(s.set[k]!==undefined)d.set[k]=s.set[k]});
   if(Array.isArray(s.roles))d.roles=s.roles.slice(-20);
+  if(Array.isArray(s.notes))d.notes=Array.from(new Set(s.notes)).filter(id=>NOTEMAP[id]);
   d.migrated=fromV1;
  }
  S=d;
@@ -1004,6 +1048,8 @@ function newRound(role){
  LOCKER_T.forEach(([tx,ty])=>G.hides.push({type:'locker',tx,ty,x:tx*TS+16,y:ty*TS+16,occ:null,shake:0}));
  TABLE_T.forEach(([tx,ty])=>G.hides.push({type:'table',tx,ty,x:tx*TS+16,y:ty*TS+16,occ:null,shake:0}));
  VENT_PAIRS.forEach(([a,b])=>{G.vents.push({x:a[0]*TS+16,y:a[1]*TS+16,to:{x:b[0]*TS+16,y:b[1]*TS+16}});G.vents.push({x:b[0]*TS+16,y:b[1]*TS+16,to:{x:a[0]*TS+16,y:a[1]*TS+16}})});
+ G.notes=[];G.notesFound=0;
+ if(role==='s'){const left=shuffle(NOTES.filter(n=>!S.notes.includes(n.id)));for(const n of left.slice(0,2)){let p=[n.x,n.y];if(tiles[I(p[0],p[1])]!==0||objAt[I(p[0],p[1])])p=nearestWalk(p[0],p[1])||p;G.notes.push({id:n.id,x:p[0]*TS+16,y:p[1]*TS+16})}}
  const types=Object.keys(ITEMS);
  for(let i=0;i<8;i++){const [tx,ty]=randomFloor();G.items.push({type:pick(types),x:tx*TS+16,y:ty*TS+16})}
  let ids=shuffle(HUNTERS.map(h=>h.id));
@@ -1212,6 +1258,7 @@ function findInteractS(s){
  o=nearestBy(G.surv,s,56,x=>x!==s&&x.state==='stage');if(o)return {type:'rescue',o,label:'Спасти',hold:true};
  if(G.power){for(const g of G.gates){if(!g.open&&dxy(s.x,s.y,g.lx,g.ly)<58)return {type:'gate',o:g,label:'Открыть',hold:true}}}
  if(!G.power){o=nearestBy(G.gens,s,52,g=>!g.done);if(o)return {type:'gen',o,label:'Чинить'}}
+ if(s===G.you&&G.notes.length){o=nearestBy(G.notes,s,36);if(o)return {type:'note',o,label:'Записка'}}
  o=nearestBy(G.hides,s,46,h=>!h.occ);if(o)return {type:'hide',o,label:o.type==='locker'?'Спрятаться':'Под стол'};
  o=nearestBy(G.vents,s,30);if(o)return {type:'vent',o,label:'В лаз'};
  o=nearestBy(G.items,s,38);if(o)return {type:'item',o,label:'Взять'};
@@ -1233,6 +1280,7 @@ function doInteractS(s,c){
  if(c.type==='revive'||c.type==='rescue'||c.type==='gate'){startAct(s,c.type,c.o);return}
  if(c.type==='gen'){if(s===G.you)openMinigame(c.o.mgNext,c.o);return}
  if(c.type==='hide'){enterHide(s,c.o);return}
+ if(c.type==='note'){if(s!==G.you)return;const i=G.notes.indexOf(c.o);if(i>=0)G.notes.splice(i,1);const n=NOTEMAP[c.o.id];if(n&&!S.notes.includes(n.id)){S.notes.push(n.id);save()}G.notesFound++;AU.click();AU.tone(880,0.25,'triangle',0.12,{delay:0.05});toast('Записка: «'+(n?n.t:'')+'» — читай в «Истории»',2600);return}
  if(c.type==='vent'){s.state='vent';s.ventT=1.1;s.vent=c.o;AU.locker(vAt(s.x,s.y,400));makeNoise(s.x,s.y,140*s.ch.stealth,'vent',s);return}
  if(c.type==='item'){const it=c.o;const i=G.items.indexOf(it);if(i>=0)G.items.splice(i,1);if(s.item){G.items.push({type:s.item.type,uses:s.item.uses,x:s.x,y:s.y})}s.item={type:it.type,uses:it.uses||ITEMS[it.type].uses};AU.click();if(s===G.you)toast('Предмет: '+ITEMS[it.type].name);return}
  if(c.type==='door'){if(c.o.open){toggleDoor(c.o,s)}else{c.o.open=true;AU.door(vAt(s.x,s.y,500))}}
@@ -1297,7 +1345,7 @@ function powerTarget(){
 function killerPower(k){
  if(k.powCd>0||k.stun>0||k.channel>0||k.lunge>0||k.charge>0||k.search)return false;
  const id=k.ch.id;
- if(id==='chorist'){G.revealSurv=6;AU.lullaby();msg('Реквием Хориста… эхо выдаёт всех выживших','#c9a0ff')}
+ if(id==='chorist'){G.revealSurv=6;AU.lullaby();msg('Реквием Chorister… эхо выдаёт всех выживших','#c9a0ff')}
  else if(id==='huntsman'){if(k.carry)return false;G.traps.push({x:k.x,y:k.y,t:0});if(G.traps.length>3)G.traps.shift();AU.tone(300,0.15,'square',0.15);if(!k.bot)toast('Капкан установлен ('+G.traps.length+'/3)')}
  else if(id==='announcer'){const p=powerTarget();let best=null,bd=1e9;for(const [tx,ty] of SPEAKER_T){const x=tx*TS+16,y=ty*TS+16;const d=dxy(x,y,p.x,p.y);if(dxy(x,y,k.x,k.y)<200)continue;if(d<bd){bd=d;best={x,y}}}if(!best)return false;k.channel=k.channelMax=1.1;k.channelTo=best;AU.tone(523,0.8,'triangle',0.15*Math.max(vAt(best.x,best.y,600),vAt(k.x,k.y,600)));AU.tone(659,0.8,'triangle',0.1*vAt(best.x,best.y,600),{delay:0.2});G.fx.push({type:'speaker',x:best.x,y:best.y,t:0})}
  else if(id==='midnight'){G.outage=8;AU.powerOff();msg('Свет погас!','#7fd8ff');if(G.role==='s')G.shake=0.3}
@@ -1998,6 +2046,8 @@ function renderGame(dt){
  for(const h of G.hides){if(h.shake>0&&inView(h.x,h.y,30)){if(h.type==='locker'){ctx.fillStyle='#050405';ctx.fillRect(h.tx*TS,h.ty*TS,TS,TS);drawLocker(ctx,h.tx*TS,h.ty*TS,1)}else{ctx.fillStyle='rgba(200,200,200,.5)';for(let i=0;i<3;i++)ctx.fillRect(h.x+rnd(-16,16),h.y+rnd(-16,16),2,2)}}}
  // items
  for(const it of G.items){if(!inView(it.x,it.y,30))continue;const b=Math.sin(t*3+it.x)*2;ctx.fillStyle='rgba(255,230,150,.18)';ctx.beginPath();ctx.arc(it.x,it.y,13,0,TAU);ctx.fill();drawItemIcon(ctx,it.type,it.x,it.y+b,15)}
+ // lore notes (survivor only)
+ if(G.notes)for(const n of G.notes){if(!inView(n.x,n.y,30))continue;const b=Math.sin(t*2.4+n.x)*1.5,gl=0.22+Math.sin(t*4+n.y)*0.08;ctx.fillStyle='rgba(180,230,255,'+gl.toFixed(3)+')';ctx.beginPath();ctx.arc(n.x,n.y,14,0,TAU);ctx.fill();ctx.save();ctx.translate(n.x,n.y+b);ctx.rotate(-0.18);ctx.fillStyle='#e8e0c8';ctx.fillRect(-7,-9,14,18);ctx.fillStyle='#d0c6a8';ctx.fillRect(3,-9,4,4);ctx.fillStyle='#6a604c';for(let k=-5;k<=5;k+=3)ctx.fillRect(-5,k,9,1);ctx.restore()}
  // traps
  for(const tp of G.traps){if(!inView(tp.x,tp.y,30))continue;ctx.strokeStyle='#888';ctx.lineWidth=2;ctx.beginPath();ctx.arc(tp.x,tp.y,9,0,TAU);ctx.stroke();ctx.fillStyle='#bbb';for(let i=0;i<8;i++){const a=i/8*TAU;ctx.fillRect(tp.x+Math.cos(a)*9-1,tp.y+Math.sin(a)*9-1,2,2)}ctx.fillStyle='#e33';ctx.beginPath();ctx.arc(tp.x,tp.y,3,0,TAU);ctx.fill()}
  // decoys
@@ -2186,7 +2236,7 @@ function drawHUD(V){
  // stamina / status
  const Y=G.you;
  if(Y.kind==='s'&&Y.state==='normal'&&(Y.stamina<1||Y.boost>0)){const w=130;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(W/2-w/2,H-22,w,8);c.fillStyle=Y.exhausted?'#a33':Y.boost>0?'#7fe0ff':'#e8e8e8';c.fillRect(W/2-w/2+1,H-21,(w-2)*(Y.boost>0?1:Y.stamina),6);c.fillStyle='#bbb';c.font='9px sans-serif';c.textAlign='center';c.fillText(Y.exhausted?'одышка…':'выносливость',W/2,H-30)}
- if(Y.kind==='s'){let st='';if(Y.state==='downed')st='Ты упал'+(FEM[Y.ch.id]?'а':'')+'! Ползи к друзьям — они могут поднять. '+Math.ceil(Y.bleed)+' с';else if(Y.state==='carried')st='Тебя несут! Жми любую кнопку, чтобы вырваться';else if(Y.state==='stage')st='Ты на сцене! Ждём спасения… '+Math.ceil(Y.stageT)+' с';else if(Y.trapped>0)st='Капкан! Не двинуться…';else if(Y.invis>0)st='Тень: тебя не видно '+Math.ceil(Y.invis)+' с';
+ if(Y.kind==='s'){let st='';if(Y.state==='downed')st='Ты упал'+(FEM[Y.ch.id]?'а':'')+'! Ползи к друзьям — они могут поднять. '+Math.ceil(Y.bleed)+' с';else if(Y.state==='carried')st='Тебя несут! Жми любую кнопку, чтобы вырваться';else if(Y.state==='stage')st='Ты на сцене! Ждём спасения… '+Math.ceil(Y.stageT)+' с';else if(Y.trapped>0)st='Капкан! Не двинуться…';else if(Y.invis>0)st='Не дышать: тебя не видно '+Math.ceil(Y.invis)+' с';
   if(st){c.font='bold 14px sans-serif';c.textAlign='center';c.fillStyle='rgba(0,0,0,.6)';const w=c.measureText(st).width+20;c.fillRect(W/2-w/2,H*0.74-12,w,24);c.fillStyle='#ffd0a0';c.fillText(st,W/2,H*0.74)}
   if(Y.state==='dead'||Y.state==='escaped'){c.font='bold 15px sans-serif';c.textAlign='center';c.fillStyle='#fff';c.fillText((Y.state==='escaped'?'Ты спасся! ':'Ты выбыл. ')+(G.spect?'Наблюдение: '+G.spect.ch.name:''),W/2,H-24)}
  }else{let st='';if(Y.carry)st=inStage(Y.x,Y.y)?'Нажми «На сцену»!':'Неси '+Y.carry.ch.name+' на сцену ('+Math.round((1-Y.carry.wiggle)*100)+'%)';else if(Y.stun>0)st='Ослеплён!';else if(Y.channel>0&&Y.ch.id==='springtrap')st='Ползёшь по вентиляции…';else if(Y.unseen>0)st='Шоу во тьме: тебя не видно '+Math.ceil(Y.unseen)+' с';else if(Y.ch.id==='huntsman')st='Капканы: '+G.traps.length+'/3';else if(Y.ch.id==='springtrap'&&Y.powCd<=0)st=nearestBy(ventGrates(),Y,170,v=>los(Y.x,Y.y,v.x,v.y))?'Решётка рядом — жми «Вентиляция»':'Найди решётку вентиляции в полу';if(G.revealSurv>0)st='Реквием: выжившие видны '+Math.ceil(G.revealSurv)+' с';
@@ -2223,7 +2273,7 @@ function renderMenuBG(t,dt){
 
 /* ================= UI / FLOW ================= */
 let mode='menu',prevMode='menu',collSide='h',collSel=null,revealT=0,revealRole=null,revealDone=false,lastTs=0,acc=0,STEP=1/60;
-const SCREENS=['menu','lobby','coll','stats','settings','about','reveal','results','pause','confirm'];
+const SCREENS=['menu','lobby','coll','stats','settings','about','story','reveal','results','pause','confirm'];
 function show(id){SCREENS.forEach(s=>$(s).classList.toggle('hidden',s!==id));$('hud').classList.add('hidden')}
 function setMode(m){mode=m;if(m==='game'){SCREENS.forEach(s=>$(s).classList.add('hidden'));$('hud').classList.remove('hidden')}else show(m);updCoins()}
 function updCoins(){document.querySelectorAll('.cval').forEach(e=>e.textContent=S.coins)}
@@ -2342,7 +2392,7 @@ function endRound(){
  const fates=$('resFates');fates.innerHTML='';
  for(const s of G.surv){const d=document.createElement('div');d.className='fate';const c=document.createElement('canvas');c.width=92;c.height=92;portrait(c,'s',s.ch.id,{mood:s.state==='escaped'?'':'scared'});d.appendChild(c);const f=s.state==='escaped'?'<span style="color:#7fff9a">сбежал'+(FEM[s.ch.id]?'а':'')+'</span>':'<span style="color:#ff6a7a">'+(s.fate==='stage'?'сцена':s.fate==='time'?'не успел'+(FEM[s.ch.id]?'а':''):'пойман'+(FEM[s.ch.id]?'а':''))+'</span>';const tx=document.createElement('div');tx.innerHTML='<b>'+s.ch.name+(s===G.you?' (ты)':'')+'</b><br>'+f;d.appendChild(tx);fates.appendChild(d)}
  const L=[];
- if(role==='s'){L.push('Мини-игры: «Провода» × '+G.mgCount.wires+', «Автомат» × '+G.mgCount.arcade+' · генераторов запущено тобой: '+st.gens);L.push('Спасено/поднято: '+(st.rescues+st.revives)+' · ослеплений: '+st.stuns+' · пряток: '+st.hides)}
+ if(role==='s'){L.push('Мини-игры: «Провода» × '+G.mgCount.wires+', «Автомат» × '+G.mgCount.arcade+' · генераторов запущено тобой: '+st.gens);L.push('Спасено/поднято: '+(st.rescues+st.revives)+' · ослеплений: '+st.stuns+' · пряток: '+st.hides+(G.notesFound?' · записок найдено: '+G.notesFound:''))}
  else{L.push('Ударов: '+st.hits+' · уронено: '+st.downs+' · поймано: '+st.elims);L.push('Генераторов запущено выжившими: '+Math.min(G.gensDone,G.gensNeed)+'/'+G.gensNeed)}
  L.push('<span class="coins"><span class="coin-ico"></span>+'+coins+'</span> монет (всего '+S.coins+') · сложность: '+D.name);
  $('resList').innerHTML=L.join('<br>');
@@ -2359,6 +2409,31 @@ $('mStats').addEventListener('click',()=>{AU.init();openStats()});
 $('mSet').addEventListener('click',()=>{AU.init();prevMode='menu';openSettings()});
 $('mAbout').addEventListener('click',()=>{AU.init();setMode('about')});
 $('aboutBack').addEventListener('click',()=>setMode('menu'));
+/* ---- story (lore + collected notes) ---- */
+let storyTab='lore',storySel=0;
+function openStory(){setMode('story');renderStory()}
+function renderStory(){
+ $('tabLore').classList.toggle('on',storyTab==='lore');$('tabNotes').classList.toggle('on',storyTab==='notes');
+ const have=S.notes.length;$('tabNotes').textContent='Записки '+have+'/'+NOTES.length;
+ const L=$('storyList'),T=$('storyText');L.innerHTML='';
+ if(storyTab==='lore'){
+  storySel=clamp(storySel,0,LORE.length-1);
+  LORE.forEach((pg,i)=>{const d=document.createElement('div');d.textContent=(i+1)+'. '+pg.t;if(i===storySel)d.className='on';d.onclick=()=>{storySel=i;AU.click();renderStory()};L.appendChild(d)});
+  const pg=LORE[storySel];
+  T.innerHTML='<h3>'+pg.t+'</h3>'+pg.p.map(x=>'<p>'+x+'</p>').join('')+'<div class="row" style="justify-content:space-between;margin-top:6px"><button class="btn alt small'+(storySel>0?'':' dis')+'" id="stPrev">◀ Назад</button><span style="font-size:11px;color:#887">'+(storySel+1)+' / '+LORE.length+'</span><button class="btn alt small'+(storySel<LORE.length-1?'':' dis')+'" id="stNext">Далее ▶</button></div>';
+  $('stPrev').onclick=()=>{storySel--;AU.click();renderStory()};$('stNext').onclick=()=>{storySel++;AU.click();renderStory()};
+ }else{
+  storySel=clamp(storySel,0,NOTES.length-1);
+  NOTES.forEach((n,i)=>{const own=S.notes.includes(n.id);const d=document.createElement('div');d.textContent=own?(i+1)+'. '+n.t:(i+1)+'. ???';d.className=(i===storySel?'on ':'')+(own?'':'lk');d.onclick=()=>{storySel=i;AU.click();renderStory()};L.appendChild(d)});
+  const n=NOTES[storySel];
+  T.innerHTML=S.notes.includes(n.id)?'<h3>'+n.t+'</h3><div class="paper">'+n.b+'</div>':'<h3>???</h3><p style="color:#998">Эта записка ещё не найдена. Записки лежат на карте — подбирай их, когда играешь за выживших (кнопка «Действие» → «Записка»).</p><p style="color:#776;font-size:12px">Найдено: '+have+' из '+NOTES.length+'.</p>';
+ }
+ T.scrollTop=0;
+}
+$('mStory').addEventListener('click',()=>{AU.init();storyTab='lore';storySel=0;openStory()});
+$('storyBack').addEventListener('click',()=>setMode('menu'));
+$('tabLore').addEventListener('click',()=>{storyTab='lore';storySel=0;renderStory()});
+$('tabNotes').addEventListener('click',()=>{storyTab='notes';storySel=0;renderStory()});
 $('menuCredit').textContent=CREDIT_TEXT;$('aboutCredit').textContent=CREDIT_TEXT;
 function diffSel(el,onChange){el.innerHTML='';DIFF.forEach((d,i)=>{const s=document.createElement('span');s.textContent=d.name;s.className=i===S.set.diff?'on':'';s.onclick=()=>{S.set.diff=i;save();diffSel(el,onChange);onChange&&onChange()};el.appendChild(s)})}
 function openLobby(){G=null;setMode('lobby');portrait($('lobH'),'s',S.sel.h);portrait($('lobK'),'k',S.sel.k,{jaw:0.15});$('lobHn').textContent=HMAP[S.sel.h].name+' «'+HMAP[S.sel.h].nick+'» · '+HMAP[S.sel.h].title;$('lobKn').textContent=KMAP[S.sel.k].name+' · '+KMAP[S.sel.k].title;diffSel($('lobDiff'))}
@@ -2421,7 +2496,7 @@ window.__gameBack=function(){
  if(mode==='game'){pauseGame();return true}
  if(mode==='pause'){if(!$('settings').classList.contains('hidden')){$('settings').classList.add('hidden');return true}resumeGame();return true}
  if(mode==='reveal'){return true}
- if(['lobby','coll','stats','settings','about','results'].includes(mode)){if(mode==='coll'&&collBack==='lobby')openLobby();else goMenu();return true}
+ if(['lobby','coll','stats','settings','about','story','results'].includes(mode)){if(mode==='coll'&&collBack==='lobby')openLobby();else goMenu();return true}
  return false;
 };
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(mode==='game')pauseGame();if(AU.ctx&&AU.ctx.state==='running')AU.ctx.suspend()}else if(AU.ctx)AU.ctx.resume()});
@@ -2450,7 +2525,7 @@ addEventListener('resize',()=>{resize();joyHome()});
 resize();setMode('menu');updCoins();joyHome();
 requestAnimationFrame(frame);
 document.addEventListener('pointerdown',()=>AU.init(),{once:false,passive:true});
-window.ZK={get G(){return G},get KILLERS(){return KILLERS},get HUNTERS(){return HUNTERS},killerPower,ventGrates,openColl,renderColl,get S(){return S},get MG(){return MG},get mode(){return mode},startNight,beginGame,endRound,forceEnd,openMinigame,closeMinigame,genStepComplete,MAZES,findPath,save,loadSave,setMode,IN};
+window.ZK={get G(){return G},get KILLERS(){return KILLERS},get HUNTERS(){return HUNTERS},killerPower,ventGrates,openColl,renderColl,get S(){return S},openStory,NOTES,LORE,get MG(){return MG},get mode(){return mode},startNight,beginGame,endRound,forceEnd,openMinigame,closeMinigame,genStepComplete,MAZES,findPath,save,loadSave,setMode,IN};
 
 </script>
 </body>
