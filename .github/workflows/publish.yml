@@ -4,7 +4,7 @@ name: Publish release (one-time bootstrap)
 # so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
 # This workflow decodes it, verifies SHA-256, creates the release with the APK,
 # removes the payload and syncs gh-pages with main.
-# It does NOT build or sign anything. v1.0 - v3.3 were published the same way.
+# It does NOT build or sign anything. v1.0 - v3.4 were published the same way.
 
 on:
   push:
@@ -32,32 +32,32 @@ jobs:
           mkdir -p /tmp/p
           base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "a635b594e210153b1d1308b6f2eb755608d7f6cd6f90a4dd58451f4381962396" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "720530e2d58aee220d8c26e1f8df5d029ba70db8b846ef926f30d53d34bacd1d" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.3 with APK
+      - name: Create release v3.4 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.3 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.4 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.3
+          «Windup Wonderland» 3.4
 
-          - Первый сезон пропуска «Заводной Хэллоуин» и событие «Хэллоуин» идут до **21 октября 2026, 00:00** по времени устройства. На экране пропуска — живой обратный отсчёт.
-          - После окончания события кнопка «Хэллоуин» скрывается, а всё полученное (тыквы, скины, рамки, значки) остаётся навсегда. Прогресс первого сезона сохраняется.
-          - В конце трека пропуска, после 50-го уровня, — карточка-анонс «Новое обновление через N дней» с обратным отсчётом.
-          - **Следующее обновление — 21 октября.**
-          - Сохранения 3.2 и старше переносятся автоматически (с резервной копией).
+          - **Новая карта «Дом Винслоу»** — жуткий трёхэтажный особняк на окраине Brunville. Лестницы между этажами, индикатор «Этаж N», шаги с соседних этажей, шкафы и кровати, чтобы спрятаться, 7 генераторов и 2 выхода. Доступна сразу — в выборе карты и в чередовании.
+          - На чердаке — запертая комната: она открывается, когда запущены генераторы, или если найти в доме две записки.
+          - Пять новых записок и новая страница «Истории» о доме Винслоу.
+          - У отца Максима появился девиз: «Истинному воину меч не нужен.»
+          - Сохранения 3.3 и старше переносятся автоматически (с резервной копией).
 
           Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 7 / versionName 3.3. Подписан тем же ключом, что и прошлые версии, ставится поверх.
-          SHA-256: a635b594e210153b1d1308b6f2eb755608d7f6cd6f90a4dd58451f4381962396
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 8 / versionName 3.4. Подписан тем же ключом, что и прошлые версии, ставится поверх.
+          SHA-256: 720530e2d58aee220d8c26e1f8df5d029ba70db8b846ef926f30d53d34bacd1d
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.3 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.3" --notes-file /tmp/notes.md
+          gh release create v3.4 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.4" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -67,12 +67,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.3 bootstrap payload (APK published in Release v3.3)"
+          git commit -m "Remove v3.4 bootstrap payload (APK published in Release v3.4)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.3)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.4)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages

@@ -285,7 +285,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.3</div>
+  <div class="ver">v3.4</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -322,9 +322,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   <div class="panel" style="width:min(100%,640px)">
     <div class="row"><h2>ОБ ИГРЕ</h2><div class="sp"></div><button class="btn alt small" id="aboutBack">Назад</button></div>
     <div class="abouttxt">
-      <p><b>«Windup Wonderland» v3.3</b> (раньше называлась «Заводные Кошмары») — асимметричный хоррор про ночь в заброшенном американском семейном центре развлечений «Windup Wonderland» (Brunville, Ohio). Каждую ночь сторона выпадает случайно: <b style="color:#7fe0ff">Выжившие</b> (ты + 3 бота) чинят генераторы и бегут к выходу, <b style="color:#ff5a6a">Аниматроники</b> (ты против 4 ботов) не дают им уйти до рассвета.</p>
-      <p><b>Новое в v3.3:</b> первый сезон пропуска «Заводной Хэллоуин» и событие Хэллоуина идут до 21 октября (00:00 по времени устройства) — на экране пропуска есть обратный отсчёт. В конце трека пропуска появилась карточка-анонс следующего обновления. Купленное и заработанное остаётся навсегда.</p>
-      <p id="aboutAnime" class="hidden"><b>Сезон 2 «Путь меча»:</b> новый пропуск на 50 уровней, выживший Musashi («Боец»), режим «Манга» в настройках и новая карта «Аниме-павильон».</p>
+      <p><b>«Windup Wonderland» v3.4</b> (раньше называлась «Заводные Кошмары») — асимметричный хоррор про ночь в заброшенном американском семейном центре развлечений «Windup Wonderland» (Brunville, Ohio). Каждую ночь сторона выпадает случайно: <b style="color:#7fe0ff">Выжившие</b> (ты + 3 бота) чинят генераторы и бегут к выходу, <b style="color:#ff5a6a">Аниматроники</b> (ты против 4 ботов) не дают им уйти до рассвета.</p>
+      <p><b>Новое в v3.4:</b> новая карта «Дом Винслоу» — жуткий трёхэтажный особняк на окраине Brunville: лестницы между этажами, индикатор «Этаж N» и шаги с других этажей, шкафы и кровати, чтобы спрятаться, запертая комната на чердаке и пять новых записок. У отца Максима появился девиз: «Истинному воину меч не нужен.»</p>
+      <p><b>Было в v3.3:</b> первый сезон пропуска «Заводной Хэллоуин» и событие Хэллоуина идут до 21 октября (00:00 по времени устройства) — на экране пропуска есть обратный отсчёт. В конце трека пропуска появилась карточка-анонс следующего обновления. Купленное и заработанное остаётся навсегда.</p>
+      <p id="aboutAnime" class="hidden"><b>Сезон 2 «Путь меча»:</b> новый пропуск на 50 уровней, выживший Musashi («Боец», награда бесплатной линии пропуска, ур. 25), новый аниматроник Ryuk («Бог смерти», 900 монет; фан-трибьют: Рюк — персонаж Death Note, права принадлежат Цугуми Оба и Такэси Обата), режим «Манга» в настройках и новая карта «Аниме-павильон».</p>
       <p><b>Было в v3.2:</b> новый выживший — Father Maxim («Священник», 1000 монет): «Крест» (свет на всю комнату и светлые руки, которые ловят удары аниматроников), «Молитва» (лечит всех выживших) и «Святая вода» (ускорение). Его история — в «Истории».</p>
       <p><b>Было в v3.1:</b> режим «2 на 6» (два аниматроника против шести выживших); новые аниматроники Hippo, Котопес, Spinner, Grimy и Dolly; новые выжившие Rosa «Mop» Delgado и Cassidy; пять новых записок и страницы «Истории».</p>
       <p><b>Было в v3.0:</b> двери можно держать (зажми «Действие»), новая карта «Парк» с колесом обозрения, каруселью, автодромом, домом с привидениями и техтоннелями; профиль с уровнем, титулами, рамками и значками; достижения; магазин с предложениями дня; пропуск на 30 дней (бесплатная и «Золотая» линия — только за монеты из игры); режим «Рейтинг» с рангами; мастерство персонажей до 50 и Мейнстоуны; событие «Хэллоуин» с Джейсоном и тыквенной лавкой. Никаких покупок за настоящие деньги.</p>
@@ -534,7 +535,7 @@ const DIFF=[
 
 /* ================= SAVE ================= */
 const SKEY='zavodnye_koshmary_v1';
-const DEF_SAVE={ver:7,notes:[],coins:0,pumpkins:0,unl:{h:['marina','artem'],k:['chorist','huntsman']},sel:{h:'marina',k:'chorist'},
+const DEF_SAVE={ver:8,notes:[],coins:0,pumpkins:0,unl:{h:['marina','artem'],k:['chorist','huntsman']},sel:{h:'marina',k:'chorist'},
  stats:{rounds:0,surv:0,kill:0,esc:0,kwins:0,gens:0,downs:0,elims:0,rescues:0,coinsTotal:0,stuns:0,hidden:0,best:0,
   braceT:0,braceBest:0,pumpTotal:0,pumpBest:0,evRounds:0,evSurv:0,parkRounds:0,rkRounds:0,rkWins:0,nogenEsc:0,blitz:0,mainstones:0,questsDone:0,hits:0,notesRound:0,duoRounds:0,trapsCleared:0,tentEsc:0,portals:0,crosses:0,crossBlocks:0,prayers:0,prayerHeals:0,dashes:0,dashHits:0,cuts:0,cutHits:0,mprayers:0,animeRounds:0},
  set:{snd:0.8,mus:0.7,sens:1,bright:1,diff:1,vib:true,shake:true,map:'rot',team:'1v4',manga:false},roles:[],
@@ -551,12 +552,13 @@ function loadSave(){
  let s=null;try{s=JSON.parse(localStorage.getItem(SKEY)||'null')}catch(e){s=null}
  const d=JSON.parse(JSON.stringify(DEF_SAVE));
  if(isObj(s)){
-  const fromV1=!(s.ver>=2),fromV2=!(s.ver>=4),fromV3=!(s.ver>=5),fromV31=!(s.ver>=6),fromV32=!(s.ver>=7);
+  const fromV1=!(s.ver>=2),fromV2=!(s.ver>=4),fromV3=!(s.ver>=5),fromV31=!(s.ver>=6),fromV32=!(s.ver>=7),fromV33=!(s.ver>=8);
   if(fromV1){try{if(!localStorage.getItem(SKEY+'_backup_v1'))localStorage.setItem(SKEY+'_backup_v1',JSON.stringify(s))}catch(e){}}
   if(fromV2&&!fromV1){try{if(!localStorage.getItem(SKEY+'_backup_v2'))localStorage.setItem(SKEY+'_backup_v2',JSON.stringify(s))}catch(e){}}
   if(fromV3&&!fromV2){try{if(!localStorage.getItem(SKEY+'_backup_v3'))localStorage.setItem(SKEY+'_backup_v3',JSON.stringify(s))}catch(e){}}
   if(fromV31&&!fromV3){try{if(!localStorage.getItem(SKEY+'_backup_v31'))localStorage.setItem(SKEY+'_backup_v31',JSON.stringify(s))}catch(e){}}
   if(fromV32&&!fromV31){try{if(!localStorage.getItem(SKEY+'_backup_v32'))localStorage.setItem(SKEY+'_backup_v32',JSON.stringify(s))}catch(e){}}
+  if(fromV33&&!fromV32){try{if(!localStorage.getItem(SKEY+'_backup_v33'))localStorage.setItem(SKEY+'_backup_v33',JSON.stringify(s))}catch(e){}}
   if(typeof s.coins==='number'&&isFinite(s.coins))d.coins=Math.max(0,Math.floor(s.coins));
   if(typeof s.pumpkins==='number'&&isFinite(s.pumpkins))d.pumpkins=Math.max(0,Math.floor(s.pumpkins));
   if(s.unl){['h','k'].forEach(k=>{if(Array.isArray(s.unl[k])){const M=k==='h'?HMAP:KMAP;d.unl[k]=Array.from(new Set(d.unl[k].concat(s.unl[k].map(migId)))).filter(id=>M[id]&&id!=='jasonk')}})}
@@ -576,7 +578,10 @@ function loadSave(){
   if(!d.own.frames.includes(d.prof.frame))d.prof.frame='none';
   if(!d.own.titles.includes(d.prof.title))d.prof.title='novice';
   d.prof.name=String(d.prof.name||'Игрок').slice(0,16)||'Игрок';
-  d.migrated=fromV32;
+  // v3.4: Musashi moved from the coin shop to Season 2 free tier 25 — anyone who already claimed that tier gets him
+  if(fromV33&&isObj(d.pass)&&d.pass.season===1&&Array.isArray(d.pass.cf)&&d.pass.cf.includes(25)&&!d.unl.h.includes('musashi'))d.unl.h.push('musashi');
+  if(d.sel.k==='ryuk'&&!d.unl.k.includes('ryuk'))d.sel.k='chorist';
+  d.migrated=fromV33;
  }
  S=d;
  if(S.migrated){delete S.migrated;save()}
@@ -761,6 +766,27 @@ HMAP.musashi=HUNTERS.find(h=>h.id==='musashi');
 const VAGABOND_CREDIT='Миямото Мусаси в образе из манги Vagabond; права на Vagabond принадлежат Такэхико Иноуэ.';
 const ANIME_MAP_CREDIT='Локации вдохновлены Naruto (М. Кисимото), Berserk (К. Миура), Vinland Saga (М. Юкимура), Vagabond (Т. Иноуэ).';
 function creditText(){return CREDIT_TEXT+(animeOn()?' '+VAGABOND_CREDIT+' '+ANIME_MAP_CREDIT+' Все рисунки — оригинальные, нарисованы кодом.':'')}
+
+/* ================= v3.4 DATA: Ryuk (fan tribute, hidden until ANIME_DATE), Musashi -> Season 2 pass reward ================= */
+ANIME_CHARS.ryuk=1;
+// Musashi is no longer sold for coins: he is the featured FREE-line reward of the Season 2 pass (tier MUS_PASS_TIER)
+const MUS_PASS_TIER=25;
+HMAP.musashi.price=0;HMAP.musashi.passTier=MUS_PASS_TIER;
+const RYUK_DESC='Бог смерти из мира шинигами. Ему стало скучно — и он явился в мир людей, чтобы забрать тех, кому суждено умереть. Говорят, в Windup Wonderland его привёл запах яблок из старой закусочной у главной сцены.';
+KILLERS.push(
+ {id:'ryuk',name:'Ryuk',title:'Бог смерти · гость из мира шинигами',price:900,col:'#1c1c26',col2:'#3a2c48',eye:'#ffd23a',skin:'#5a6478',spd:0.82,vis:1,anime:true,fanV:true,
+  pow:{name:'Полёт',cd:55,desc:'Расправляет крылья и взлетает на 10 секунд: летит намного быстрее и перелетает столы, ящики и мебель (но не стены и двери).'},
+  pow2:{name:'Яблоко',cd:75,desc:'Съедает яблоко (1 с) и получает «Сила 1»: следующий удар сразу сбивает выжившего с ног, даже если он был цел.'},
+  pow3:{name:'Тетрадь смерти',cd:70,desc:'Вписывает имя выжившего, которого видит или видел недавно: +1 ярость, цель замедлена на 10% и видна Ryuk сквозь стены 40 секунд.'},
+  pas:'«Ярость» (до 20): с 10 ярости — красные глаза, все выжившие видны сквозь стены, оглушения на 10% короче; чем больше ярости, тем он быстрее и тем чаще удар снимает сразу 2 здоровья. Хватка у него костлявая: из его рук вырываются в 1,5 раза быстрее. «Глаза бога смерти»: кто вырвался у него из рук, 60 с видит Ryuk сквозь стены. Сцена: пойманный им выживший погибает через 10 секунд, если его не спасут.',
+  desc:RYUK_DESC,st:[2,4,5]}
+);
+KMAP.ryuk=KILLERS.find(k=>k.id==='ryuk');NEWK.ryuk=1;
+const RYUK_CREDIT='Рюк — персонаж Death Note; права принадлежат Цугуми Оба и Такэси Обата.';
+{const _ct=creditText;creditText=function(){return _ct()+(animeOn()?' '+RYUK_CREDIT:'')}}
+// Father Maxim's motto (shown in his collection card)
+HMAP.priest.quote='Истинному воину меч не нужен.';
+HMAP.priest.desc=HMAP.priest.desc.replace(/\s*$/,'')+' Его девиз: «Истинному воину меч не нужен.»';
 
 /* ================= v3.0 META DATA: Jason, skins, frames, badges, titles, achievements, ranks, pass, mastery, event ================= */
 // Jason Voorhees as a playable SURVIVOR (Halloween exchange reward, class «Боец»)
@@ -960,6 +986,21 @@ PASS2_SKINS.forEach(([id,fx])=>addSkin('p2_'+id+'_'+fx,HMAP[id]?'h':'k',id,fx,'p
  .forEach(([id,n,d,ic,col])=>addBadge(id,{name:n,desc:d,icon:ic,col,anime:true}));
 const PASS2_FREE={3:{fr:'sakura'},8:{c:150},10:{sk:'p2_marina_sakura'},15:{bd:'b_s2'},20:{c:200},25:{sk:'p2_artem_ronin'},30:{ti:'ronin'},33:{bd:'b_ronin'},35:{c:250},40:{sk:'p2_springtrap_oni'},45:{c:250},50:{sk:'p2_musashi_sumi'}};
 const PASS2_GOLD={1:{sk:'p2_musashi_ronin'},5:{fr:'katana'},10:{sk:'p2_freddy_oni'},15:{c:300},20:{fr:'manga'},25:{sk:'p2_lida_sakura'},30:{bd:'b_s2gold'},35:{sk:'p2_huntsman_ronin'},40:{ti:'swordpath'},42:{ti:'sumi'},45:{c:500},48:{sk:'p2_ksenia_sumi'},50:{fr:'torii'}};
+
+/* ===== v3.4 meta: Musashi on the Season 2 free line, Winslow house notes ===== */
+PASS2_FREE[23]=PASS2_FREE[25];            // the Artem «Ронин» skin moves two tiers earlier
+PASS2_FREE[MUS_PASS_TIER]={ch:'musashi'};  // featured reward: Musashi himself (free line, everyone can get him)
+// collectible notes 16-20 — found only in «Дом Винслоу»
+const HOUSE_NOTES=['n16','n17','n18','n19','n20'];
+NOTES.push(
+ {id:'n16',house:1,t:'Дневник Winslow: март 1985',b:'Купил старый дом на холме за Brunville — три этажа скрипа и сквозняков. Риелтор отводил глаза и сбавлял цену. Неважно. В кабинете будет чертёжная, на чердаке — мастерская. Первый аниматроник родится здесь, а не на заводе.'},
+ {id:'n17',house:1,t:'Чертёж: проект «Кукла», лист 4 из 9',b:'Корпус — фарфор, суставы на пружинах. Глаза: камеры, ночной режим. Голосовой модуль: запись голоса дочери, 11 минут. Пометка карандашом на полях: «Чтобы ей не было страшно в темноте. Чтобы она никогда не была одна».'},
+ {id:'n18',house:1,t:'Письмо из школы (1991)',b:'Уважаемый мистер Winslow! Ваша дочь снова рассказывала классу, что кукла в её комнате по ночам разговаривает с ней — вашим голосом. Девочка почти не спит. Просим вас зайти к школьному психологу. С уважением, классный руководитель.'},
+ {id:'n19',house:1,t:'Дневник Winslow: октябрь 1993',b:'Детскую я запер. Куклы на полке всё равно поворачивают головы к двери. Всё, что осталось от проекта, — в комнате на чердаке, под кодовым замком. Код — год, когда всё началось. Если со мной что-то случится, пусть дом молчит.'},
+ {id:'n20',house:1,t:'Записка на двери чердака',b:'Не поднимайтесь на чердак после полуночи. Там под простынями лежат запчасти — руки, маски, пружины. Утром они лежат не так, как вечером. Будто что-то пытается собрать себя заново.'}
+);
+NOTES.forEach(n=>NOTEMAP[n.id]=n);
+LORE.push({t:'Дом Винслоу',p:['На окраине Brunville, на холме за старой железной дорогой, стоит трёхэтажный дом Arthur Winslow. Здесь, в кабинете на первом этаже и в мастерской на чердаке, родились первые чертежи аниматроников Windup Wonderland.','После 1993 года дом опечатали вместе с центром. Соседи говорят, что по ночам в окнах детской горит свет, а на чердаке кто-то работает отвёрткой.','Код от запертой комнаты на чердаке спрятан в записках Winslow. Комната открывается и сама — когда в доме снова появляется питание.']});
 
 /* ================= MAP ================= */
 const TS=32,MW=64,MH=40,NT=MW*MH;
@@ -1557,6 +1598,163 @@ function anInk(c){
  cv._ink=ink;return cv;
 }}
 
+/* ================= v3.4 MAP: «Дом Винслоу» — three floors (available now) =================
+   Floors are horizontal bands of the 64x40 grid joined by real staircases, so every system (A*, LOS, bots) works unchanged.
+   Floor 3 (attic) rows 1-10, floor 2 rows 14-25, floor 1 rows 29-38. Other floors are blacked out in the view. */
+O.BED=31;O.SHELF=32;O.FIREPL=33;O.SOFA=34;O.PIANO=35;O.BATH=36;O.DOLLS=37;O.COVER=38;O.BENCH=39;O.LOCKD=40;O.STOVE=41;O.CLOCK=42;
+SOLIDO.push(1,1,1,1,1,1,1,1,1,1,1,1); // 31..42
+const WH_LOCK=[43,5];
+const WH_FLOOR_Y=[12.5*TS,27.5*TS]; // boundaries (pixel y) between floors 3|2 and 2|1
+const whFloorOfY=y=>y<WH_FLOOR_Y[0]?3:y<WH_FLOOR_Y[1]?2:1;
+const isWinslow=()=>!!(MAPDEF&&MAPDEF.winslow);
+const floorOf=e=>isWinslow()?whFloorOfY(e.y):1;
+MAPS.winslow={id:'winslow',name:'Дом Винслоу',winslow:true,
+ ROOMS:[
+ // floor 3 — attic
+ {id:'attic',name:'Чердак',x:10,y:1,w:18,h:10,floor:'attic',wall:'#3a2e22',fl:3},
+ {id:'workshop',name:'Мастерская',x:29,y:1,w:14,h:10,floor:'workshop',wall:'#33302a',fl:3},
+ {id:'locked',name:'Запертая комната',x:44,y:1,w:9,h:10,floor:'oldrug',wall:'#3a1e2a',fl:3},
+ {id:'st3_cor',name:'Лестница на чердак',x:13,y:11,w:2,h:3,floor:'stairs',wall:'#2a2018',stairs:[3,2]},
+ {id:'st4_cor',name:'Лестница на чердак',x:39,y:11,w:2,h:3,floor:'stairs',wall:'#2a2018',stairs:[3,2]},
+ // floor 2
+ {id:'wbed',name:'Спальня Winslow',x:2,y:14,w:14,h:4,floor:'parquet',wall:'#3a2a40',fl:2},
+ {id:'child',name:'Детская',x:17,y:14,w:12,h:4,floor:'kidrug',wall:'#6a4a5a',fl:2},
+ {id:'bath',name:'Ванная',x:30,y:14,w:7,h:4,floor:'bathtile',wall:'#3e5a56',fl:2},
+ {id:'aland_cor',name:'Площадка у чердака',x:38,y:14,w:5,h:4,floor:'parquet2',wall:'#4a3426',fl:2},
+ {id:'guest',name:'Гостевая спальня',x:44,y:14,w:18,h:4,floor:'parquet2',wall:'#2e3a4a',fl:2},
+ {id:'f2cor',name:'Коридор второго этажа',x:2,y:19,w:60,h:2,floor:'runner',wall:'#4a2a22',fl:2},
+ {id:'bst_cor',name:'Чёрная лестница',x:2,y:22,w:3,h:4,floor:'planks2',wall:'#3a2a1e',fl:2},
+ {id:'library',name:'Библиотека',x:6,y:22,w:19,h:4,floor:'parquet2',wall:'#2a3a2a',fl:2},
+ {id:'land_cor',name:'Лестничная площадка',x:26,y:22,w:12,h:4,floor:'runner',wall:'#4a2a22',fl:2},
+ {id:'gallery',name:'Портретная галерея',x:39,y:22,w:23,h:4,floor:'parquet',wall:'#4a2030',fl:2},
+ {id:'st1_cor',name:'Главная лестница',x:30,y:26,w:3,h:3,floor:'stairs',wall:'#2a2018',stairs:[2,1]},
+ {id:'st2_cor',name:'Чёрная лестница',x:2,y:26,w:2,h:3,floor:'stairs',wall:'#2a2018',stairs:[2,1]},
+ // floor 1
+ {id:'kitchen',name:'Кухня',x:1,y:29,w:11,h:7,floor:'kitchen',wall:'#4a4436',fl:1},
+ {id:'dining',name:'Столовая',x:13,y:29,w:12,h:7,floor:'parquet',wall:'#4a1e22',fl:1},
+ {id:'hall',name:'Холл',x:26,y:29,w:12,h:10,floor:'marble',wall:'#3a2a1e',fl:1},
+ {id:'living',name:'Гостиная с камином',x:39,y:29,w:12,h:7,floor:'oldrug',wall:'#3a2a1a',fl:1},
+ {id:'study',name:'Кабинет Winslow',x:52,y:29,w:11,h:7,floor:'parquet2',wall:'#2a2a3a',fl:1},
+ {id:'f1cor',name:'Галерея первого этажа',x:1,y:37,w:62,h:2,floor:'runner',wall:'#4a2a22',fl:1},
+ ],
+ WALL_T:[],
+ DOOR_T:[[28,8],[8,18],[22,18],[33,18],[52,18],[16,15],[43,16],[11,21],[45,21],[25,23],[6,36],[21,36],[48,36],[57,36],[25,32],[51,33]],
+ OPEN_T:[[28,4],[28,5],WH_LOCK,[39,18],[40,18],[41,18],[2,21],[3,21],[4,21],[19,21],[20,21],[28,21],[29,21],[30,21],[31,21],[32,21],[33,21],[34,21],[55,21],[56,21],
+  [5,24],[38,23],[38,24],[17,36],[18,36],[42,36],[43,36],[12,31],[12,32],[38,31],[38,32]],
+ GATE_DEF:[{tiles:[[0,37],[0,38]],side:-1,name:'Чёрный ход'},{tiles:[[63,37],[63,38]],side:1,name:'Парадная дверь'}],
+ GEN_T:[[19,4],[36,7],[13,24],[24,15],[54,15],[9,33],[60,33]],
+ LOCKER_T:[[10,1],[27,10],[29,10],[52,1],[2,14],[11,14],[28,14],[44,14],[61,14],[6,25],[24,25],[37,22],[61,25],[1,35],[11,35],[13,29],[24,35],[37,29],[39,35],[62,35]],
+ TABLE_T:[[5,32],[6,32],[15,32],[16,32],[17,32],[19,32],[20,32],[21,32],[21,24]],
+ ARCADE_T:[],COUNTER_T:[[5,29],[6,29],[7,29]],CRATE_T:[[10,10],[26,1],[27,1],[11,6]],DESK_T:[[56,31],[57,31],[58,31],[48,2],[49,2]],BOILER_T:[],RACK_T:[[41,1],[42,1]],PRIZE_T:[],BIG_T:[],CAR_T:[],BOOTH_T:[],STAND_T:[],TREE_T:[],
+ EXTRA:{
+  BED:[[4,15],[4,16],[27,15],[27,16],[47,14],[47,15],[57,14],[57,15]],
+  SHELF:[[6,22],[7,22],[8,22],[14,22],[15,22],[16,22],[23,22],[24,22],[8,24],[9,24],[16,24],[17,24],[52,29],[53,29],[61,29],[62,29],[50,1]],
+  FIREPL:[[40,29],[41,29]],SOFA:[[40,33],[41,33],[42,25],[43,25]],PIANO:[[50,23],[51,23]],BATH:[[35,14],[36,14]],DOLLS:[[19,14],[20,14],[21,14]],
+  COVER:[[12,3],[13,3],[16,6],[17,6],[22,2],[23,2],[24,8],[20,8],[34,4],[35,4],[51,8]],BENCH:[[31,1],[32,1],[33,1],[36,1],[37,1]],
+  LOCKD:[WH_LOCK],STOVE:[[9,29],[10,29]],CLOCK:[[26,29],[26,22]],
+ },
+ VENT_PAIRS:[[[30,14],[1,32]],[[30,8],[23,29]]],
+ GRATE_T:[[15,9],[38,3],[6,15],[33,16],[50,17],[20,23],[48,24],[8,34],[19,34],[33,31],[45,33],[55,34]],
+ SPEAKER_T:[[24,4],[40,9],[12,16],[49,16],[29,23],[60,22],[4,31],[29,34],[46,35],[54,33]],
+ STAGE_Z:{x0:44,y0:29,x1:50,y1:30},
+ STAGE_SLOTS:[[45,29],[47,29],[49,29],[46,30]],
+ STAGE_TGT:[47,30],curtain:{x0:44,x1:51,y:29},
+ SURV_SPAWN:[[29,37],[31,38],[33,37],[35,38]],
+ KILL_SPAWN:[35,9],
+ NOTE_SPOTS:[[20,6],[33,9],[6,17],[25,17],[34,16],[59,16],[14,23],[35,24],[58,24],[3,34],[22,30],[35,33],[46,34],[59,34],[40,19],[10,19],[25,7]],
+ GLOW_T:[[40,29],[41,29]],
+ LAMP_DEF:[
+  [18,5,190,.42,2,'#d8c8a0'],[36,4,170,.55,1,'#ffe0a0'],[48,5,130,.35,2,'#c0a0ff'],
+  [8,15.5,150,.45,0,'#ffd0a0'],[22,15.5,150,.45,1,'#ffb0d0'],[33,15.5,110,.45,0,'#d0f0ff'],[40,15.5,100,.35,2,'#ffd0a0'],[52,15.5,190,.45,0,'#ffe0b0'],
+  [12,19.5,110,.4,0,'#ffd8a0'],[31,19.5,110,.4,1,'#ffd8a0'],[50,19.5,110,.4,0,'#ffd8a0'],
+  [15,23.5,190,.45,1,'#ffd890'],[31,23.5,150,.5,0,'#ffe0b0'],[50,23.5,190,.45,0,'#ffe0b0'],
+  [6,32,170,.5,0,'#f0f0d0'],[19,31,170,.55,0,'#ffd8a0'],[31.5,32,220,.6,0,'#ffe0b0'],[41,30.5,160,.6,1,'#ff9a50'],[47,30,120,.45,0,'#ffb0d0'],[57,32,160,.5,2,'#c8e0ff'],
+  [10,37.5,120,.4,0,'#ffd8a0'],[50,37.5,120,.4,2,'#ffd8a0'],
+ ],
+};
+MAPS.winslow.BED_HIDE=MAPS.winslow.EXTRA.BED.filter((p,i)=>i%2===0);
+MAPS.winslow.LAMP_DEF.forEach(l=>{l.fl=whFloorOfY(l[1]*TS+16)});
+/* the locked attic room: closed again at the start of every round on this map */
+function whLockClosed(){return isWinslow()&&objAt[I(WH_LOCK[0],WH_LOCK[1])]===O.LOCKD}
+function whResetLock(){if(!isWinslow())return;const i=I(WH_LOCK[0],WH_LOCK[1]);if(objAt[i]!==O.LOCKD){objAt[i]=O.LOCKD;if(typeof invalidateMapCanvas==='function')invalidateMapCanvas()}}
+function whOpenLock(why){
+ if(!whLockClosed()||!G)return;objAt[I(WH_LOCK[0],WH_LOCK[1])]=0;G.whLockOpen=true;invalidateMapCanvas();
+ const x=WH_LOCK[0]*TS+16,y=WH_LOCK[1]*TS+16;AU.click();AU.tone(520,0.3,'triangle',0.12*Math.max(0.3,vAt(x,y,700)));AU.door(Math.max(0.3,vAt(x,y,700)));
+ G.fx.push({type:'ring',x,y,t:0,col:'#c0a0ff',r:60});
+ msg(why==='code'?'Код подошёл: запертая комната на чердаке открыта!':'Питание есть — запертая комната на чердаке открылась!','#d8c0ff');
+ // what Winslow kept behind the lock
+ [[46,4,'med'],[49,6,'tool'],[50,9,'torch'],[46,8,'decoy']].forEach(([tx,ty,type])=>G.items.push({type,x:tx*TS+16,y:ty*TS+16}));
+ makeNoise(x,y,300,'door',null);
+}
+/* random floor tiles never inside the locked room while it is locked */
+{const _rf=randomFloor;randomFloor=function(ids){for(let k=0;k<12;k++){const r=_rf(ids);if(!r||!whLockClosed())return r;const rm=ROOMS[roomOf[I(r[0],r[1])]];if(!rm||rm.id!=='locked')return r}return _rf(['hall'])}}
+/* ---------------- drawing ---------------- */
+{const _f=drawFloorTile;drawFloorTile=function(c,x,y,r,R){
+ if(!isWinslow())return _f(c,x,y,r,R);
+ const px=x*TS,py=y*TS,f=r?r.floor:'parquet';
+ if(f==='stairs'){const up=r.stairs;c.fillStyle='#1c140e';c.fillRect(px,py,TS,TS);for(let k=0;k<4;k++){const yy=py+k*8;const sh=0.25+0.75*((y-r.y)*4+k)/(r.h*4);c.fillStyle='rgba(120,80,50,'+(0.35+0.5*sh).toFixed(3)+')';c.fillRect(px+1,yy+1,TS-2,6);c.fillStyle='rgba(0,0,0,.5)';c.fillRect(px+1,yy+7,TS-2,1)}
+  c.fillStyle='#5a1a1a';c.fillRect(px+8,py,TS-16,TS);c.fillStyle='rgba(255,210,150,.08)';c.fillRect(px+8,py,2,TS);return}
+ if(f==='attic'){c.fillStyle='#2a2016';c.fillRect(px,py,TS,TS);c.fillStyle='#33281c';for(let k=0;k<4;k++)c.fillRect(px+k*8,py,7,TS);c.fillStyle='rgba(0,0,0,.4)';c.fillRect(px,py+((x*13)%TS),TS,1);if(R()<.25){c.fillStyle='rgba(200,190,170,.08)';c.beginPath();c.ellipse(px+R()*TS,py+R()*TS,6+R()*8,3+R()*4,R()*3,0,TAU);c.fill()}}
+ else if(f==='workshop'){c.fillStyle='#2a2826';c.fillRect(px,py,TS,TS);c.fillStyle='#302e2b';for(let k=0;k<2;k++)c.fillRect(px,py+k*16+1,TS,14);if(R()<.15){c.fillStyle='rgba(10,10,10,.5)';c.beginPath();c.ellipse(px+R()*TS,py+R()*TS,4+R()*5,3,0,0,TAU);c.fill()}if(R()<.08){c.fillStyle='#8a8a90';c.fillRect(px+R()*28,py+R()*28,3,1.5)}}
+ else if(f==='oldrug'){c.fillStyle='#2a1a12';c.fillRect(px,py,TS,TS);const inR=x>r.x&&x<r.x+r.w-1&&y>r.y&&y<r.y+r.h-1;if(inR){c.fillStyle='#4a1a20';c.fillRect(px,py,TS,TS);c.fillStyle='#6a2a26';if((x+y)%2===0){c.beginPath();c.moveTo(px+16,py+4);c.lineTo(px+28,py+16);c.lineTo(px+16,py+28);c.lineTo(px+4,py+16);c.closePath();c.fill()}c.fillStyle='rgba(200,160,90,.18)';c.fillRect(px,py+15,TS,2)}}
+ else if(f==='parquet'||f==='parquet2'){const a=f==='parquet'?['#3a2616','#33200f']:['#2c1e14','#26190f'];c.fillStyle=a[0];c.fillRect(px,py,TS,TS);for(let j=0;j<4;j++)for(let i=0;i<2;i++){c.fillStyle=((i+j+x+y)%2)?a[0]:a[1];if((i+j)%2)c.fillRect(px+i*16,py+j*8,16,8);else c.fillRect(px+i*16,py+j*8,8,8)}c.fillStyle='rgba(0,0,0,.25)';c.fillRect(px,py,TS,1)}
+ else if(f==='kidrug'){c.fillStyle='#3a2a34';c.fillRect(px,py,TS,TS);c.fillStyle=(x+y)%2?'#4a3044':'#3e2e3e';c.fillRect(px+2,py+2,TS-4,TS-4);if(R()<.12){c.fillStyle=pick(['#c86a8a','#6a9ac8','#d8c06a']);c.fillRect(px+R()*24,py+R()*24,5,5)}}
+ else if(f==='bathtile'){c.fillStyle='#2e3a38';c.fillRect(px,py,TS,TS);c.fillStyle='#4a5a56';for(let j=0;j<4;j++)for(let i=0;i<4;i++)c.fillRect(px+i*8+0.5,py+j*8+0.5,7,7);if(R()<.15){c.fillStyle='rgba(20,40,30,.4)';c.fillRect(px+R()*24,py+R()*24,6,2)}}
+ else if(f==='runner'){c.fillStyle='#2a1c12';c.fillRect(px,py,TS,TS);c.fillStyle='#30200f';for(let k=0;k<4;k++)c.fillRect(px+k*8,py,7,TS);c.fillStyle='#5a1a1e';const vert=r&&r.h>r.w;if(vert)c.fillRect(px+6,py,TS-12,TS);else c.fillRect(px,py+(y===r.y?10:0),TS,y===r.y?22:22);c.fillStyle='rgba(210,170,90,.25)';if(!vert){if(y===r.y)c.fillRect(px,py+12,TS,1.5);else c.fillRect(px,py+20,TS,1.5)}}
+ else if(f==='planks2'){c.fillStyle='#2a2016';c.fillRect(px,py,TS,TS);c.fillStyle='#30251a';for(let k=0;k<4;k++)c.fillRect(px,py+k*8,TS,7)}
+ else if(f==='kitchen'){c.fillStyle='#24221e';c.fillRect(px,py,TS,TS);for(let j=0;j<2;j++)for(let i=0;i<2;i++){c.fillStyle=((i+j)%2)?'#4a4840':'#1e1c18';c.fillRect(px+i*16+1,py+j*16+1,14,14)}if(R()<.07){c.fillStyle='rgba(90,20,20,.35)';c.beginPath();c.arc(px+R()*TS,py+R()*TS,2+R()*3,0,TAU);c.fill()}}
+ else if(f==='marble'){c.fillStyle=((x+y)%2)?'#3a3632':'#2a2724';c.fillRect(px,py,TS,TS);c.strokeStyle='rgba(200,190,170,.08)';c.lineWidth=1;c.beginPath();c.moveTo(px+R()*TS,py);c.quadraticCurveTo(px+R()*TS,py+16,px+R()*TS,py+TS);c.stroke()}
+ else return _f(c,x,y,r,R);
+}}
+{const _w=drawWallTile;drawWallTile=function(c,x,y,R){
+ if(!isWinslow())return _w(c,x,y,R);
+ const px=x*TS,py=y*TS;c.fillStyle='#0b0908';c.fillRect(px,py,TS,TS);c.fillStyle='#14100d';c.fillRect(px+1,py+1,TS-2,TS-2);
+ const below=y+1<MH?tiles[I(x,y+1)]:1;
+ if(below!==1&&y+1<MH){const r=ROOMS[roomOf[I(x,y+1)]];const col=r?r.wall:'#3a2a20';
+  c.fillStyle=col;c.fillRect(px,py+TS-17,TS,17);
+  c.fillStyle=shade(col,.14);for(let k=3;k<TS;k+=8)c.fillRect(px+k,py+TS-17,2,11);           // wallpaper stripes
+  if(R()<.2){c.fillStyle=shade(col,.28);c.beginPath();c.arc(px+R()*TS,py+TS-11,1.6,0,TAU);c.fill()}
+  c.fillStyle='#2a1a10';c.fillRect(px,py+TS-6,TS,4);c.fillStyle='rgba(0,0,0,.45)';c.fillRect(px,py+TS-2,TS,2);  // baseboard
+  if(R()<.1){c.fillStyle='rgba(0,0,0,.35)';c.fillRect(px+R()*20,py+TS-17,6+R()*8,4)} // peeling paper
+ }
+}}
+function whBed(c,x,y,horiz){const px=x*TS,py=y*TS,w=horiz?TS*2:TS,h=horiz?TS:TS*2;c.fillStyle='rgba(0,0,0,.45)';c.fillRect(px+4,py+5,w,h);c.fillStyle='#3a2414';c.fillRect(px+2,py+1,w-4,h-2);c.fillStyle='#7a6a5a';c.fillRect(px+4,py+3,w-8,h-6);c.fillStyle='#5a3a4a';c.fillRect(px+4,py+18,w-8,h-21);c.fillStyle='rgba(0,0,0,.25)';for(let k=py+22;k<py+h-4;k+=6)c.fillRect(px+4,k,w-8,1);c.fillStyle='#d8d0c0';rrect(c,px+7,py+5,w-14,10,4);c.fill()}
+function whDecor(c){
+ const M=MAPDEF,E=M.EXTRA;
+ for(let i=0;i<E.BED.length;i+=2){whBed(c,E.BED[i][0],E.BED[i][1],E.BED[i+1][1]===E.BED[i][1])}
+ // stairs arrows / labels
+ for(const r of ROOMS){if(!r.stairs)continue;const cx=(r.x+r.w/2)*TS,cy=(r.y+r.h/2)*TS;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(cx-22,cy-8,44,16);c.fillStyle='#ffd8a0';c.font='bold 9px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('↑'+r.stairs[0]+' · ↓'+r.stairs[1],cx,cy)}
+ // portraits in the gallery and the study (above wall faces)
+ for(let x=40;x<=60;x+=4){const px=x*TS+4,py=21*TS+6;c.fillStyle='#6a4a1a';c.fillRect(px,py-14,22,18);c.fillStyle='#1a1414';c.fillRect(px+3,py-11,16,12);c.fillStyle='#4a3a32';c.beginPath();c.arc(px+11,py-6,4,0,TAU);c.fill();c.fillStyle='#2a2028';c.fillRect(px+5,py-2,12,3)}
+ // blueprints on the desk in the study
+ c.save();c.translate(57*TS+16,31*TS+14);c.rotate(-0.12);c.fillStyle='#2a4a7a';c.fillRect(-30,-9,46,18);c.strokeStyle='rgba(220,235,255,.8)';c.lineWidth=1;c.strokeRect(-27,-6,40,12);c.beginPath();c.arc(-14,0,4,0,TAU);c.moveTo(-6,-5);c.lineTo(8,5);c.moveTo(-6,5);c.lineTo(8,-5);c.stroke();c.restore();
+ c.save();c.translate(55*TS+30,30*TS+26);c.rotate(0.2);c.fillStyle='#e8dcc0';c.fillRect(-7,-5,14,10);c.restore();
+ // house exterior: roof tiles around the outer walls of each floor
+ c.fillStyle='rgba(60,30,24,.35)';[[10,0,53,0],[2,13,61,13],[1,28,62,28]].forEach(([x0,y0,x1])=>{for(let x=x0;x<=x1;x++)if(tiles[I(x,y0)]===1)c.fillRect(x*TS,y0*TS+4,TS-1,6)});
+ // floor names painted on the outer frame
+ [['ЧЕРДАК',5,5.5],['2 ЭТАЖ',0.2,19.5],['1 ЭТАЖ',0.2,33]].forEach(([t,x,y])=>{c.save();c.translate(x*TS+12,y*TS);c.rotate(-Math.PI/2);c.fillStyle='rgba(255,220,170,.22)';c.font='bold 11px sans-serif';c.textAlign='center';c.fillText(t,0,0);c.restore()});
+}
+{const _o=drawObj;drawObj=function(c,o,x,y,R){
+ if(o<31)return _o(c,o,x,y,R);
+ const px=x*TS,py=y*TS,cx=px+16,cy=py+16;
+ if(o===O.BED){/* drawn by whDecor */}
+ else if(o===O.SHELF){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(px+3,py+4,TS,28);c.fillStyle='#3a2414';c.fillRect(px,py+1,TS,28);for(let k=0;k<3;k++){const yy=py+3+k*9;for(let i=0;i<6;i++){c.fillStyle=['#6a2a20','#2a4a3a','#3a3a6a','#7a6a3a','#4a2a3a'][(x*7+y*3+i+k)%5];c.fillRect(px+2+i*5,yy,4,7)}c.fillStyle='#2a1a0c';c.fillRect(px,yy+7,TS,2)}}
+ else if(o===O.FIREPL){c.fillStyle='#3a3430';c.fillRect(px,py,TS,26);c.fillStyle='#4a443e';c.fillRect(px,py,TS,5);c.fillStyle='#0a0606';c.fillRect(px+5,py+8,TS-10,16);c.fillStyle='#ff7a1a';c.beginPath();c.ellipse(cx,py+20,9,4,0,0,TAU);c.fill();c.fillStyle='#ffd04a';c.beginPath();c.ellipse(cx,py+21,4,2,0,0,TAU);c.fill()}
+ else if(o===O.SOFA){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(px+3,py+6,TS,24);c.fillStyle='#4a2a2a';c.fillRect(px,py+4,TS,22);c.fillStyle='#5e3434';c.fillRect(px+2,py+10,TS-4,13);c.fillStyle='rgba(0,0,0,.3)';c.fillRect(px+TS-1,py+10,1,13)}
+ else if(o===O.PIANO){c.fillStyle='rgba(0,0,0,.45)';c.fillRect(px+3,py+5,TS,26);c.fillStyle='#120e0e';c.fillRect(px,py+2,TS,24);c.fillStyle='#e8e4d8';c.fillRect(px,py+20,TS,6);c.fillStyle='#120e0e';for(let k=2;k<TS;k+=5)c.fillRect(px+k,py+20,2,4);c.fillStyle='rgba(220,220,220,.25)';c.fillRect(px+2,py+3,TS-4,2)}
+ else if(o===O.BATH){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(px+2,py+5,TS,25);c.fillStyle='#d8d8d0';rrect(c,px+1,py+3,TS-2,24,8);c.fill();c.fillStyle='#4a5a50';rrect(c,px+5,py+7,TS-10,16,6);c.fill();c.fillStyle='rgba(120,40,30,.35)';c.fillRect(px+8,py+12,10,4)}
+ else if(o===O.DOLLS){c.fillStyle='#3a2414';c.fillRect(px,py+2,TS,24);c.fillStyle='#2a1a0c';c.fillRect(px,py+24,TS,3);for(let i=0;i<3;i++){const dx=px+6+i*10,dy=py+12;c.fillStyle=['#a8506a','#5a6aa8','#e8e0d0'][(x+i)%3];c.fillRect(dx-3,dy+2,6,8);c.fillStyle='#ecdfd2';c.beginPath();c.arc(dx,dy,3.6,0,TAU);c.fill();c.fillStyle='#111';c.fillRect(dx-2,dy-1,1.2,1.2);c.fillRect(dx+1,dy-1,1.2,1.2)}}
+ else if(o===O.COVER){c.fillStyle='rgba(0,0,0,.45)';c.beginPath();c.ellipse(cx+3,cy+6,15,11,0,0,TAU);c.fill();c.fillStyle='#b8b0a0';c.beginPath();c.moveTo(px+3,py+28);c.quadraticCurveTo(px+2,py+8,cx,py+3);c.quadraticCurveTo(px+30,py+8,px+29,py+28);c.closePath();c.fill();c.strokeStyle='rgba(60,50,40,.5)';c.lineWidth=1;c.beginPath();c.moveTo(cx-6,py+8);c.lineTo(cx-9,py+27);c.moveTo(cx+5,py+9);c.lineTo(cx+8,py+27);c.stroke();if((x+y)%3===0){c.fillStyle='#6a6a70';c.fillRect(cx+6,py+24,9,3)}}
+ else if(o===O.BENCH){c.fillStyle='#4a3424';c.fillRect(px,py+2,TS,24);c.fillStyle='#5a4230';c.fillRect(px,py+2,TS,4);c.fillStyle='#8a8a90';c.fillRect(px+4+((x*5)%10),py+10,8,2);c.fillStyle='#c8a040';c.fillRect(px+18,py+14,6,6);c.fillStyle='#2a2a2a';c.beginPath();c.arc(px+9,py+19,3,0,TAU);c.fill()}
+ else if(o===O.LOCKD){c.fillStyle='#2a2420';c.fillRect(px,py,TS,TS);c.fillStyle='#4a3a2a';c.fillRect(px+4,py+1,TS-8,TS-2);c.strokeStyle='#1a1410';c.lineWidth=2;c.strokeRect(px+5,py+2,TS-10,TS-4);c.fillStyle='#8a8a90';c.fillRect(px+4,py+8,TS-8,3);c.fillRect(px+4,py+21,TS-8,3);c.fillStyle='#c8a040';c.fillRect(px+12,py+12,8,8);c.fillStyle='#1a1a1a';c.fillRect(px+15,py+15,2,3);c.fillStyle='#3aff8a';c.fillRect(px+21,py+5,3,2)}
+ else if(o===O.STOVE){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(px+3,py+4,TS,26);c.fillStyle='#2a2a2c';c.fillRect(px,py+1,TS,26);for(const [a,b] of [[9,9],[23,9],[9,20],[23,20]]){c.strokeStyle='#555';c.lineWidth=1.5;c.beginPath();c.arc(px+a,py+b,4,0,TAU);c.stroke()}}
+ else if(o===O.CLOCK){c.fillStyle='rgba(0,0,0,.45)';c.fillRect(px+9,py+4,18,28);c.fillStyle='#3a2414';c.fillRect(px+8,py+1,16,28);c.fillStyle='#d8ccb0';c.beginPath();c.arc(cx,py+9,5,0,TAU);c.fill();c.strokeStyle='#1a1008';c.lineWidth=1;c.beginPath();c.moveTo(cx,py+9);c.lineTo(cx,py+6);c.moveTo(cx,py+9);c.lineTo(cx+3,py+10);c.stroke();c.fillStyle='#c8a040';c.beginPath();c.arc(cx,py+21,3,0,TAU);c.fill()}
+}}
+{const _bc=buildMapCanvas;buildMapCanvas=function(scale){const cv=_bc(scale);if(isWinslow()){const c=cv.getContext('2d');c.save();c.setTransform(scale,0,0,scale,0,0);whDecor(c);c.restore()}return cv}}
+// wardrobes instead of metal lockers in the house
+{const _dl=drawLocker;drawLocker=function(c,px,py,shake){if(!isWinslow())return _dl(c,px,py,shake);const x=px+(shake?Math.sin(performance.now()/30)*1.5:0);
+ c.fillStyle='rgba(0,0,0,.45)';c.fillRect(x+4,py+5,26,28);c.fillStyle='#3a2414';c.fillRect(x+2,py+1,28,29);c.fillStyle='#4e321c';c.fillRect(x+2,py+1,28,4);c.strokeStyle='#1e1208';c.lineWidth=1;c.strokeRect(x+3.5,py+5.5,12,23);c.strokeRect(x+16.5,py+5.5,12,23);c.fillStyle='#c8a040';c.fillRect(x+13,py+16,2,3);c.fillRect(x+17,py+16,2,3)}}
+
 /* ================= CHARACTER ART ================= */
 function glowDot(c,x,y,r,col,a){const g=c.createRadialGradient(x,y,0,x,y,r*3);g.addColorStop(0,col);g.addColorStop(.3,col);g.addColorStop(1,'rgba(0,0,0,0)');c.globalAlpha=a===undefined?1:a;c.fillStyle=g;c.beginPath();c.arc(x,y,r*3,0,TAU);c.fill();c.globalAlpha=1;c.fillStyle='#fff';c.beginPath();c.arc(x,y,r*.5,0,TAU);c.fill()}
 const ANIM_TALL={huntsman:1,springtrap:1};
@@ -2099,10 +2297,10 @@ function newRound(role,opt){
  v31Prep();
  if(role==='s'){ids=ids.filter(x=>x!==S.sel.h);ids.unshift(S.sel.h)}
  for(let i=0;i<NS;i++)G.surv.push(mkSurv(ids[i],!(role==='s'&&i===0),i));
- let kid=role==='k'?S.sel.k:(window.__forceKiller||pick(KILLERS).id),ksk='';
+ let kid=role==='k'?S.sel.k:(window.__forceKiller||pick(KILLERS.filter(x=>chVisible(x.id))).id),ksk='';
  if(G.ev){kid='jasonk';if(S.sel.h==='jason'){kid=Math.random()<0.5?'freddy':'springtrap';ksk='e_'+kid+'_pumpkin'}}
  G.killer=addKillerEnt(kid,role!=='k',ksk,KILL_SPAWN);
- if(duo){const pk=window.__forcePartner||pick(KILLERS.filter(x=>x.id!==kid&&x.id!=='jasonk')).id;G.partnerId=pk;addKillerEnt(pk,true,'',farKillerSpawn())}
+ if(duo){const pk=window.__forcePartner||pick(KILLERS.filter(x=>x.id!==kid&&x.id!=='jasonk'&&chVisible(x.id))).id;G.partnerId=pk;addKillerEnt(pk,true,'',farKillerSpawn())}
  G.you=role==='s'?G.surv[0]:G.killer;
  G.cam.x=G.you.x;G.cam.y=G.you.y;
  LAMPS.forEach(l=>{l.cur=l.i;l.on=1});
@@ -3596,6 +3794,115 @@ function mangaPanel(s,k){
  AU.tone(90,0.4,'square',0.12,{slide:50});
 }
 
+/* ================= v3.4 GAMEPLAY: «Дом Винслоу» rules + Ryuk (hidden until ANIME_DATE) ================= */
+/* ---------- Winslow house: round setup, beds, notes & the code lock ---------- */
+let RY_WH_TIME=30; // the house is big and has three floors: dawn comes a bit later
+{const _nr=newRound;newRound=function(role,opt){
+ whResetLock();
+ const g=_nr(role,opt);
+ if(G.notes&&G.notes.length){const used=new Set(G.notes.map(n=>n.id));
+  if(isWinslow()){const hl=shuffle(HOUSE_NOTES.filter(id=>!S.notes.includes(id)));for(const n of G.notes){if(NOTEMAP[n.id].house)continue;const id=hl.find(x=>!used.has(x));if(id){used.delete(n.id);used.add(id);n.id=id}}}
+  else{const pool=shuffle(NOTES.filter(n=>!n.house&&!S.notes.includes(n.id)&&!used.has(n.id)).map(n=>n.id));G.notes=G.notes.filter(n=>{if(!NOTEMAP[n.id].house)return true;const id=pool.shift();if(id){n.id=id;return true}return false})}}
+ if(isWinslow()){G.whCode=0;G.whLockOpen=false;if(!G.ev)G.timer+=RY_WH_TIME;for(const [tx,ty] of MAPDEF.BED_HIDE)G.hides.push({type:'table',bed:true,tx,ty,x:tx*TS+16,y:ty*TS+16,occ:null,shake:0})}
+ return g}}
+{const _fi=findInteractS;findInteractS=function(s){const c=_fi(s);if(c&&c.type==='hide'&&isWinslow())c.label=c.o.bed?'Под кровать':c.o.type==='locker'?'В шкаф':'Под стол';return c}}
+{const _di=doInteractS;doInteractS=function(s,c){const isHouseNote=c&&c.type==='note'&&isWinslow();_di(s,c);
+ if(isHouseNote&&G){G.whCode=(G.whCode||0)+1;if(whLockClosed()){if(G.whCode>=2)whOpenLock('code');else setTimeout(()=>{if(G&&!G.over)toast('В записке — половина кода от запертой комнаты на чердаке (1/2)',2200)},2700)}}}}
+function whUpdate(dt){if(!isWinslow())return;if(whLockClosed()&&(G.power||(G.whCode||0)>=2))whOpenLock(G.power?'power':'code')}
+/* view: other floors are blacked out; lamps of other floors don't tint the view */
+function lampHidden(l){return isWinslow()&&G&&whFloorOfY(l.y)!==floorOf(viewEnt())}
+{const _rd=renderDark;renderDark=function(V,vis,cx,cy,x0,y0,vw,vh){_rd(V,vis,cx,cy,x0,y0,vw,vh);if(!isWinslow())return;
+ const c=dctx,s=VS*DKS,f=floorOf(V);c.setTransform(s,0,0,s,dk.width/2-cx*s,dk.height/2-cy*s);c.globalCompositeOperation='source-over';
+ const B=[[3,-400,WH_FLOOR_Y[0]],[2,WH_FLOOR_Y[0],WH_FLOOR_Y[1]],[1,WH_FLOOR_Y[1],MH*TS+400]];
+ for(const [fl,a,b] of B){if(fl===f)continue;c.fillStyle='rgba(2,3,10,.94)';c.fillRect(-400,a,MW*TS+800,b-a)}
+ c.globalCompositeOperation='source-over'}}
+/* ---------- Ryuk ---------- */
+const RY={FLY_T:10,FLY_SPD:1.4,APPLE_T:1.0,BOOK_T:1.2,BOOK_DUR:40,BOOK_SLOW:0.9,BOOK_SEEN:30,EYES_T:60,STAGE_T:10,RAGE_MAX:20,RAGE_X:10,STUN_RED:0.9,SPD_PER:0.005,DMG2_PER:0.02,XRAY_BOT:350,WIGGLE:1.5,BOOK_XRAY_BOT:350,
+ DECAY:false,DECAY_AFTER:30,DECAY_EVERY:5};
+const isRyuk=k=>!!(k&&k.kind==='k'&&k.ch&&k.ch.id==='ryuk');
+const ryRageOf=k=>isRyuk(k)?(k.rage||0):0;
+function ryInit(k){if(k.ryInit)return;k.ryInit=true;k.rage=0;k.flyT=0;k.str1=false;k.ryAct=null;k.seen={};k.lastGain=G?G.t:0;k.decayT=0}
+function ryRage(k,n,why){ryInit(k);const was=k.rage;k.rage=clamp(k.rage+n,0,RY.RAGE_MAX);k.lastGain=G.t;k.decayT=0;
+ if(G.ryStats)G.ryStats.rage=Math.max(G.ryStats.rage,k.rage);
+ if(was<RY.RAGE_X&&k.rage>=RY.RAGE_X){msg('Глаза Ryuk налились красным — он видит всех!','#ff4a4a');AU.tone(70,0.8,'sawtooth',0.18*Math.max(0.35,vAt(k.x,k.y,800)),{slide:40});if(k===G.you)toast('Ярость '+k.rage+'/20: красные глаза — видишь всех выживших сквозь стены',2000)}
+ else if(k===G.you&&n>0)toast('Ярость +'+n+(why?' · '+why:'')+' ('+k.rage+'/20)',1300)}
+function ryVisible(k,s){if(s.state==='dead'||s.state==='escaped'||s.state==='hidden'||s.state==='vent'||s.state==='tent')return false;if(s.invis>0)return false;const d=dist(k,s);return (d<430&&los(k.x,k.y,s.x,s.y))||(s.dnT>0)||(k.rage>=RY.RAGE_X)}
+function ryBookTarget(k){ryInit(k);let best=null,bs=-1e9;
+ for(const s of G.surv){if(s.state==='dead'||s.state==='escaped')continue;const seenAgo=G.t-(k.seen[s.idx]===undefined?-999:k.seen[s.idx]);const vis=ryVisible(k,s)&&!(s.dnT>0&&k.rage<RY.RAGE_X);if(!vis&&seenAgo>RY.BOOK_SEEN)continue;
+  let sc=(vis?400:200-seenAgo*4)-dist(k,s)*0.2-(s.dnT>0?600:0)+(s.state==='normal'?50:0)+(s.state==='stage'||s.state==='carried'?-500:0);if(sc>bs){bs=sc;best=s}}
+ return best}
+function ryFly(k){ryInit(k);if(k.flyT>0)return false;k.flyT=RY.FLY_T;AU.whoosh();AU.noise(0.6,0.35*Math.max(0.35,vAt(k.x,k.y,700)),{f:500,slide:200,q:0.6});makeNoise(k.x,k.y,280,'run',k);
+ G.fx.push({type:'ring',x:k.x,y:k.y,t:0,col:'#3a3448',r:56});if(G.ryStats)G.ryStats.fly++;if(k===G.you)toast('Полёт 10 с: быстрее и над мебелью',1300);else if(G.role==='s'&&listener()&&dist(listener(),k)<600)msg('Хлопанье чёрных крыльев…','#c8c0e0');return true}
+function ryApple(k){ryInit(k);if(k.str1){if(k===G.you)toast('«Сила 1» уже готова — бей!',1100);return false}k.channel=k.channelMax=RY.APPLE_T;k.channelTo=null;k.ryAct='apple';
+ AU.tone(300,0.12,'square',0.08*Math.max(0.3,vAt(k.x,k.y,500)));return true}
+function ryBook(k){ryInit(k);const s=ryBookTarget(k);if(!s){if(k===G.you)toast('Тетрадь: нужен выживший, которого ты видишь или видел недавно',1600);return false}
+ k.channel=k.channelMax=RY.BOOK_T;k.channelTo=null;k.ryAct='book';k.ryBookT=s;AU.noise(1.1,0.12*Math.max(0.3,vAt(k.x,k.y,500)),{f:3200,q:2});
+ if(k===G.you)toast('Вписываешь имя: '+s.ch.name+'…',1200);return true}
+function ryActDone(k){const a=k.ryAct;k.ryAct=null;
+ if(a==='apple'){k.str1=true;AU.noise(0.15,0.4*Math.max(0.3,vAt(k.x,k.y,500)),{f:1400,q:1});G.fx.push({type:'ring',x:k.x,y:k.y,t:0,col:'#ff3a3a',r:30});if(G.ryStats)G.ryStats.apple++;
+  if(k===G.you)toast('Хрусть! «Сила 1»: следующий удар сразу сбивает с ног',1600);else if(G.role==='s'&&listener()&&dist(listener(),k)<420)msg('Где-то рядом хрустнуло яблоко…','#ff9a9a');return}
+ if(a==='book'){const s=k.ryBookT;k.ryBookT=null;if(!s||s.state==='dead'||s.state==='escaped'){k.powCd3=Math.min(k.powCd3,8);return}
+  s.dnT=RY.BOOK_DUR;ryRage(k,1,'Тетрадь');if(G.ryStats)G.ryStats.book++;G.fx.push({type:'ryname',x:k.x,y:k.y-30,t:0,text:s.ch.name});
+  msg('Ryuk вписал имя «'+s.ch.name+'» в Тетрадь смерти','#d8d0ff');AU.tone(110,0.6,'sine',0.12,{slide:70});
+  if(s===G.you){G.redFlash=0.6;toast('Твоё имя в Тетради смерти! 40 с ты медленнее, и Ryuk видит тебя сквозь стены',2400)}}}
+// powers: b3 «Полёт» (pow), b5 «Яблоко» (pow2), b6 «Тетрадь смерти» (pow3)
+{const _vp=v31Power;v31Power=function(k){if(isRyuk(k))return ryFly(k);return _vp(k)}}
+{const _p2=killerPower2;killerPower2=function(k){if(!isRyuk(k))return _p2(k);if(k.powCd2>0||k.stun>0||k.channel>0||k.count>0||k.search||k.gone)return false;const ok=ryApple(k);if(ok)k.powCd2=k.ch.pow2.cd;return ok}}
+{const _p3=killerPower3;killerPower3=function(k){if(!isRyuk(k))return _p3(k);if((k.powCd3||0)>0||k.stun>0||k.channel>0||k.count>0||k.search||k.gone)return false;const ok=ryBook(k);if(ok)k.powCd3=k.ch.pow3.cd;return ok}}
+// speed: rage scaling + flight; death-note slow on survivors
+{const _ks=killerSpeed;killerSpeed=function(k){const v=_ks(k);if(!isRyuk(k)||v<=0||k.lunge>0)return v;return v*(1+ryRageOf(k)*RY.SPD_PER)*(k.flyT>0?RY.FLY_SPD:1)}}
+{const _ss=survSpeed;survSpeed=function(s){const v=_ss(s);return s.dnT>0?v*RY.BOOK_SLOW:v}}
+// flight: furniture is not solid for a flying Ryuk (walls, doors and gates still are)
+let RY_FLYING=false;
+{const _st=solidT;solidT=function(x,y){if(RY_FLYING&&x>=0&&y>=0&&x<MW&&y<MH&&tiles[y*MW+x]===0)return false;return _st(x,y)}}
+{const _rs=resolve;resolve=function(e){if(e.kind==='k'&&e.flyT>0){RY_FLYING=true;try{return _rs(e)}finally{RY_FLYING=false}}return _rs(e)}}
+// hits: «Сила 1» and rage double-damage
+{const _h=hurtSurv;hurtSurv=function(s,k,kind){
+ if(!isRyuk(k)||s.state!=='normal'||s.inv>0)return _h(s,k,kind);
+ const hp0=s.hp;let mode=0;if(k.str1&&s.hp>1){s.hp=1;mode=1}else if(s.hp>1&&Math.random()<ryRageOf(k)*RY.DMG2_PER){s.hp=1;mode=2}
+ const r=_h(s,k,kind);if(!r){s.hp=hp0;return r}
+ if(k.str1){k.str1=false;if(mode===1){msg('«Сила 1»: Ryuk сбил '+s.ch.name+' с ног одним ударом!','#ff6a6a');if(G.ryStats)G.ryStats.str1Downs++}}
+ else if(mode===2){msg('Ярость Ryuk: удар снял сразу два здоровья!','#ff6a6a');if(G.ryStats)G.ryStats.dbl++}
+ return r}}
+{const _dn=downSurv;downSurv=function(s,k){_dn(s,k);if(isRyuk(k)){k.lastGain=G.t;k.decayT=0}}}
+// stuns 10% shorter in rage; an interrupted apple / notebook is lost
+{const _sk=stunKiller;stunKiller=function(k,t,by){if(isRyuk(k)&&k.stun<=0&&!k.gone){if(k.ryAct){k.ryAct=null;k.ryBookT=null}if(ryRageOf(k)>=RY.RAGE_X)t*=RY.STUN_RED}return _sk(k,t,by)}}
+// passive «Глаза бога смерти»
+{const _dc=dropCarried;dropCarried=function(k,stunned){const s=k.carry;_dc(k,stunned);if(isRyuk(k)&&s&&s.state==='normal'){s.eyesT=RY.EYES_T;if(G.ryStats)G.ryStats.eyes++;msg(s.ch.name+' '+gw(s,'вырвался','вырвалась')+' у Ryuk и теперь видит бога смерти сквозь стены (60 с)','#ffe08a');if(s===G.you)toast('Глаза бога смерти: 60 с ты видишь Ryuk сквозь стены',2000)}}}
+{const _kv=killerVisibleTo;killerVisibleTo=function(s,k){k=k||nearestKiller(s);if(s.eyesT>0&&isRyuk(k)&&!k.gone&&dist(s,k)<330)return true;return _kv(s,k)}}
+// passive: the stage — 10 seconds, then a cause of death appears in the feed
+{const _ps=placeOnStage;placeOnStage=function(k){const s=k.carry;_ps(k);if(isRyuk(k)&&s&&s.state==='stage'){s.stageT=RY.STAGE_T;s.stageMax=RY.STAGE_T;s.ryDoom=k;msg('У '+s.ch.name+' 10 секунд. Спасите!','#ff5060');if(s===G.you)toast('Ryuk положил тебя на сцену: 10 секунд до конца, если не спасут',2200)}}}
+{const _rc=rescue;rescue=function(s,by){s.ryDoom=null;s.stageMax=null;_rc(s,by)}}
+const RY_CAUSES=[['Сердечный приступ',5],['Самоубийство',10]];
+{const _el=elimSurv;elimSurv=function(s,why){const k=s.ryDoom;const doom=why==='stage'&&k&&s.state==='stage';s.ryDoom=null;const n0=G.msgs.length;_el(s,why);
+ if(doom&&s.state==='dead'){if(G.msgs.length>=n0&&G.msgs.length)G.msgs.pop();const c=pick(RY_CAUSES);s.fate='ryuk';msg(s.ch.name+' — '+c[0],'#ff4a5a');if(G.ryStats)G.ryStats.causes.push(c[0]);ryRage(k,c[1],c[0])}}}
+// bot killers: x-ray targets
+{const _ksee=killerSees;killerSees=function(k,s){if(_ksee(k,s))return true;if(!isRyuk(k)||s.state!=='normal'||s.invis>0)return false;const d=dist(k,s);if(s.dnT>0&&d<RY.BOOK_XRAY_BOT)return true;return ryRageOf(k)>=RY.RAGE_X&&d<RY.XRAY_BOT}}
+function botRyuk(k,dt){
+ ryInit(k);const ai=k.ai;if(k.carry)return false;const D=G.diff;
+ const chasing=ai.state==='chase'&&ai.tgt;const dT=chasing?dist(k,ai.tgt):1e9;
+ if(!k.str1&&k.powCd2<=0&&dT>200&&Math.random()<dt*0.9*D.kSpd){if(killerPower2(k))return true}
+ if((k.powCd3||0)<=0&&dT>90&&Math.random()<dt*0.8){const t=ryBookTarget(k);if(t&&killerPower3(k))return true}
+ if(k.powCd<=0&&k.flyT<=0){if(chasing&&dT>100&&dT<500&&Math.random()<dt*2)killerPower(k);else if(ai.state==='hunt'&&dxy(k.x,k.y,ai.lastX,ai.lastY)>420&&Math.random()<dt*0.7)killerPower(k);else if(G.power&&Math.random()<dt*0.05)killerPower(k)}
+ return false}
+{const _bk=botKillerV31;botKillerV31=function(k,dt){if(isRyuk(k)&&botRyuk(k,dt))return true;return _bk(k,dt)}}
+/* per-frame */
+function v34Update(dt){
+ whUpdate(dt);
+ for(const s of G.surv){if(s.dnT>0)s.dnT=Math.max(0,s.dnT-dt);if(s.eyesT>0)s.eyesT=Math.max(0,s.eyesT-dt)}
+ // a gaunt grip: survivors wriggle out of Ryuk's claws faster
+ if(RY.WIGGLE>1)for(const k of G.killers){const s=k.carry;if(isRyuk(k)&&s&&s.state==='carried'){s.wiggle+=dt/20*(RY.WIGGLE-1);if(s.wiggle>=1&&s!==G.you){dropCarried(k,true)}}}
+ for(const k of G.killers){if(!isRyuk(k)||k.gone)continue;ryInit(k);
+  if(k.flyT>0){k.flyT=Math.max(0,k.flyT-dt);if(Math.random()<dt*3)AU.noise(0.25,0.08*vAt(k.x,k.y,520),{f:420,q:0.7});if(k.flyT<=0){G.fx.push({type:'dust',x:k.x,y:k.y,t:0});if(k===G.you)toast('Ryuk приземлился',800)}}
+  if(k.ryAct&&k.channel<=0&&k.stun<=0)ryActDone(k);
+  for(const s of G.surv){if(s.state==='dead'||s.state==='escaped')continue;if(ryVisible(k,s))k.seen[s.idx]=G.t}
+  if(RY.DECAY&&k.rage>0&&G.t-k.lastGain>RY.DECAY_AFTER){k.decayT+=dt;if(k.decayT>=RY.DECAY_EVERY){k.decayT=0;k.rage=Math.max(0,k.rage-1)}}
+ }
+ if(G.fx)for(const f of G.fx){if(f.type==='ryname')f.y-=dt*8}
+}
+{const _u=v33Update;v33Update=function(dt){_u(dt);v34Update(dt)}}
+{const _mk=addKillerEnt;addKillerEnt=function(id,bot,sk,sp){const k=_mk(id,bot,sk,sp);if(isRyuk(k)){ryInit(k);G.ryStats={fly:0,apple:0,book:0,str1Downs:0,dbl:0,eyes:0,rage:0,causes:[]}}return k}}
+
 /* ================= v3.1 ART: new animatronics, traps, tents, portals ================= */
 SVG.eye2='<svg viewBox="0 0 24 24" fill="#ffcf6a"><path d="M12 2l2.4 5.6L20 6l-1.6 5.6L23 15l-6 .8L15 22l-3-4.6L9 22l-2-6.2-6-.8 4.6-3.4L4 6l5.6 1.6z" opacity=".95"/><circle cx="12" cy="12" r="3.2" fill="#3a1020"/></svg>';
 SVG.order='<svg viewBox="0 0 24 24" fill="#fff"><path d="M5 2h2v20H5z"/><path d="M7 3h12l-3 4 3 4H7z" fill="#ffcf4a"/></svg>';
@@ -4188,6 +4495,115 @@ function mangaScreen(){
  c.fillStyle='rgba(0,0,0,.45)';c.fillRect(x+4,py+5,26,28);c.fillStyle='#5a3a20';c.fillRect(x+3,py+1,26,29);c.fillStyle='#6e4a2a';c.fillRect(x+3,py+1,26,4);c.strokeStyle='#2a1a0c';c.lineWidth=1;c.strokeRect(x+3.5,py+1.5,25,28);
  for(let k=0;k<3;k++){c.strokeRect(x+5.5,py+6.5+k*8,21,7);c.fillStyle='#1a1a1a';c.fillRect(x+14,py+9+k*8,4,2)}}}
 
+/* ================= v3.4 ART: Ryuk (original canvas drawing, fan tribute), Ryuk HUD, floors HUD ================= */
+SVG.wing='<svg viewBox="0 0 24 24" fill="#d8d0ff"><path d="M12 13C9 8 5 5 1 4c2 3 2 5 1 7 2 0 3 1 3 2-1 1-2 2-2 4 2-1 4-1 5 0 0-2 2-3 4-4zM12 13c3-5 7-8 11-9-2 3-2 5-1 7-2 0-3 1-3 2 1 1 2 2 2 4-2-1-4-1-5 0 0-2-2-3-4-4z"/></svg>';
+SVG.apple='<svg viewBox="0 0 24 24"><path d="M12 7c-3-2-8-1-8 5 0 5 4 10 6 10 1 0 1-1 2-1s1 1 2 1c2 0 6-5 6-10 0-6-5-7-8-5z" fill="#e8343a"/><path d="M12 7c0-2 1-4 3-5" stroke="#5a3a1a" stroke-width="1.6" fill="none"/><path d="M13 5c2-2 4-2 5-1-1 2-3 2-5 1z" fill="#4aa83a"/><ellipse cx="8.5" cy="11" rx="1.5" ry="2.4" fill="#ff9a9a"/></svg>';
+SVG.book='<svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="1.5" fill="#111" stroke="#bbb" stroke-width="1"/><rect x="5.5" y="3" width="2" height="18" fill="#2a2a2a"/><path d="M10 9h7M10 12h7M10 15h5" stroke="#777" stroke-width="1"/></svg>';
+const ryEyeCol=k=>ryRageOf(k)>=RY.RAGE_X?'#ff2a2a':'#ffd23a';
+function drawRyukTop(c,k,t){
+ const ch=k.ch,fly=k.flyT>0,col=ch.col,skin=ch.skin||'#5a6478';const lift=fly?7+Math.sin(t*7)*1.5:0;
+ c.fillStyle='rgba(0,0,0,'+(fly?0.3:0.45)+')';c.beginPath();c.ellipse(2+lift*0.6,6+lift,fly?16:18,fly?11:13,0,0,TAU);c.fill();
+ c.translate(0,-lift);c.rotate(k.face+(k.moving&&!fly?Math.sin(t*20)*0.04:0));
+ const step=k.moving&&!fly?Math.sin(t*9)*4:0;
+ // wings
+ const span=fly?1:0.35,flap=fly?Math.sin(t*14)*0.55:Math.sin(t*1.5)*0.06;
+ for(const sd of [-1,1]){c.save();c.translate(-4,sd*7);c.rotate(sd*(0.25+flap*span));
+  c.fillStyle='#14121a';c.beginPath();c.moveTo(0,0);const L=fly?36:20;
+  for(let i=0;i<=5;i++){const a=-0.9+i*0.32;c.lineTo(-Math.cos(a)*L*0.5-L*0.35-i*1.5,sd*(4+i*L*0.11))}
+  c.lineTo(-6,sd*3);c.closePath();c.fill();
+  c.strokeStyle='#2c2838';c.lineWidth=1.2;c.beginPath();for(let i=0;i<4;i++){c.moveTo(-3,sd*2);c.lineTo(-L*0.55-i*2,sd*(5+i*L*0.12))}c.stroke();c.restore()}
+ // legs (thin, long)
+ if(!fly){c.fillStyle=shade(col,-.3);c.beginPath();c.ellipse(step-2,-6,6,3.5,0,0,TAU);c.ellipse(-step-2,6,6,3.5,0,0,TAU);c.fill()}
+ // gaunt body with feather collar
+ c.fillStyle=col;c.beginPath();c.ellipse(-3,0,10,12,0,0,TAU);c.fill();
+ c.fillStyle='#0c0a10';for(let i=0;i<9;i++){const a=Math.PI*0.5+i/8*Math.PI;c.beginPath();c.moveTo(-1+Math.cos(a)*7,Math.sin(a)*9);c.lineTo(-1+Math.cos(a)*14,Math.sin(a)*15);c.lineTo(-1+Math.cos(a+0.2)*8,Math.sin(a+0.2)*10);c.fill()}
+ // long arms forward: apple in one hand, notebook in the other
+ c.strokeStyle=skin;c.lineWidth=3;c.beginPath();c.moveTo(0,-9);c.lineTo(10,-13);c.lineTo(16,-10);c.moveTo(0,9);c.lineTo(10,13);c.lineTo(16,10);c.stroke();
+ const eat=k.ryAct==='apple',write=k.ryAct==='book';
+ if(!k.str1||eat){c.fillStyle='#d8242a';c.beginPath();c.arc(eat?13:18,eat?4:11,3.6,0,TAU);c.fill();c.fillStyle='#4aa83a';c.fillRect(eat?13:18,eat?-1:6,1.5,2.5)}
+ c.fillStyle='#0a0a0a';c.save();c.translate(write?14:17,write?-3:-12);c.rotate(write?0:0.3);c.fillRect(-4,-5.5,write?12:8,11);c.strokeStyle='#888';c.lineWidth=0.8;c.strokeRect(-4,-5.5,write?12:8,11);if(write){c.strokeStyle='#ddd';c.beginPath();c.moveTo(0,-3);c.lineTo(6,-3);c.moveTo(0,0);c.lineTo(5,0);c.stroke()}c.restore();
+ // head: pale grey-blue skin, spiky black hair
+ c.fillStyle='#08070b';for(let i=0;i<11;i++){const a=Math.PI*0.62+i/10*Math.PI*0.76;c.beginPath();c.moveTo(6+Math.cos(a)*5,Math.sin(a)*6);c.lineTo(6+Math.cos(a)*15,Math.sin(a)*14);c.lineTo(6+Math.cos(a+0.18)*6,Math.sin(a+0.18)*7);c.fill()}
+ c.fillStyle=skin;c.beginPath();c.ellipse(8,0,8,8.5,0,0,TAU);c.fill();
+ c.fillStyle='#08070b';c.beginPath();c.ellipse(5,0,6,8.6,0,Math.PI*0.5,Math.PI*1.5);c.fill();
+ // grin
+ c.strokeStyle='#1a0a14';c.lineWidth=2.5;c.beginPath();c.arc(10,0,5.5,-1.1,1.1);c.stroke();c.strokeStyle='#f4f0e8';c.lineWidth=1.3;c.beginPath();c.arc(10,0,5.5,-0.9,0.9);c.stroke();
+ const eA=k.stun>0?0.3:1,ec=ryEyeCol(k);glowDot(c,11,-3.2,1.9,ec,eA);glowDot(c,11,3.2,1.9,ec,eA);
+ if(k.str1&&!eat){c.strokeStyle='rgba(255,60,60,'+(0.4+0.3*Math.sin(t*8)).toFixed(2)+')';c.lineWidth=1.5;c.beginPath();c.arc(0,0,22,0,TAU);c.stroke()}
+}
+{const _nk=drawNewKillTop;drawNewKillTop=function(c,k,t){if(k.ch.id==='ryuk'){drawRyukTop(c,k,t);return}_nk(c,k,t)}}
+function drawRyukFace(c,cx,cy,S,t,jaw,GA,ch){
+ c.save();c.translate(cx,cy);c.scale(S/100,S/100);
+ const skin=ch.skin||'#5a6478',col=ch.col||'#1c1c26';const red=!!(G&&G.killers&&G.killers.some(k=>isRyuk(k)&&ryRageOf(k)>=RY.RAGE_X));
+ // wings behind
+ for(const sd of [-1,1]){c.fillStyle='#0e0c14';c.beginPath();c.moveTo(sd*30,40);c.quadraticCurveTo(sd*70,-40,sd*112,-70);
+  for(let i=0;i<7;i++){const y=-70+i*24;c.lineTo(sd*(112-i*6),y);c.lineTo(sd*(98-i*7),y+10)}c.lineTo(sd*44,96);c.closePath();c.fill();
+  c.strokeStyle='#26222e';c.lineWidth=2;for(let i=0;i<6;i++){c.beginPath();c.moveTo(sd*40,30);c.quadraticCurveTo(sd*(70+i*4),-10+i*12,sd*(100-i*6),-60+i*25);c.stroke()}}
+ // coat / shoulders with feather collar
+ c.fillStyle=col;c.beginPath();c.moveTo(-70,112);c.quadraticCurveTo(-66,52,-24,40);c.lineTo(24,40);c.quadraticCurveTo(66,52,70,112);c.closePath();c.fill();
+ c.fillStyle='#08070c';for(let i=0;i<14;i++){const x=-58+i*9;c.beginPath();c.moveTo(x,44+Math.abs(i-6.5)*2);c.lineTo(x+5,26+Math.abs(i-6.5)*3+(i%2)*6);c.lineTo(x+10,46+Math.abs(i-6.5)*2);c.fill()}
+ c.strokeStyle='#6a6a78';c.lineWidth=2;c.beginPath();c.moveTo(-30,70);c.quadraticCurveTo(0,86,30,70);c.stroke();
+ // neck
+ c.fillStyle=shade(skin,-.25);c.fillRect(-9,22,18,22);
+ // hair spikes (back)
+ c.fillStyle='#07060a';for(let i=0;i<15;i++){const a=Math.PI*1.02+i/14*Math.PI*0.96;const r1=34,r2=62+((i*37)%17);c.beginPath();c.moveTo(Math.cos(a-0.12)*r1,-12+Math.sin(a-0.12)*r1*1.1);c.lineTo(Math.cos(a)*r2,-12+Math.sin(a)*r2*1.05);c.lineTo(Math.cos(a+0.12)*r1,-12+Math.sin(a+0.12)*r1*1.1);c.fill()}
+ for(const sd of [-1,1]){c.beginPath();c.moveTo(sd*30,-26);c.lineTo(sd*52,6);c.lineTo(sd*34,-4);c.lineTo(sd*44,22);c.lineTo(sd*28,8);c.fill()}
+ // head
+ const g=c.createRadialGradient(-8,-22,4,0,-6,44);g.addColorStop(0,shade(skin,.25));g.addColorStop(1,shade(skin,-.35));c.fillStyle=g;c.beginPath();c.ellipse(0,-6,29,38,0,0,TAU);c.fill();
+ // pointed ears
+ c.fillStyle=shade(skin,-.15);for(const sd of [-1,1]){c.beginPath();c.moveTo(sd*26,-14);c.lineTo(sd*44,-30);c.lineTo(sd*29,2);c.fill()}
+ // fringe
+ c.fillStyle='#07060a';c.beginPath();c.moveTo(-30,-22);for(let i=0;i<=8;i++){c.lineTo(-30+i*7.5,-34+(i%2?14:0))}c.lineTo(30,-44);c.lineTo(-30,-44);c.closePath();c.fill();
+ // eye sockets + eyes (yellow, red pupils; fully red in rage)
+ for(const sd of [-1,1]){c.fillStyle='#0b0a10';c.beginPath();c.ellipse(sd*13,-12,13,12,0,0,TAU);c.fill();
+  const ec=red?'#ff2a2a':'#ffd23a';const eg=c.createRadialGradient(sd*13,-12,0,sd*13,-12,22);eg.addColorStop(0,hexA(ec,0.55*GA));eg.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=eg;c.beginPath();c.arc(sd*13,-12,22,0,TAU);c.fill();
+  c.fillStyle=ec;c.globalAlpha=GA;c.beginPath();c.arc(sd*13,-12,9.5,0,TAU);c.fill();c.fillStyle=red?'#5a0000':'#c81818';c.beginPath();c.arc(sd*13+sd*1.5,-11,3.6,0,TAU);c.fill();c.globalAlpha=1}
+ // the wide grin
+ const j=(jaw||0)*14;c.fillStyle='#1a0610';c.beginPath();c.moveTo(-27,10);c.quadraticCurveTo(0,26+j,27,10);c.quadraticCurveTo(30,4,33,0);c.quadraticCurveTo(0,40+j*1.4,-33,0);c.quadraticCurveTo(-30,4,-27,10);c.fill();
+ c.fillStyle='#f2eee4';c.beginPath();c.moveTo(-26,10);c.quadraticCurveTo(0,24,26,10);c.lineTo(25,15);c.quadraticCurveTo(0,30,-25,15);c.closePath();c.fill();
+ if(j>2){c.beginPath();c.moveTo(-24,16+j*0.6);c.quadraticCurveTo(0,33+j*1.2,24,16+j*0.6);c.lineTo(23,21+j*0.6);c.quadraticCurveTo(0,37+j*1.3,-23,21+j*0.6);c.closePath();c.fill()}
+ c.strokeStyle='#2a1a1a';c.lineWidth=1.2;for(let i=-5;i<=5;i++){c.beginPath();c.moveTo(i*4.6,12+Math.abs(i)*-0.3+(5-Math.abs(i))*1.6);c.lineTo(i*4.6,17+(5-Math.abs(i))*1.9);c.stroke()}
+ c.strokeStyle='#3a2a4a';c.lineWidth=3;c.beginPath();c.moveTo(-34,0);c.quadraticCurveTo(0,40+j*1.4,34,0);c.stroke();
+ // hand with an apple (right) and the black notebook (left)
+ c.strokeStyle=shade(skin,-.1);c.lineWidth=5;c.lineCap='round';for(let i=0;i<4;i++){c.beginPath();c.moveTo(62,104);c.quadraticCurveTo(58+i*7,82,48+i*8,74);c.stroke()}c.lineCap='butt';
+ c.fillStyle='#c8202a';c.beginPath();c.arc(62,76,14,0,TAU);c.fill();c.fillStyle='rgba(255,170,170,.6)';c.beginPath();c.ellipse(56,70,3.5,6,0.4,0,TAU);c.fill();c.strokeStyle='#4a2a10';c.lineWidth=2.5;c.beginPath();c.moveTo(62,63);c.lineTo(64,55);c.stroke();c.fillStyle='#3a9a2a';c.beginPath();c.ellipse(70,57,7,3,-0.4,0,TAU);c.fill();
+ c.save();c.translate(-64,80);c.rotate(-0.25);c.fillStyle='#050505';c.fillRect(-18,-24,36,48);c.strokeStyle='#777';c.lineWidth=1.5;c.strokeRect(-18,-24,36,48);c.fillStyle='#1c1c1c';c.fillRect(-18,-24,5,48);c.restore();
+ c.restore();
+}
+{const _na=drawNewAnimFace;drawNewAnimFace=function(c,id,cx,cy,S,t,jaw,GA,ch){if(id==='ryuk'){drawRyukFace(c,cx,cy,S,t,jaw,GA,ch||KMAP.ryuk);return}_na(c,id,cx,cy,S,t,jaw,GA,ch)}}
+/* fx: the written name floats up */
+{const _fx=drawFx;drawFx=function(c,t){_fx(c,t);for(const f of G.fx){if(f.type!=='ryname')continue;const a=Math.max(0,1-f.t/1.5);c.globalAlpha=a;c.fillStyle='rgba(0,0,0,.75)';c.font='bold 12px serif';c.textAlign='center';const w=c.measureText(f.text).width+14;c.fillRect(f.x-w/2,f.y-10,w,18);c.fillStyle='#f0f0f0';c.fillText(f.text,f.x,f.y+3);c.globalAlpha=1}}}
+/* above the darkness: x-ray auras */
+{const _a=drawV32Above;drawV32Above=function(c,t,V,inView){_a(c,t,V,inView);
+ if(V.kind==='k'&&isRyuk(V)){for(const s of G.surv){if(s.state==='dead'||s.state==='escaped'||s.state==='hidden'||s.state==='vent'||s.state==='tent')continue;
+   if(s.dnT>0){aura(c,s.x,s.y,15,'#b080ff',t);c.fillStyle='#e8d8ff';c.font='bold 9px serif';c.textAlign='center';c.fillText('✎ '+s.ch.name+' '+Math.ceil(s.dnT),s.x,s.y-22)}
+   else if(ryRageOf(V)>=RY.RAGE_X&&s.invis<=0)aura(c,s.x,s.y,12,'#ff2a2a',t)}}
+ if(V.kind==='s'&&V.eyesT>0){for(const k of G.killers){if(!isRyuk(k)||k.gone)continue;aura(c,k.x,k.y,20,'#ffe08a',t);glowDot(c,k.x+Math.cos(k.face)*9,k.y+Math.sin(k.face)*9,2.5,ryEyeCol(k),1)}}
+}}
+/* floor layers: a boundary strip with the neighbouring floor's name */
+{const _a=drawV32Above;drawV32Above=function(c,t,V,inView){_a(c,t,V,inView);if(!isWinslow())return;const f=floorOf(V);
+ for(const [y,up,dn] of [[WH_FLOOR_Y[0],3,2],[WH_FLOOR_Y[1],2,1]]){if(Math.abs(y-V.y)>420)continue;const other=f>=up?dn:up;if(other===f||(f!==up&&f!==dn))continue;const above=other>f;
+  c.save();c.globalAlpha=0.75;c.strokeStyle='#8a7a6a';c.setLineDash([10,8]);c.lineWidth=1.5;c.beginPath();c.moveTo(V.x-700,y);c.lineTo(V.x+700,y);c.stroke();c.setLineDash([]);
+  c.font='bold 12px sans-serif';c.textAlign='center';c.fillStyle='#d8c8a8';for(let x=Math.floor((V.x-600)/320)*320;x<V.x+600;x+=320)c.fillText((above?'▲ ':'▼ ')+'Этаж '+other+(other===3?' · чердак':''),x+160,y+(above?-10:18));c.restore()}}}
+/* HUD: floors, footsteps from other floors, Ryuk's rage */
+function drawV34HUD(V){
+ const c=ctx,Y=G.you;c.textBaseline='middle';
+ if(isWinslow()){const f=floorOf(V);const top=8,yy=top+(G.role==='s'&&!G.ev?94:72);
+  c.fillStyle='rgba(0,0,0,.6)';rrect(c,8,yy-9,74,18,6);c.fill();c.font='bold 11px sans-serif';c.textAlign='left';c.fillStyle=f===3?'#d8c8ff':f===2?'#ffd8a0':'#a8e8ff';c.fillText('Этаж '+f+(f===3?' · чердак':''),14,yy);
+  // footsteps heard through the floor
+  const marks=[];if(V.kind==='s'){for(const k of G.killers)if(!k.gone&&k.moving&&floorOf(k)!==f&&Math.abs(k.x-V.x)<560)marks.push(k)}
+  else{for(const s of G.surv)if(s.state==='normal'&&s.moving&&(s.sprint||s.boost>0)&&floorOf(s)!==f&&Math.abs(s.x-V.x)<560)marks.push(s)}
+  for(const e of marks){const up=floorOf(e)>f;const sx=clamp(W/2+(e.x-G.cam.x)*VS,40,W-40),sy=up?62:H-56;const a=0.55+0.35*Math.sin(G.t*9+e.x);
+   c.globalAlpha=a;c.fillStyle='rgba(0,0,0,.55)';rrect(c,sx-40,sy-10,80,20,8);c.fill();c.fillStyle=e.kind==='k'?'#ff8a8a':'#9fdcff';c.font='bold 10px sans-serif';c.textAlign='center';c.fillText((up?'▲ шаги сверху':'▼ шаги снизу'),sx,sy);c.globalAlpha=1}}
+ if(Y.kind==='k'&&isRyuk(Y)){const r=ryRageOf(Y),w=150,x0=W/2-w/2,y0=H-50;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(x0-2,y0-2,w+4,10);const gr=c.createLinearGradient(x0,0,x0+w,0);gr.addColorStop(0,'#7a1a2a');gr.addColorStop(1,'#ff2a2a');c.fillStyle=gr;c.fillRect(x0,y0,w*r/RY.RAGE_MAX,6);
+  c.fillStyle='rgba(255,255,255,.5)';c.fillRect(x0+w*RY.RAGE_X/RY.RAGE_MAX,y0-2,1.5,10);c.font='bold 10px sans-serif';c.textAlign='center';c.fillStyle=r>=RY.RAGE_X?'#ff6a6a':'#e8c8c8';c.fillText('Ярость '+r+'/'+RY.RAGE_MAX+(Y.str1?' · «Сила 1»':'')+(Y.flyT>0?' · полёт '+Math.ceil(Y.flyT)+' с':''),W/2,y0-9);
+  if(r>=RY.RAGE_X){const vg=c.createRadialGradient(W/2,H/2,H*0.4,W/2,H/2,Math.max(W,H)*0.7);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(140,0,0,.25)');c.fillStyle=vg;c.fillRect(0,0,W,H)}}
+ if(Y.kind==='s'&&Y.state!=='dead'&&Y.state!=='escaped'){let s='';if(Y.dnT>0)s='✎ Твоё имя в Тетради смерти: '+Math.ceil(Y.dnT)+' с';if(Y.eyesT>0)s=(s?s+' · ':'')+'Глаза бога смерти: '+Math.ceil(Y.eyesT)+' с';
+  if(s){c.font='bold 11px sans-serif';c.textAlign='center';c.fillStyle='rgba(0,0,0,.55)';const w=c.measureText(s).width+16;c.fillRect(W/2-w/2,H-64,w,18);c.fillStyle=Y.dnT>0?'#d8c0ff':'#ffe08a';c.fillText(s,W/2,H-55)}}
+ c.textBaseline='alphabetic';
+}
+{const _h=drawV32HUD;drawV32HUD=function(V){_h(V);drawV34HUD(V)}}
+
 /* ================= MINIGAMES ================= */
 let MG=null;
 const mgEl=$('mg'),mgc=$('mgc'),mctx=mgc.getContext('2d');
@@ -4521,7 +4937,7 @@ function renderGame(dt){
  ctx.setTransform(sc,0,0,sc,cv.width/2-cx*sc,cv.height/2-cy*sc);
  // warm light tint
  ctx.globalCompositeOperation='lighter';
- for(const l of LAMPS){if(l.cur<0.05||!inView(l.x,l.y,l.r))continue;const g=ctx.createRadialGradient(l.x,l.y,0,l.x,l.y,l.r*0.8);g.addColorStop(0,hexA(l.col,0.10*l.cur));g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(l.x,l.y,l.r*0.8,0,TAU);ctx.fill()}
+ for(const l of LAMPS){if(l.cur<0.05||!inView(l.x,l.y,l.r)||lampHidden(l,V))continue;const g=ctx.createRadialGradient(l.x,l.y,0,l.x,l.y,l.r*0.8);g.addColorStop(0,hexA(l.col,0.10*l.cur));g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(l.x,l.y,l.r*0.8,0,TAU);ctx.fill()}
  crossTint(ctx,inView);
  if(V.kind==='s'){const g=ctx.createRadialGradient(V.x,V.y,10,V.x,V.y,vis.len);g.addColorStop(0,'rgba(255,230,170,.10)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;polyPath(ctx,vis.cone,V.x,V.y);ctx.fill()}
  ctx.globalCompositeOperation='source-over';
@@ -4557,7 +4973,7 @@ function renderGame(dt){
  if(Y.kind==='k'&&Y.search){progRing(ctx,Y.x,Y.y-30,1-Y.search.t/0.9,'#ff5a6a')}
  if(Y.kind==='k'&&Y.channel>0){progRing(ctx,Y.x,Y.y-30,1-Y.channel/(Y.channelMax||1.1),Y.ch.id==='springtrap'?'#d8d27a':'#c8ff4a')}
  if(Y.kind==='k'&&Y.count>0)progRing(ctx,Y.x,Y.y-30,1-Y.count/5,'#bfe8ff');
- for(const s of G.surv){if(s.state==='downed'&&inView(s.x,s.y,20))progRing(ctx,s.x,s.y-22,s.bleed/45,'#ff8a3a');if(s.state==='stage'&&inView(s.x,s.y,20))progRing(ctx,s.x,s.y-24,s.stageT/(G.duo?50:40),'#ff3a4a');if(s.state==='carried'&&s===G.you)progRing(ctx,s.x,s.y-34,s.wiggle,'#7fe0ff')}
+ for(const s of G.surv){if(s.state==='downed'&&inView(s.x,s.y,20))progRing(ctx,s.x,s.y-22,s.bleed/45,'#ff8a3a');if(s.state==='stage'&&inView(s.x,s.y,20))progRing(ctx,s.x,s.y-24,s.stageT/(s.stageMax||(G.duo?50:40)),'#ff3a4a');if(s.state==='carried'&&s===G.you)progRing(ctx,s.x,s.y-34,s.wiggle,'#7fe0ff')}
  // screen space
  ctx.setTransform(DPR,0,0,DPR,0,0);
  edgeMarkers(V,cx,cy,vw,vh);
@@ -4692,7 +5108,7 @@ function drawHUD(V){
   const st=s.state;let col='#5f5';if(s.hp===1)col='#fd3';if(st==='downed'||st==='carried')col='#f83';if(st==='stage')col='#f33';if(st==='dead')col='#555';if(st==='escaped')col='#3cf';
   c.fillStyle=s.ch.col;c.beginPath();c.arc(x+15,top+17,12,0,TAU);c.fill();
   c.fillStyle='#fff';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(st==='dead'?'✕':st==='escaped'?'✓':s.ch.name[0],x+15,top+18);
-  c.strokeStyle=col;c.lineWidth=3;c.beginPath();let f=1;if(st==='downed')f=s.bleed/45;if(st==='stage')f=s.stageT/(G.duo?50:40);if(st==='carried')f=1-s.wiggle;c.arc(x+15,top+17,14.5,-Math.PI/2,-Math.PI/2+TAU*clamp(f,0,1));c.stroke();
+  c.strokeStyle=col;c.lineWidth=3;c.beginPath();let f=1;if(st==='downed')f=s.bleed/45;if(st==='stage')f=s.stageT/(s.stageMax||(G.duo?50:40));if(st==='carried')f=1-s.wiggle;c.arc(x+15,top+17,14.5,-Math.PI/2,-Math.PI/2+TAU*clamp(f,0,1));c.stroke();
   if(s===G.you){c.fillStyle='#fff';c.font='8px sans-serif';c.fillText('ТЫ',x+15,top+38)}
   x+=36}
  // messages
@@ -4725,7 +5141,7 @@ function renderMenuBG(t,dt){
  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle='#030203';ctx.fillRect(0,0,W,H);
  // floor checker in perspective
  const hz=H*0.62;for(let i=0;i<14;i++){const y0=hz+Math.pow(i/14,1.8)*(H-hz),y1=hz+Math.pow((i+1)/14,1.8)*(H-hz);for(let j=-12;j<12;j++){const xa=W*0.62+j*(20+i*12),xb=W*0.62+(j+1)*(20+i*12);ctx.fillStyle=((i+j)&1)?'#121014':'#2a2622';ctx.fillRect(xa,y0,xb-xa+1,y1-y0+1)}}
- const MK=(typeof eventActive==='function'&&eventActive())?KILLERS.concat([JASON_K]):KILLERS;
+ const MK=(typeof eventActive==='function'&&eventActive())?KILLERS.filter(k=>chVisible(k.id)).concat([JASON_K]):KILLERS.filter(k=>chVisible(k.id));
  menuKT+=dt;if(menuKT>9){menuKT=0;menuK=(menuK+1)%MK.length}
  const id=MK[menuK%MK.length].id;const S2=H*0.3;const fl=0.25+0.12*Math.sin(t*1.3)+(Math.random()<0.04?0.3:0);
  ctx.save();ctx.globalAlpha=Math.min(1,menuKT*0.8)*(menuKT>8.3?Math.max(0,(9-menuKT)/0.7):1);
@@ -4807,7 +5223,7 @@ document.addEventListener('touchmove',e=>{if(!e.target.closest||!e.target.closes
 document.addEventListener('touchstart',e=>{if(e.touches.length>1&&e.target.closest&&e.target.closest('.panel'))e.preventDefault()},{passive:false});
 /* ---- flow ---- */
 function goMenu(){G=null;AU.applyVol();if(MG)closeMinigame('cancel');AU.setDrone(0.45,0);fade(()=>setMode('menu'))}
-function pickMap(ev){if(ev)return 'park';if(window.__forceMap)return window.__forceMap;const m=S.set.map;if(m==='pizza'||m==='park')return m;if(m==='anime')return animeOn()?'anime':'park';const rot=animeOn()?['pizza','park','anime']:['pizza','park'];const i=rot.indexOf(S.lastMap);return rot[(i+1)%rot.length]}
+function pickMap(ev){if(ev)return 'park';if(window.__forceMap)return window.__forceMap;const m=S.set.map;if(m==='pizza'||m==='park'||m==='winslow')return m;if(m==='anime')return animeOn()?'anime':'park';const rot=animeOn()?['pizza','park','winslow','anime']:['pizza','park','winslow'];const i=rot.indexOf(S.lastMap);return rot[(i+1)%rot.length]}
 const mapName=id=>(MAPS[id]||MAPS.pizza).name;
 let lastOpt={};
 function startNight(forced,opt){
@@ -4828,8 +5244,8 @@ function updateReveal(dt){
  else if(!revealDone){revealDone=true;el.className=revealRole;el.textContent=revealRole==='s'?(FEM[G.you.ch.id]?'ВЫЖИВШАЯ':'ВЫЖИВШИЙ'):'АНИМАТРОНИК';AU.stinger();const f=$('revFlash');f.style.transition='none';f.style.opacity=0.9;requestAnimationFrame(()=>{f.style.transition='opacity .8s';f.style.opacity=0});
   const ch=G.you.ch;const KN=G.killers.filter(k=>k.half!=='cat').map(k=>k.ch.name).join(' и ');const partner=G.duo&&revealRole==='k'?KMAP[G.partnerId]:null;portrait($('revCv'),revealRole,ch.id,{jaw:0.3});
   const goal=G.ev?'Цель: собери как можно больше <b style="color:#ffa030">тыкв</b> до рассвета (2:30) и не попадись <b style="color:#e8e4d8">Джейсону</b>. Он медленный, но появляется за спиной, когда на него не смотрят.':revealRole==='s'?'Цель: почини <b>'+G.gensNeed+' из '+G.gens.length+'</b> генераторов, открой ворота и сбеги до рассвета'+(G.duo?' (вас шестеро)':'')+'. Против тебя: <b style="color:#f66">'+KN+'</b>.':G.duo?'Цель: вместе с напарником <b style="color:#f66">'+(partner?partner.name:'')+'</b> (бот) поймай <b>4 из 6 выживших</b>. Отнеси упавших на <b>сцену</b>.':'Цель: поймай всех <b>4 выживших</b>, пока они не починили генераторы. Отнеси упавших на <b>сцену</b>.';
-  const ab=revealRole==='s'?ch.abil:ch.pow;const ab2=revealRole==='k'&&ch.pow2&&ch.id!=='catdog'?ch.pow2:null;
-  $('revText').innerHTML='<div class="nm">'+(revealRole==='s'?FULLNAME(ch):ch.name)+' <span style="font-size:13px;color:#e89">'+ch.title+'</span></div><div>'+goal+'</div><div style="margin-top:4px"><b style="color:#ffcf6a">'+ab.name+':</b> '+ab.desc+'</div>'+(ab2?'<div style="margin-top:2px"><b style="color:#ffcf6a">'+ab2.name+':</b> '+ab2.desc+'</div>':'')+(revealRole==='s'&&ch.id==='musashi'?'<div style="margin-top:2px;font-size:11.5px"><b style="color:#ffcf6a">'+ch.abil2.name+'</b>: дуга перед собой — оглушение 1 с и замедление. <b style="color:#ffcf6a">'+ch.abil3.name+'</b>: 8 с — лечит только себя. <b style="color:#ff9a8a">Не чинит генераторы, без фонаря и предметов</b> — охраняй тех, кто чинит.</div><div style="margin-top:3px;font-size:10px;color:#b8a070">'+VAGABOND_CREDIT+'</div>':revealRole==='s'&&ch.abil2?'<div style="margin-top:2px;font-size:11.5px"><b style="color:#ffcf6a">'+ch.abil2.name+'</b> (кнопка над «Предметом»): 8 с молитвы — лечит всех. <b style="color:#9fd8ff">'+ch.abil3.name+'</b>: +35% скорости на 6 с.</div>':'')+(ch.id==='catdog'&&revealRole==='k'?'<div style="margin-top:2px;font-size:11.5px">'+ch.pas+' Кнопки «Сменить» и «Приказ».</div>':'')+(ch.fnafRef?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Freddy Fazbear’s Pizza — отсылка к Five Nights at Freddy’s © Scott Cawthon. Grimy — оригинальный персонаж автора игры.</div>':'')+(ch.fnaf?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Персонаж Five Nights at Freddy’s © Scott Cawthon. Неофициальный фан-трибьют.</div>':'')+((ch.fanJ||G.ev)?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.</div>':'');
+  const ab=revealRole==='s'?ch.abil:ch.pow;const ab2=revealRole==='k'&&ch.pow2&&ch.id!=='catdog'?ch.pow2:null;const ab3=revealRole==='k'&&ch.pow3&&ch.id!=='catdog'?ch.pow3:null;
+  $('revText').innerHTML='<div class="nm">'+(revealRole==='s'?FULLNAME(ch):ch.name)+' <span style="font-size:13px;color:#e89">'+ch.title+'</span></div><div>'+goal+'</div><div style="margin-top:4px"><b style="color:#ffcf6a">'+ab.name+':</b> '+ab.desc+'</div>'+(ab2?'<div style="margin-top:2px"><b style="color:#ffcf6a">'+ab2.name+':</b> '+ab2.desc+'</div>':'')+(ab3?'<div style="margin-top:2px"><b style="color:#ffcf6a">'+ab3.name+':</b> '+ab3.desc+'</div>':'')+(revealRole==='k'&&ch.id==='ryuk'?'<div style="margin-top:3px;font-size:10px;color:#b8a070">Фан-трибьют. '+RYUK_CREDIT+' Рисунок оригинальный.</div>':'')+(revealRole==='s'&&ch.id==='musashi'?'<div style="margin-top:2px;font-size:11.5px"><b style="color:#ffcf6a">'+ch.abil2.name+'</b>: дуга перед собой — оглушение 1 с и замедление. <b style="color:#ffcf6a">'+ch.abil3.name+'</b>: 8 с — лечит только себя. <b style="color:#ff9a8a">Не чинит генераторы, без фонаря и предметов</b> — охраняй тех, кто чинит.</div><div style="margin-top:3px;font-size:10px;color:#b8a070">'+VAGABOND_CREDIT+'</div>':revealRole==='s'&&ch.abil2?'<div style="margin-top:2px;font-size:11.5px"><b style="color:#ffcf6a">'+ch.abil2.name+'</b> (кнопка над «Предметом»): 8 с молитвы — лечит всех. <b style="color:#9fd8ff">'+ch.abil3.name+'</b>: +35% скорости на 6 с.</div>':'')+(ch.id==='catdog'&&revealRole==='k'?'<div style="margin-top:2px;font-size:11.5px">'+ch.pas+' Кнопки «Сменить» и «Приказ».</div>':'')+(ch.fnafRef?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Freddy Fazbear’s Pizza — отсылка к Five Nights at Freddy’s © Scott Cawthon. Grimy — оригинальный персонаж автора игры.</div>':'')+(ch.fnaf?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Персонаж Five Nights at Freddy’s © Scott Cawthon. Неофициальный фан-трибьют.</div>':'')+((ch.fanJ||G.ev)?'<div style="margin-top:4px;font-size:10px;color:#b8a070">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.</div>':'');
   $('revInfo').classList.add('on');$('revTap').style.opacity=1;$('revPre').textContent='Твоя роль в эту ночь:';
  }
  if(revealDone&&revealT>9)beginGame();
@@ -4935,7 +5351,7 @@ $('tabLore').addEventListener('click',()=>{storyTab='lore';storySel=0;renderStor
 $('tabNotes').addEventListener('click',()=>{storyTab='notes';storySel=0;renderStory()});
 $('menuCredit').textContent=creditText();$('aboutCredit').textContent=creditText();
 function diffSel(el,onChange){el.innerHTML='';DIFF.forEach((d,i)=>{const s=document.createElement('span');s.textContent=d.name;s.className=i===S.set.diff?'on':'';s.onclick=()=>{S.set.diff=i;save();diffSel(el,onChange);onChange&&onChange()};el.appendChild(s)})}
-const MAP_OPTS=[['pizza','Пиццерия'],['park','Парк'],['anime','Аниме-павильон'],['rot','Чередовать']];
+const MAP_OPTS=[['pizza','Пиццерия'],['park','Парк'],['winslow','Дом Винслоу'],['anime','Аниме-павильон'],['rot','Чередовать']];
 function mapSel(el){el.innerHTML='';if(S.set.map==='anime'&&!animeOn())S.set.map='rot';MAP_OPTS.filter(o=>o[0]!=='anime'||animeOn()).forEach(([id,n])=>{const s=document.createElement('span');s.textContent=n;s.className=S.set.map===id?'on':'';s.onclick=()=>{S.set.map=id;save();AU.click();mapSel(el)};el.appendChild(s)})}
 function teamSel(el){el.innerHTML='';[['1v4','1 на 4'],['2v6','2 на 6']].forEach(([id,n])=>{const s=document.createElement('span');s.textContent=n;s.className=S.set.team===id?'on':'';s.onclick=()=>{S.set.team=id;save();AU.click();teamSel(el)};el.appendChild(s)})}
 function openLobby(){G=null;setMode('lobby');teamSel($('lobTeam'));const H0=HMAP[S.sel.h];portrait($('lobH'),'s',S.sel.h,{mine:1});portrait($('lobK'),'k',S.sel.k,{jaw:0.15,mine:1});$('lobHn').textContent=H0.name+(H0.nick?' «'+H0.nick+'»':'')+' · '+H0.title;$('lobKn').textContent=KMAP[S.sel.k].name+' · '+KMAP[S.sel.k].title;diffSel($('lobDiff'));mapSel($('lobMap'));
@@ -4962,19 +5378,19 @@ function renderColl(){
  for(const ch of list){const own=S.unl[collSide].includes(ch.id);const d=document.createElement('div');d.className='card'+(own?'':' locked')+(ch.id===collSel?' sel':'')+((collSide==='h'?S.sel.h:S.sel.k)===ch.id?' cur':'');
   const c=document.createElement('canvas');c.width=150;c.height=150;portrait(c,collSide==='h'?'s':'k',ch.id,{mine:1});d.appendChild(c);
   const n=document.createElement('div');n.textContent=ch.name;if(ch.fnaf){const tg=document.createElement('span');tg.className='fnaf-tag';tg.textContent='FNAF';n.appendChild(tg)}d.appendChild(n);
-  if(!own){const l=document.createElement('div');l.className='lock';l.innerHTML=ch.event?'🎃'+ch.event:'<span class="coin-ico"></span>'+ch.price;d.appendChild(l)}else{const m=mastOf(ch.id);if(m.lvl){const l=document.createElement('div');l.className='lock';l.style.color='#ffd24a';l.textContent='★'+m.lvl;d.appendChild(l)}}
+  if(!own){const l=document.createElement('div');l.className='lock';l.innerHTML=ch.passTier?'🎫 ур. '+ch.passTier:ch.event?'🎃'+ch.event:'<span class="coin-ico"></span>'+ch.price;d.appendChild(l)}else{const m=mastOf(ch.id);if(m.lvl){const l=document.createElement('div');l.className='lock';l.style.color='#ffd24a';l.textContent='★'+m.lvl;d.appendChild(l)}}
   d.onclick=()=>{collSel=ch.id;renderColl();AU.click()};grid.appendChild(d)}
  const ch=list.find(x=>x.id===collSel)||list[0];const own=S.unl[collSide].includes(ch.id);const cur=(collSide==='h'?S.sel.h:S.sel.k)===ch.id;
  const det=$('collDet');
  const labels=collSide==='h'?['Скорость','Выносливость','Ремонт','Скрытность']:['Скорость','Зрение','Опасность'];
  const ab=collSide==='h'?ch.abil:ch.pow;
- det.innerHTML='<div class="dh"><canvas width="200" height="200" id="detCv"></canvas><div><div class="nm">'+(collSide==='h'?FULLNAME(ch):ch.name)+'</div><div class="tt">'+ch.title+'</div><div style="margin-top:4px">'+ch.desc+'</div><div class="row" style="margin-top:5px">'+(cur?'<button class="btn small dis">Выбран</button>':own?'<button class="btn small" id="detSel">Выбрать</button>':ch.event?'<button class="btn hallo small" id="detEv">Тыквенная лавка · 🎃'+ch.event+'</button>':'<button class="btn gold small'+(S.coins<ch.price?' dis':'')+'" id="detBuy">Купить за '+ch.price+'</button>')+'</div></div></div>'+mastHTML(ch.id)+
+ det.innerHTML='<div class="dh"><canvas width="200" height="200" id="detCv"></canvas><div><div class="nm">'+(collSide==='h'?FULLNAME(ch):ch.name)+'</div><div class="tt">'+ch.title+'</div><div style="margin-top:4px">'+descHTML(ch)+'</div><div class="row" style="margin-top:5px">'+(cur?'<button class="btn small dis">Выбран</button>':own?'<button class="btn small" id="detSel">Выбрать</button>':ch.passTier?'<button class="btn small" id="detPass">Награда пропуска Сезон 2, ур. '+ch.passTier+'</button>':ch.event?'<button class="btn hallo small" id="detEv">Тыквенная лавка · 🎃'+ch.event+'</button>':'<button class="btn gold small'+(S.coins<ch.price?' dis':'')+'" id="detBuy">Купить за '+ch.price+'</button>')+'</div></div></div>'+mastHTML(ch.id)+
   labels.map((l,i)=>'<div class="stat"><b>'+l+'</b><div class="bar"><i style="width:'+(ch.st[i]*20)+'%"></i></div></div>').join('')+
   '<div class="abil"><b>'+ab.name+'</b> (перезарядка '+ab.cd+' с): '+ab.desc+'</div>'+
   (collSide==='h'&&ch.abil2?'<div class="abil"><b>'+ch.abil2.name+'</b> (перезарядка '+ch.abil2.cd+' с): '+ch.abil2.desc+'</div><div class="abil"><b>'+ch.abil3.name+'</b> (перезарядка '+ch.abil3.cd+' с): '+ch.abil3.desc+'</div>':'')+
-  (collSide==='h'?'<div class="abil"><b>Особенность:</b> '+ch.pas+(ch.item?' Стартовый предмет: '+ITEMS[ch.item].name+'.':'')+'</div>'+(ch.fanV?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Фан-трибьют. '+VAGABOND_CREDIT+' Рисунок оригинальный.</div>':''):(ch.pow2?'<div class="abil"><b>'+ch.pow2.name+'</b>'+(ch.pow2.cd>=2?' (перезарядка '+ch.pow2.cd+' с)':'')+': '+ch.pow2.desc+'</div>':'')+(ch.pow3?'<div class="abil"><b>'+ch.pow3.name+'</b>: '+ch.pow3.desc+'</div>':'')+(ch.pas?'<div class="abil"><b>Особенность:</b> '+ch.pas+'</div>':'')+'<div class="abil"><b>Всегда:</b> удар (2 удара = выживший падает), рывок-выпад, переноска на сцену.</div>'+(ch.fnafRef?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Freddy Fazbear’s Pizza — отсылка к Five Nights at Freddy’s; все права принадлежат Скотту Коутону (Scott Cawthon). Grimy — оригинальный персонаж автора игры. Неофициальная фан-игра.</div>':'')+(ch.fnaf?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">'+CREDIT_TEXT+'</div>':''))+(ch.fanJ?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям. Неофициальная бесплатная фан-игра.</div>':'')+
+  (collSide==='h'?'<div class="abil"><b>Особенность:</b> '+ch.pas+(ch.item?' Стартовый предмет: '+ITEMS[ch.item].name+'.':'')+'</div>'+(ch.fanV?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Фан-трибьют. '+VAGABOND_CREDIT+' Рисунок оригинальный.</div>':''):(ch.pow2?'<div class="abil"><b>'+ch.pow2.name+'</b>'+(ch.pow2.cd>=2?' (перезарядка '+ch.pow2.cd+' с)':'')+': '+ch.pow2.desc+'</div>':'')+(ch.pow3?'<div class="abil"><b>'+ch.pow3.name+'</b>: '+ch.pow3.desc+'</div>':'')+(ch.pas?'<div class="abil"><b>Особенность:</b> '+ch.pas+'</div>':'')+(ch.fanV&&ch.id==='ryuk'?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Фан-трибьют. '+RYUK_CREDIT+' Рисунок оригинальный.</div>':'')+'<div class="abil"><b>Всегда:</b> удар (2 удара = выживший падает), рывок-выпад, переноска на сцену.</div>'+(ch.fnafRef?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Freddy Fazbear’s Pizza — отсылка к Five Nights at Freddy’s; все права принадлежат Скотту Коутону (Scott Cawthon). Grimy — оригинальный персонаж автора игры. Неофициальная фан-игра.</div>':'')+(ch.fnaf?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">'+CREDIT_TEXT+'</div>':''))+(ch.fanJ?'<div class="abil" style="border-color:#8a6a2a;color:#e8d0a0;font-size:11px">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям. Неофициальная бесплатная фан-игра.</div>':'')+
   '';
- portrait($('detCv'),collSide==='h'?'s':'k',ch.id,{jaw:0.2,mine:1});fillSkinRow(ch.id,collSide==='h'?'s':'k');const ev=$('detEv');if(ev)ev.onclick=()=>{AU.click();openHallo()};
+ portrait($('detCv'),collSide==='h'?'s':'k',ch.id,{jaw:0.2,mine:1});fillSkinRow(ch.id,collSide==='h'?'s':'k');const ev=$('detEv');if(ev)ev.onclick=()=>{AU.click();openHallo()};const dp=$('detPass');if(dp)dp.onclick=()=>{AU.click();openPass()};
  const sb=$('detSel');if(sb)sb.onclick=()=>{if(collSide==='h')S.sel.h=ch.id;else S.sel.k=ch.id;save();AU.click();renderColl()};
  const bb=$('detBuy');if(bb)bb.onclick=()=>{if(S.coins<ch.price||ch.event||!(ch.price>0))return;S.coins-=ch.price;S.unl[collSide].push(ch.id);if(collSide==='h')S.sel.h=ch.id;else S.sel.k=ch.id;save();AU.chime();toast(ch.name+' теперь твой!');updCoins();renderColl()};
 }
@@ -5111,7 +5527,7 @@ function renderShop(){
   for(const o of offs){const r=o.sk?{sk:o.sk}:{fr:o.fr};g.appendChild(shopItem(r,o.price,o.old,()=>S.shop.bought.push(rKey(r))))}}
  else if(shopTab==='skins'){for(const sk of Object.values(SKINS).filter(s=>s.src==='shop'&&chVisible(s.ch)))g.appendChild(shopItem({sk:sk.id},sk.price))}
  else if(shopTab==='frames'){for(const f of FRAMES.filter(f=>f.src==='shop'))g.appendChild(shopItem({fr:f.id},f.price))}
- else{for(const h of HUNTERS){if(h.event||h.price<=0||!chVisible(h.id))continue;g.appendChild(shopItem({ch:h.id},h.price))}for(const k of KILLERS){if(k.price<=0)continue;g.appendChild(shopItem({kch:k.id},k.price))}
+ else{for(const h of HUNTERS){if(h.event||h.price<=0||!chVisible(h.id))continue;g.appendChild(shopItem({ch:h.id},h.price))}for(const k of KILLERS){if(k.price<=0||!chVisible(k.id))continue;g.appendChild(shopItem({kch:k.id},k.price))}
   const j=el('div','it','<div class="nm">Jason Voorhees</div><div>Выживший «Боец» — только в Тыквенной лавке за 250 тыкв (Хэллоуин).</div>');const c=mkCv(96);portrait(c,'s','jason',{noTag:1});j.prepend(c);g.appendChild(j)}
 }
 [['stDaily','daily'],['stSkins','skins'],['stFrames','frames'],['stChars','chars']].forEach(([id,k])=>$(id).addEventListener('click',()=>{shopTab=k;AU.click();renderShop()}));
@@ -5235,6 +5651,26 @@ function ensureAnimeLore(){if(_animeLore||!animeOn())return;_animeLore=true;
   {t:'Странствующий мечник',p:[MUSASHI_DESC,'Он не чинит генераторы и не носит фонарь. Он просто стоит рядом с теми, кто чинит, — и ждёт, когда из темноты выйдет противник.','<span class="lq">'+VAGABOND_CREDIT+'</span>']})}
 // guard: never let a hidden character be selected / played before the unlock
 {const _sn=startNight;startNight=function(){if(!chVisible(S.sel.h))S.sel.h='marina';if(S.set.map==='anime'&&!animeOn())S.set.map='rot';return _sn.apply(this,arguments)}}
+
+/* ================= v3.4 UI: Ryuk buttons/status, Musashi pass label, Maxim's motto, guards ================= */
+BTN_ROLE.kr={b1:['atk','claw','Удар'],b2:['lunge','dash','Рывок'],b3:['pow','wing','Полёт'],b4:['act','grab','Действие'],b5:['pow2','apple','Яблоко'],b6:['pow3','book','Тетрадь']};
+{const _sb=setupButtons;setupButtons=function(role){const ch=G&&G.you?G.you.ch:null;if(role==='k'&&ch&&ch.id==='ryuk'){const keep=BTN_ROLE.k;BTN_ROLE.k=BTN_ROLE.kr;try{_sb(role)}finally{BTN_ROLE.k=keep}return}_sb(role)}}
+{const _ub=updateButtons;updateButtons=function(){_ub();if(!G||G.role!=='k')return;const Y=G.you;if(!isRyuk(Y))return;
+ const set=(id,label,cd,off,hot)=>{const el=$(id);const sp=el.querySelector('span');if(sp.textContent!==label)sp.textContent=label;el.querySelector('.cd').style.setProperty('--cd',clamp(cd,0,1).toFixed(3));el.classList.toggle('off',!!off);el.classList.toggle('hot',!!hot)};
+ set('b3',Y.flyT>0?'Полёт '+Math.ceil(Y.flyT)+' с':'Полёт',Y.powCd/Y.ch.pow.cd,Y.powCd>0||Y.flyT>0,Y.powCd<=0&&Y.flyT<=0);
+ set('b5',Y.ryAct==='apple'?'Ем…':Y.str1?'Сила 1!':'Яблоко',(Y.powCd2||0)/Y.ch.pow2.cd,(Y.powCd2||0)>0||Y.str1,Y.str1);
+ const tg=(Y.powCd3||0)<=0?ryBookTarget(Y):null;set('b6',Y.ryAct==='book'?'Пишу…':tg?'Тетрадь: '+tg.ch.name:'Тетрадь',(Y.powCd3||0)/Y.ch.pow3.cd,(Y.powCd3||0)>0||!tg,!!tg)}}
+{const _ks=v31KillerStatus;v31KillerStatus=function(Y){if(!isRyuk(Y))return _ks(Y);const cd=v=>v>0?Math.ceil(v)+' с':'готов';
+ return (Y.flyT>0?'Полёт '+Math.ceil(Y.flyT)+' с':'Полёт: '+cd(Y.powCd))+' · '+(Y.str1?'«Сила 1» — следующий удар роняет':'Яблоко: '+cd(Y.powCd2))+' · Тетрадь: '+cd(Y.powCd3)+(ryRageOf(Y)>=RY.RAGE_X?' · ЯРОСТЬ: видишь всех':'')}}
+// collection: Maxim's motto as a styled line
+function descHTML(ch){if(ch.quote){const q='Его девиз: «'+ch.quote+'»';return ch.desc.replace(q,'').trim()+'<div style="margin-top:5px;font-style:italic;color:#ffe9b0;border-left:2px solid #c8a050;padding-left:6px">«'+ch.quote+'»<span style="font-style:normal;color:#b8a070;font-size:10px"> — девиз</span></div>'}return ch.desc}
+// shop: Musashi is no longer sold — show where to get him (only after the unlock)
+{const _rs=renderShop;renderShop=function(){_rs.apply(this,arguments);if(shopTab!=='chars'||!animeOn())return;const g=$('shopGrid');const own=S.unl.h.includes('musashi');
+ const j=el('div','it'+(own?' on':''),'<div class="nm">Musashi</div><div>Выживший «Боец» — '+(own?'уже твой.':'Награда пропуска Сезон 2, ур. '+MUS_PASS_TIER+' (бесплатная линия).')+'</div>');const c=mkCv(96);portrait(c,'s','musashi',{noTag:1});j.prepend(c);if(!own)j.onclick=()=>{AU.click();openPass()};g.appendChild(j)}}
+// guards: hidden killer never selected before the unlock; lore after the unlock
+{const _sn=startNight;startNight=function(){if(!chVisible(S.sel.k)||!S.unl.k.includes(S.sel.k))S.sel.k='chorist';return _sn.apply(this,arguments)}}
+{const _ol=openLobby;openLobby=function(){if(!chVisible(S.sel.k))S.sel.k='chorist';_ol()}}
+{const _el=ensureAnimeLore;ensureAnimeLore=function(){const was=_animeLore;_el();if(!was&&_animeLore)LORE.push({t:'Бог смерти',p:[RYUK_DESC,'Ему скучно. Он ест яблоки, летает над крышами павильона и иногда открывает чёрную тетрадь. Тем, кому удаётся вырваться из его когтей, ещё долго мерещатся его глаза.','<span class="lq">Фан-трибьют. '+RYUK_CREDIT+' Рисунок оригинальный.</span>']})}}
 
 /* ---- boot ---- */
 loadMap('pizza',eventActive());checkSeason();checkQuests();checkShopDay();
