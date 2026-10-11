@@ -1,10 +1,11 @@
 name: Publish release (one-time bootstrap)
 
 # The GitHub API tools used to maintain this repo can only upload text files,
-# so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
+# so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/
+# (since v3.5 split into parts zavodnye-koshmary.apk.b64.partN; the .sha256 file is uploaded last).
 # This workflow decodes it, verifies SHA-256, creates the release with the APK,
 # removes the payload and syncs gh-pages with main.
-# It does NOT build or sign anything. v1.0 - v3.4 were published the same way.
+# It does NOT build or sign anything. v1.0 - v3.5 were published the same way.
 
 on:
   push:
@@ -27,37 +28,41 @@ jobs:
       - name: Decode and verify payload
         run: |
           set -euo pipefail
-          test -f .github/bootstrap/zavodnye-koshmary.apk.b64 || { printf 'payload already processed\n'; exit 0; }
+          ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* >/dev/null 2>&1 || { printf 'payload already processed\n'; exit 0; }
           test -f .github/bootstrap/zavodnye-koshmary.apk.sha256 || { printf 'checksum file not uploaded yet\n'; exit 0; }
           mkdir -p /tmp/p
-          base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
+          ls -l .github/bootstrap
+          cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "720530e2d58aee220d8c26e1f8df5d029ba70db8b846ef926f30d53d34bacd1d" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "ac8dd5ddd30f6fb7c633f116bae7f8152cff12ee43ab4b4a0879239b55c138f5" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.4 with APK
+      - name: Create release v3.5 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.4 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.5 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.4
+          «Windup Wonderland» 3.5
 
-          - **Новая карта «Дом Винслоу»** — жуткий трёхэтажный особняк на окраине Brunville. Лестницы между этажами, индикатор «Этаж N», шаги с соседних этажей, шкафы и кровати, чтобы спрятаться, 7 генераторов и 2 выхода. Доступна сразу — в выборе карты и в чередовании.
-          - На чердаке — запертая комната: она открывается, когда запущены генераторы, или если найти в доме две записки.
-          - Пять новых записок и новая страница «Истории» о доме Винслоу.
-          - У отца Максима появился девиз: «Истинному воину меч не нужен.»
-          - Сохранения 3.3 и старше переносятся автоматически (с резервной копией).
+          - **Маска на стене главного меню.** Старая маска с замком на рту и зашитыми губами. Глаза тускло светятся и следят за пальцем, замок иногда дёргается сам. Над ней табличка «Остатки прошлого».
+          - **Подарок маски.** Первое касание дарит бесплатного аниматроника **Michael Myers** (фан-трибьют фильма «Хэллоуин»), значок профиля «Подарок от шута!» и достижение «Шутки шутками, а подарки дарит!».
+            - «Он всегда встаёт»: оглушения вдвое короче.
+            - «Слежка»: медленнее и тише, а пока выжившие в конусе зрения, копится «Зло».
+            - «Зло во плоти»: 15 с ярости, удар сразу роняет выжившего.
+            - Боты тоже им пользуются; по симуляциям он ловит в среднем около 2 из 4 выживших.
+          - **Проигрыватель в главном меню.** Выбор пластинки, пауза, следующая и громкость музыки. Музыка звучит только в меню и лобби: перед матчем затихает, после него возвращается.
+          - **Вкладка «Пластинки» в магазине** (100–300 монет, можно послушать перед покупкой). «Заводная шкатулка» бесплатна. Три пластинки — оригинальные процедурные мелодии игры, шесть — записи Kevin MacLeod (incompetech.com) по лицензии CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); список и ссылки в README, раздел «Музыка».
 
-          Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.
+          Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Джейсон Вурхиз (Friday the 13th) и Майкл Майерс («Хэллоуин», 1978, Джон Карпентер и Дебра Хилл) — персонажи фильмов; все права принадлежат их правообладателям.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 8 / versionName 3.4. Подписан тем же ключом, что и прошлые версии, ставится поверх.
-          SHA-256: 720530e2d58aee220d8c26e1f8df5d029ba70db8b846ef926f30d53d34bacd1d
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 9 / versionName 3.5. Подписан тем же ключом, что и прошлые версии, ставится поверх; сохранения не теряются.
+          SHA-256: ac8dd5ddd30f6fb7c633f116bae7f8152cff12ee43ab4b4a0879239b55c138f5
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.4 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.4" --notes-file /tmp/notes.md
+          gh release create v3.5 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.5" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -67,12 +72,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.4 bootstrap payload (APK published in Release v3.4)"
+          git commit -m "Remove v3.5 bootstrap payload (APK published in Release v3.5)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.4)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.5)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
