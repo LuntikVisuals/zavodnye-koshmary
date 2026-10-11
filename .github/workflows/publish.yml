@@ -4,7 +4,7 @@ name: Publish release (one-time bootstrap)
 # so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
 # This workflow decodes it, verifies SHA-256, creates the release with the APK,
 # removes the payload and syncs gh-pages with main.
-# It does NOT build or sign anything. v1.0 was published the same way.
+# It does NOT build or sign anything. v1.0 and v2.0 were published the same way.
 
 on:
   push:
@@ -31,32 +31,33 @@ jobs:
           mkdir -p /tmp/p
           base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
           echo "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
-          echo "91cd320198d367fc54b621d19572e60ef4a95664d5ce8240d146d20302bef434  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
+          echo "e3ec134cadef949114ad60a0efde2fc302479d5f998ccce6c3ceb3276077d463  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v2.0 with APK
+      - name: Create release v2.1 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v2.0 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
+          gh release view v2.1 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Заводные Кошмары» 2.0 — большое обновление персонажей.
+          «Windup Wonderland» 2.1 (раньше — «Заводные Кошмары»): сюжет и записки.
 
-          - Стороны переименованы: **Выжившие** и **Аниматроники** (меню, лобби, раскрытие роли, итоги, статистика).
-          - Все персонажи переработаны в серьёзном жутком стиле. Выжившие: Марина «Искра» Ершова (электрик), Артём «Курьер» Белов (курьер), Лидия «Док» Корнеева (фельдшер), Глеб «Тень» Тихонов (взломщик), Ксения «Объектив» Орлова (журналистка), Павел «Батя» Громов (ночной охранник). Аниматроники: Хорист, Егерь, Диктор, Полуночница, Молох — повреждённые машины со своими историями. Способности и баланс прежние.
-          - Новые играбельные аниматроники (фан-трибьют): **Спрингтрап** — «Вентиляция»: ныряет в решётку и вылезает у последнего шума или генератора, скрежет в трубах выдаёт его; умеет пролезать в лазы. **Фредди** — «Шоу во тьме»: 8 секунд невидим в темноте, слышна лишь мелодия шкатулки, вне луча фонаря быстрее. Открываются за 500 монет.
-          - Экран «Об игре» и подпись о фан-игре в главном меню.
-          - Сохранения 1.0 переносятся автоматически: монеты, статистика и открытые персонажи сохраняются.
+          - Игра переименована в **Windup Wonderland**. Пакет, ссылки и имя файла APK прежние — ставится поверх.
+          - Новое место действия: американский семейный центр развлечений «Windup Wonderland» (Brunville, Ohio). Меньше мистики, больше реальной техники.
+          - Персонажи с английскими именами. Выжившие: Mara «Spark» Ellis, Danny «Courier» Brooks, Lydia «Doc» Hayes, Glen «Shade» Turner, Casey «Lens» Morgan, Paul «Pops» Grant. Аниматроники: Chorister, Ranger, Announcer, Midnight, Moloch, а также Springtrap и Freddy (фан-трибьют). Способности, характеристики и цены прежние.
+          - Раздел **«История»** в главном меню: 8 страниц хроники — от открытия центра в 1986 году до ночи 13 ноября 1993 года и сервера под сценой.
+          - **10 записок на карте** (памятки, накладная, журналы охраны, дневник Winslow, письмо подрядчика, распечатка сервера). Выжившие подбирают их во время ночи; найденные сохраняются и читаются в «Истории».
+          - Сохранения 2.0 и 1.0 переносятся автоматически: монеты, статистика, открытые и выбранные персонажи.
 
-          Неофициальная бесплатная фан-игра. Без доната и рекламы. Спрингтрап и Фредди взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.
+          Неофициальная бесплатная фан-игра. Без доната и рекламы. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 2 / versionName 2.0. Подписан тем же ключом, что и 1.0, — ставится поверх.
-          SHA-256: 91cd320198d367fc54b621d19572e60ef4a95664d5ce8240d146d20302bef434
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 3 / versionName 2.1. Подписан тем же ключом, что и 1.0 и 2.0, — ставится поверх.
+          SHA-256: e3ec134cadef949114ad60a0efde2fc302479d5f998ccce6c3ceb3276077d463
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v2.0 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Заводные Кошмары v2.0" --notes-file /tmp/notes.md
+          gh release create v2.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v2.1" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -65,12 +66,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v2.0 bootstrap payload (APK published in Release v2.0)"
+          git commit -m "Remove v2.1 bootstrap payload (APK published in Release v2.1)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v2.0)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v2.1)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
