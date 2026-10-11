@@ -1,0 +1,86 @@
+name: Publish v1.0 release (one-time bootstrap)
+
+# The GitHub API tools used to create this repo can only upload text files,
+# so the signed APK (built and signed locally, versionCode 1) and the binary parts of the
+# Android project (launcher icons, gradle-wrapper.jar) were uploaded as base64.
+# This workflow decodes them, verifies SHA-256, creates Release v1.0 with the APK,
+# commits the binary Android files, removes the payload and publishes gh-pages.
+# It does NOT build or sign anything.
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/bootstrap/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decode and verify payload
+        run: |
+          set -euo pipefail
+          test -f .github/bootstrap/zavodnye-koshmary.apk.b64 || { echo "payload already processed"; exit 0; }
+          test -f .github/bootstrap/android-binaries.tgz.b64 || { echo "waiting for android binaries payload"; exit 0; }
+          mkdir -p /tmp/p
+          base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
+          echo "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
+          echo "1edb50c2fc80eeed8fdd7b383edfc421a202cdaef9247c67b2348cd2a721efbb  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
+          base64 -d .github/bootstrap/android-binaries.tgz.b64 > /tmp/p/bin.tgz
+          echo "$(cat .github/bootstrap/android-binaries.tgz.sha256)  /tmp/p/bin.tgz" | sha256sum -c -
+          echo "08b18b8ccf5b1e8a8802595baa8404e98857131873b93f704bba29fe92746122  /tmp/p/bin.tgz" | sha256sum -c -
+          tar tzf /tmp/p/bin.tgz | grep -vE '^(app/src/main/res/mipmap-[a-z]+/ic_launcher[a-z_]*\.png|gradle/wrapper/gradle-wrapper\.jar)$' && { echo "unexpected file in archive"; exit 1; } || true
+          ls -l /tmp/p
+
+      - name: Create release v1.0 with APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -f /tmp/p/zavodnye-koshmary.apk || exit 0
+          gh release view v1.0 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
+          cat > /tmp/notes.md <<'NOTES'
+          «Заводные Кошмары» 1.0 — первая версия асимметричного хоррора про ночь в заброшенном пицца-парке.
+
+          - Роль выпадает случайно каждый раунд: Охотник (ты + 3 бота против аниматроника) или Убийца (ты против 4 ботов-охотников).
+          - Охотники: почини 5 из 7 генераторов, запитай ворота и сбеги до рассвета. Бег с выносливостью, шкафчики и столы для пряток, предметы (стробоскоп, инструменты, аптечка, хлопушка), спасение и подъём друзей.
+          - Ремонт генератора — две мини-игры: «Провода» и «Автомат» (8-битный аркадный лабиринт). Мир не останавливается, а ошибка шумит и привлекает аниматроника.
+          - Убийца: удар (2 удара — охотник падает), рывок, уникальная сила у каждого аниматроника, унеси упавших на сцену.
+          - 6 охотников и 5 аниматроников (свои, оригинальные персонажи), монеты и открытие персонажей, статистика, 3 уровня сложности.
+          - Темнота с фонариком, туман войны, мигающие лампы, синтезированные звуки и сердцебиение. Без крови — только мурашки.
+          - Работает без интернета, прогресс сохраняется на устройстве.
+
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 1, альбомная ориентация.
+          SHA-256: 1edb50c2fc80eeed8fdd7b383edfc421a202cdaef9247c67b2348cd2a721efbb
+          NOTES
+          sed -i 's/^          //' /tmp/notes.md
+          gh release create v1.0 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Заводные Кошмары v1.0" --notes-file /tmp/notes.md
+
+      - name: Add Android binaries, remove payload, publish gh-pages
+        run: |
+          set -euo pipefail
+          test -f /tmp/p/zavodnye-koshmary.apk || exit 0
+          tar xzf /tmp/p/bin.tgz -C android
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add android
+          git rm -q -r .github/bootstrap
+          git commit -m "Add Android launcher icons and gradle wrapper jar; remove v1.0 bootstrap payload (APK published in Release v1.0)"
+          git push origin HEAD:main
+          git push origin HEAD:gh-pages
+
+      - name: Enable / rebuild GitHub Pages
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X POST "repos/${{ github.repository }}/pages" -f "source[branch]=gh-pages" -f "source[path]=/" || echo "Pages site create not permitted or already exists"
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages rebuild request not permitted; the push to gh-pages should trigger it."
