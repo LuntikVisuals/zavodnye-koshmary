@@ -1,11 +1,10 @@
-name: Publish v1.0 release (one-time bootstrap)
+name: Publish release (one-time bootstrap)
 
-# The GitHub API tools used to create this repo can only upload text files,
-# so the signed APK (built and signed locally, versionCode 1) and the binary parts of the
-# Android project (launcher icons, gradle-wrapper.jar) were uploaded as base64.
-# This workflow decodes them, verifies SHA-256, creates Release v1.0 with the APK,
-# commits the binary Android files, removes the payload and publishes gh-pages.
-# It does NOT build or sign anything.
+# The GitHub API tools used to maintain this repo can only upload text files,
+# so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
+# This workflow decodes it, verifies SHA-256, creates the release with the APK,
+# removes the payload and syncs gh-pages with main.
+# It does NOT build or sign anything. v1.0 was published the same way.
 
 on:
   push:
@@ -29,58 +28,56 @@ jobs:
         run: |
           set -euo pipefail
           test -f .github/bootstrap/zavodnye-koshmary.apk.b64 || { echo "payload already processed"; exit 0; }
-          test -f .github/bootstrap/android-binaries.tgz.b64 || { echo "waiting for android binaries payload"; exit 0; }
           mkdir -p /tmp/p
           base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
           echo "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
-          echo "1edb50c2fc80eeed8fdd7b383edfc421a202cdaef9247c67b2348cd2a721efbb  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
-          base64 -d .github/bootstrap/android-binaries.tgz.b64 > /tmp/p/bin.tgz
-          echo "$(cat .github/bootstrap/android-binaries.tgz.sha256)  /tmp/p/bin.tgz" | sha256sum -c -
-          echo "08b18b8ccf5b1e8a8802595baa8404e98857131873b93f704bba29fe92746122  /tmp/p/bin.tgz" | sha256sum -c -
-          tar tzf /tmp/p/bin.tgz | grep -vE '^(app/src/main/res/mipmap-[a-z]+/ic_launcher[a-z_]*\.png|gradle/wrapper/gradle-wrapper\.jar)$' && { echo "unexpected file in archive"; exit 1; } || true
+          echo "91cd320198d367fc54b621d19572e60ef4a95664d5ce8240d146d20302bef434  /tmp/p/zavodnye-koshmary.apk" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v1.0 with APK
+      - name: Create release v2.0 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v1.0 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
+          gh release view v2.0 >/dev/null 2>&1 && { echo "release exists"; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Заводные Кошмары» 1.0 — первая версия асимметричного хоррора про ночь в заброшенном пицца-парке.
+          «Заводные Кошмары» 2.0 — большое обновление персонажей.
 
-          - Роль выпадает случайно каждый раунд: Охотник (ты + 3 бота против аниматроника) или Убийца (ты против 4 ботов-охотников).
-          - Охотники: почини 5 из 7 генераторов, запитай ворота и сбеги до рассвета. Бег с выносливостью, шкафчики и столы для пряток, предметы (стробоскоп, инструменты, аптечка, хлопушка), спасение и подъём друзей.
-          - Ремонт генератора — две мини-игры: «Провода» и «Автомат» (8-битный аркадный лабиринт). Мир не останавливается, а ошибка шумит и привлекает аниматроника.
-          - Убийца: удар (2 удара — охотник падает), рывок, уникальная сила у каждого аниматроника, унеси упавших на сцену.
-          - 6 охотников и 5 аниматроников (свои, оригинальные персонажи), монеты и открытие персонажей, статистика, 3 уровня сложности.
-          - Темнота с фонариком, туман войны, мигающие лампы, синтезированные звуки и сердцебиение. Без крови — только мурашки.
-          - Работает без интернета, прогресс сохраняется на устройстве.
+          - Стороны переименованы: **Выжившие** и **Аниматроники** (меню, лобби, раскрытие роли, итоги, статистика).
+          - Все персонажи переработаны в серьёзном жутком стиле. Выжившие: Марина «Искра» Ершова (электрик), Артём «Курьер» Белов (курьер), Лидия «Док» Корнеева (фельдшер), Глеб «Тень» Тихонов (взломщик), Ксения «Объектив» Орлова (журналистка), Павел «Батя» Громов (ночной охранник). Аниматроники: Хорист, Егерь, Диктор, Полуночница, Молох — повреждённые машины со своими историями. Способности и баланс прежние.
+          - Новые играбельные аниматроники (фан-трибьют): **Спрингтрап** — «Вентиляция»: ныряет в решётку и вылезает у последнего шума или генератора, скрежет в трубах выдаёт его; умеет пролезать в лазы. **Фредди** — «Шоу во тьме»: 8 секунд невидим в темноте, слышна лишь мелодия шкатулки, вне луча фонаря быстрее. Открываются за 500 монет.
+          - Экран «Об игре» и подпись о фан-игре в главном меню.
+          - Сохранения 1.0 переносятся автоматически: монеты, статистика и открытые персонажи сохраняются.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 1, альбомная ориентация.
-          SHA-256: 1edb50c2fc80eeed8fdd7b383edfc421a202cdaef9247c67b2348cd2a721efbb
+          Неофициальная бесплатная фан-игра. Без доната и рекламы. Спрингтрап и Фредди взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.
+
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 2 / versionName 2.0. Подписан тем же ключом, что и 1.0, — ставится поверх.
+          SHA-256: 91cd320198d367fc54b621d19572e60ef4a95664d5ce8240d146d20302bef434
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v1.0 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Заводные Кошмары v1.0" --notes-file /tmp/notes.md
+          gh release create v2.0 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Заводные Кошмары v2.0" --notes-file /tmp/notes.md
 
-      - name: Add Android binaries, remove payload, publish gh-pages
+      - name: Remove payload, sync gh-pages with main
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          tar xzf /tmp/p/bin.tgz -C android
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add android
           git rm -q -r .github/bootstrap
-          git commit -m "Add Android launcher icons and gradle wrapper jar; remove v1.0 bootstrap payload (APK published in Release v1.0)"
+          git commit -m "Remove v2.0 bootstrap payload (APK published in Release v2.0)"
           git push origin HEAD:main
-          git push origin HEAD:gh-pages
+          MAIN=$(git rev-parse HEAD)
+          git fetch origin gh-pages
+          git checkout -B gh-pages origin/gh-pages
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v2.0)"
+          if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
+          git diff --quiet "$MAIN" HEAD
+          git push origin gh-pages
 
-      - name: Enable / rebuild GitHub Pages
+      - name: Rebuild GitHub Pages
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api -X POST "repos/${{ github.repository }}/pages" -f "source[branch]=gh-pages" -f "source[path]=/" || echo "Pages site create not permitted or already exists"
           gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages rebuild request not permitted; the push to gh-pages should trigger it."
