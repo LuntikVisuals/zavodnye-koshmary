@@ -4,7 +4,7 @@ name: Publish release (one-time bootstrap)
 # so the signed APK (built and signed locally) is uploaded as base64 into .github/bootstrap/.
 # This workflow decodes it, verifies SHA-256, creates the release with the APK,
 # removes the payload and syncs gh-pages with main.
-# It does NOT build or sign anything. v1.0 - v3.0 were published the same way.
+# It does NOT build or sign anything. v1.0 - v3.2 were published the same way.
 
 on:
   push:
@@ -32,37 +32,34 @@ jobs:
           mkdir -p /tmp/p
           base64 -d .github/bootstrap/zavodnye-koshmary.apk.b64 > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "3c6cd577ba49976a2b2ef7f870522c21db944423359d339fab38954601165d0e" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "c045136ecd1129aa5ebc202e6985a911e4517d7c23447f88b17d9130aee555ac" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.1 with APK
+      - name: Create release v3.2 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.1
+          «Windup Wonderland» 3.2
 
-          - **Новый режим «2 на 6»:** 2 аниматроника против 6 выживших (переключатель «Режим» в лобби, в «Обычном» и в «Рейтинге»). Сторона выпадает случайно: аниматроник с ботом-напарником или выживший с 5 ботами. 5 генераторов, 6 минут до рассвета, 50 с на сцене.
-          - **Новые аниматроники:**
-            - **Hippo** (550) — «Метание топора» и «Счастливый день»: шатёр с лабиринтом и маленькими бегемотиками. Пойманный в лабиринте выбывает без спасения.
-            - **Котопес** (700) — пёс (глухой) и кошка (слепая) двумя телами: «Сменить», «Приказ» (за мной / охраняй / патруль) и «Соединение».
-            - **Spinner** (650) — паутина на сцене (6 с снимать, сигнал Spinner), «Паутинный кокон» и паутины в дверных проёмах.
-            - **Grimy** (600) — замедляющий грязный след, до 2 грязевых луж и нырок между ними.
-            - **Dolly** (750) — «Шёпот» с ложного направления, «Игра в прятки» (счёт до 5) и кукольные домики с телепортом.
-          - **Новые выжившие:** Rosa «Mop» Delgado (500) убирает ловушки в 4 раза быстрее и получает +5 монет за каждую; Cassidy (550) открывает портал в дальний конец карты на 10 с, и аниматроники тоже могут им пройти.
-          - Мастерство до 50 и Мейнстоуны для всех новых персонажей, боты используют новые силы, новые страницы «Истории» и 5 новых записок (всего 15).
-          - Сохранения 3.0 и старше переносятся автоматически.
+          - **Новый выживший — Father Maxim, «Священник»** (1000 монет, самый дорогой персонаж). Медленный, плохо прячется, выдерживает 3 удара.
+            - **Крест** (60 с): 10 с установки, свет на всю комнату. Пока аниматроник в свете креста, светлые руки ловят его удары по любому выжившему. Крест можно сломать (5 прочности), одновременно стоит один.
+            - **Молитва** (80 с): 8 с молитвы, затем лечит всех выживших, включая себя, и поднимает упавших. Пойманных на сцене и выбывших не возвращает.
+            - **Святая вода** (40 с): +35% к скорости на 6 с.
+          - Страница «Священник» в «Истории», эндоскелет «001» на карте «Парк».
+          - Мастерство до 50 с Мейнстоунами, два скина в магазине, боты пользуются крестом, молитвой и святой водой, боты-аниматроники ломают крест.
+          - Сохранения 3.1 и старше переносятся автоматически.
 
           Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap и Freddy взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Grimy — оригинальный персонаж автора игры; Freddy Fazbear's Pizza в её истории — отсылка к FNAF. Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям.
 
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 5 / versionName 3.1. Подписан тем же ключом, что и прошлые версии, ставится поверх.
-          SHA-256: 3c6cd577ba49976a2b2ef7f870522c21db944423359d339fab38954601165d0e
+          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 6 / versionName 3.2. Подписан тем же ключом, что и прошлые версии, ставится поверх.
+          SHA-256: c045136ecd1129aa5ebc202e6985a911e4517d7c23447f88b17d9130aee555ac
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.1" --notes-file /tmp/notes.md
+          gh release create v3.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.2" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -72,12 +69,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.1 bootstrap payload (APK published in Release v3.1)"
+          git commit -m "Remove v3.2 bootstrap payload (APK published in Release v3.2)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.2)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
