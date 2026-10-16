@@ -312,8 +312,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
 .stars{font-size:11px;color:#bba;margin-bottom:3px}.stars b{color:#ffcf4a;letter-spacing:1px}.stars b span{color:#3a3030}
 .it.bnr canvas{width:100%;max-width:200px;height:auto;border-radius:5px}
 .it.bnr{grid-column:span 2}
-#profBanner{width:100%;max-width:420px;height:auto;border-radius:8px;border:1px solid #4a3030;display:block;margin-bottom:4px}
-.card.teaser{opacity:.85}.card.teaser canvas{filter:none}
+#profInfo.hasBnr{position:relative;border-radius:8px;overflow:hidden}#profBanner{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:.32;z-index:0;pointer-events:none;border-radius:8px}#profInfo.hasBnr>*:not(#profBanner){position:relative;z-index:1}
+.card.soon36{opacity:.9}.card.soon36 canvas{filter:none}
 @media (max-height:420px){#menu .credit{font-size:7.5px;line-height:1.15;max-height:3.6em;overflow-y:auto;overscroll-behavior:contain}}
 </style>
 </head>
@@ -356,7 +356,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.6</div>
+  <div class="ver">v3.6.1</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -6652,7 +6652,7 @@ function drawV36HUD(V){const Y=G.you;const c=ctx;c.textBaseline='middle';c.textA
  c.textBaseline='alphabetic'}
 {const _h=drawV32HUD;drawV32HUD=function(V){_h(V);if(G&&G.e36)drawV36HUD(V)}}
 /* ---------- teaser silhouettes («?») ---------- */
-function drawTeaser(cv,T,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);const g=c.createRadialGradient(w/2,h*0.45,4,w/2,h/2,w*0.75);g.addColorStop(0,'#1c1a22');g.addColorStop(1,'#040306');c.fillStyle=g;c.fillRect(0,0,w,h);
+function drawSoon36(cv,T,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);const g=c.createRadialGradient(w/2,h*0.45,4,w/2,h/2,w*0.75);g.addColorStop(0,'#1c1a22');g.addColorStop(1,'#040306');c.fillStyle=g;c.fillRect(0,0,w,h);
  c.save();c.translate(w/2,h*0.58);const s=w/150;c.scale(s,s);c.fillStyle='#000';c.strokeStyle='rgba(140,150,170,.35)';c.lineWidth=2;
  const sil=T.sil;c.beginPath();
  if(sil==='endo'){c.ellipse(0,-30,22,26,0,0,TAU);c.moveTo(-40,60);c.lineTo(-30,10);c.lineTo(30,10);c.lineTo(40,60);c.closePath()}
@@ -6663,8 +6663,7 @@ function drawTeaser(cv,T,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;c
  else{c.moveTo(-36,-30);c.quadraticCurveTo(-60,-70,-30,-80);c.quadraticCurveTo(0,-50,0,-50);c.quadraticCurveTo(0,-50,30,-80);c.quadraticCurveTo(60,-70,36,-30);c.ellipse(0,-14,30,34,0,0,TAU);c.moveTo(-50,60);c.quadraticCurveTo(-44,16,0,14);c.quadraticCurveTo(44,16,50,60);c.closePath()}
  c.fill();c.stroke();if(sil==='jester'){c.fillStyle='#c8a050';c.beginPath();c.arc(-30,-80,5,0,TAU);c.arc(30,-80,5,0,TAU);c.fill();glowDot(c,-11,-18,1.6,'#ffd890',0.5+0.3*Math.sin(t*2));glowDot(c,11,-18,1.6,'#ffd890',0.5+0.3*Math.sin(t*2))}
  else if(sil==='endo'){glowDot(c,-8,-32,1.5,'#ff3030',0.6);glowDot(c,8,-32,1.5,'#ff3030',0.6)}
- c.restore();c.fillStyle='rgba(255,255,255,'+(0.75+0.2*Math.sin(t*2))+')';c.font='bold '+Math.round(h*0.42)+'px serif';c.textAlign='center';c.textBaseline='middle';c.fillText('?',w/2,h*0.42);
- c.fillStyle='rgba(0,0,0,.65)';c.fillRect(0,h*0.86,w,h*0.14);c.fillStyle='#ffcf6a';c.font='bold '+Math.round(h*0.075)+'px sans-serif';c.fillText('СКОРО',w/2,h*0.93);c.textBaseline='alphabetic'}
+ c.restore();c.fillStyle='rgba(255,255,255,'+(0.75+0.2*Math.sin(t*2))+')';c.font='bold '+Math.round(h*0.42)+'px serif';c.textAlign='center';c.textBaseline='middle';c.fillText('?',w/2,h*0.42);c.textBaseline='alphabetic'}
 /* ---------- banners (wide profile cards) ---------- */
 const SHOP_BANNERS=[{id:'bn_s_park',name:'Ночной парк',price:350,col:'#1a2a4a'},{id:'bn_s_carousel',name:'Карусель в тумане',price:450,col:'#4a1a2a'},{id:'bn_s_key',name:'Заводной ключ',price:600,col:'#3a2a10'}];
 const _bnCache={};
@@ -6683,7 +6682,7 @@ function drawBanner(cv,id,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;
  c.fillStyle='rgba(255,240,215,.85)';c.font='bold '+Math.round(h*0.16)+'px serif';c.textAlign='left';c.fillText(side==='s'?FULLNAME(ch):ch.name,w*0.04,h*0.88)}
 
 /* ================= v3.6 UI & META: buttons, menus, collection (stars, teasers, confirm), profile (titles/avatar/banner), promo codes, pumpkin record, fixes ================= */
-const WW_VERSION='3.6';
+const WW_VERSION='3.6.1';
 const TELEGRAM_URL=''; // TODO: Telegram link of Luntik_pvp (pending) — leave empty to hide
 const REPO_URL='https://github.com/LuntikVisuals/zavodnye-koshmary';
 /* ---------- clock-exploit mitigation: the game clock never goes backwards from the latest time ever seen ---------- */
@@ -6751,7 +6750,7 @@ HMAP.musashi.dream='Разве можно смеяться над чьими-т�
 {const _dh=descHTML;descHTML=function(ch){let h=_dh(ch);if(ch.dream)h+='<div style="margin-top:5px;font-style:italic;color:#ffe9b0;border-left:2px solid #c8a050;padding-left:6px">«'+ch.dream+'»</div>';return starsHTML(ch.id)+h}}
 {const _rc=renderColl;renderColl=function(){_rc.apply(this,arguments);const det=$('collDet'),grid=$('collGrid');
  // teasers: locked silhouettes, never selectable
- for(const T of TEASERS){if(T.side!==collSide)continue;const d=document.createElement('div');d.className='card locked teaser';const cv=document.createElement('canvas');cv.width=150;cv.height=150;regAnim(cv,t=>drawTeaser(cv,T,t));d.appendChild(cv);const n=document.createElement('div');n.textContent='?';d.appendChild(n);const l=document.createElement('div');l.className='lock';l.textContent='Скоро';d.appendChild(l);
+ for(const T of TEASERS){if(T.side!==collSide)continue;const d=document.createElement('div');d.className='card locked soon36';const cv=document.createElement('canvas');cv.width=150;cv.height=150;regAnim(cv,t=>drawSoon36(cv,T,t));d.appendChild(cv);const n=document.createElement('div');n.textContent='?';d.appendChild(n);const l=document.createElement('div');l.className='lock';l.textContent='Скоро';d.appendChild(l);
   d.onclick=()=>{AU.click();toast(T.name+': '+T.hint,3400)};grid.appendChild(d)}
  const list=(collSide==='h'?HUNTERS:KILLERS).filter(c=>chVisible(c.id));const ch=list.find(x=>x.id===collSel)||list[0];
  if(ch&&(ch.id==='ennard'||ch.id==='mikami')&&det&&!det.querySelector('.e36cr')){const d=document.createElement('div');d.className='abil e36cr';d.style.cssText='border-color:#8a6a2a;color:#e8d0a0;font-size:11px';d.textContent=ch.id==='ennard'?ENNARD_CREDIT:'Фан-трибьют. '+MIKAMI_CREDIT;det.appendChild(d)}
@@ -6760,8 +6759,8 @@ HMAP.musashi.dream='Разве можно смеяться над чьими-т�
 drawAvatar=function(cv,t,frame){const a=S.prof.avatar;const m=/^([hk]):(.+)$/.exec(a||'');if(m&&((m[1]==='h'&&HMAP[m[2]])||(m[1]==='k'&&KMAP[m[2]])))portrait(cv,m[1]==='h'?'s':'k',m[2],{noTag:1});else portrait(cv,'s',S.sel.h,{mine:1,noTag:1});drawFrame(cv.getContext('2d'),frame||S.prof.frame,cv.width,cv.height,t)};
 (function(){const tabs=document.querySelector('#profile .tabs');if(!tabs)return;for(const [id,lab] of [['ptAvatar','Аватар'],['ptBanner','Баннер']]){const d=document.createElement('div');d.className='tab';d.id=id;d.textContent=lab;tabs.appendChild(d);d.addEventListener('click',()=>{profTab=id==='ptAvatar'?'avatar':'banner';AU.click();renderProfile()})}})();
 {const _rp=renderProfile;renderProfile=function(){_rp.apply(this,arguments);const P=S.prof;$('ptAvatar').classList.toggle('on',profTab==='avatar');$('ptBanner').classList.toggle('on',profTab==='banner');
- const info=$('profInfo');const bc=document.createElement('canvas');bc.id='profBanner';bc.width=520;bc.height=110;if(P.banner){regAnim(bc,t=>drawBanner(bc,P.banner,t))}else{const c=bc.getContext('2d');c.fillStyle='#120c10';c.fillRect(0,0,520,110);c.fillStyle='#665';c.font='16px sans-serif';c.textAlign='center';c.fillText('Баннер не выбран — вкладка «Баннер»',260,62)}
- info.prepend(bc);
+ const info=$('profInfo');if(P.banner){const bc=document.createElement('canvas');bc.id='profBanner';bc.width=520;bc.height=110;regAnim(bc,t=>drawBanner(bc,P.banner,t));info.classList.add('hasBnr');
+ info.prepend(bc)}
  if(profTab!=='avatar'&&profTab!=='banner')return;const g=$('profGrid');g.innerHTML='';
  if(profTab==='avatar'){const add=(side,c)=>{const key=(side==='s'?'h':'k')+':'+c.id;const d=el('div','it'+(P.avatar===key?' on':''));const cv=mkCv(96);portrait(cv,side,c.id,{noTag:1});d.appendChild(cv);d.appendChild(el('div','nm',esc(c.name)));d.onclick=()=>{AU.click();P.avatar=key;save();renderProfile()};g.appendChild(d)};
   const d0=el('div','it'+(P.avatar?'':' on'),'<div class="nm">Мой выживший</div><div>как в лобби</div>');d0.onclick=()=>{P.avatar='';save();renderProfile()};g.appendChild(d0);
@@ -6802,6 +6801,18 @@ promoRegister('523fa10c58063321',[{bn:'bn_s_carousel'},{c:50}]);
 /* v3.6 (m): Winslow 2v6 balance — tight house corridors made two killers too lethal */
 {const _sn=startNight;startNight=function(role,opt){const r=_sn.apply(this,arguments);try{if(G&&G.duo&&isWinslow()){G.whDuo=true;G.gensNeed=Math.max(3,Math.min(G.gensNeed,4));G.timer+=30}}catch(e){}return r}}
 {const _ks=killerSpeed;killerSpeed=function(k){const v=_ks.apply(this,arguments);return (G&&G.whDuo)?v*0.83*(k&&k.ch&&k.ch.id==="mikami"?0.94:1):v}}
+
+/* v3.6.1: Mikami Teru is a Season 2 pass reward (free line, tier 48), not sold for coins. Owners from 3.6 keep him. */
+const MIKAMI_PASS_TIER=48;
+KMAP.mikami.price=0;KMAP.mikami.passTier=MIKAMI_PASS_TIER;
+if(typeof PASS2_FREE!=='undefined')PASS2_FREE[MIKAMI_PASS_TIER]={kc:'mikami'};
+{const _h=hasReward;hasReward=function(r){if(r&&r.kc)return S.unl.k.includes(r.kc);return _h.apply(this,arguments)}}
+{const _g=grant;grant=function(r){if(r&&r.kc){if(!S.unl.k.includes(r.kc))S.unl.k.push(r.kc);return rewardLabel(r)}return _g.apply(this,arguments)}}
+{const _l=rewardLabel;rewardLabel=function(r){if(r&&r.kc)return 'Персонаж '+KMAP[r.kc].name;return _l.apply(this,arguments)}}
+{const _rc=rewardCanvas;rewardCanvas=function(r,size){if(r&&r.kc){const c=mkCv(size||96);portrait(c,'k',r.kc,{noTag:1});return c}return _rc.apply(this,arguments)}}
+{const _rc=renderColl;renderColl=function(){_rc.apply(this,arguments);if(collSide!=='k'||S.unl.k.includes('mikami'))return;
+ for(const d of document.querySelectorAll('#collGrid .card')){if(/Mikami/.test(d.textContent)){const l=d.querySelector('.lock');if(l){l.textContent='🎫 Пропуск 2 сезона';l.style.fontSize='8.5px'}}}
+ const p=$('detPass');if(p&&collSel==='mikami')p.textContent='Пропуск 2 сезона · ур. '+MIKAMI_PASS_TIER}}
 
 /* ---- boot ---- */
 loadMap('pizza',eventActive());checkSeason();checkQuests();checkShopDay();

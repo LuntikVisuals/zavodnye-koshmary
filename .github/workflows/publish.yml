@@ -34,69 +34,29 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "54048b75eb438c205f12a1a724ca980e983a73993c4764442e433a5531edbc51" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "fe98d9f3032a3b1c7bb487836ae691f2da0b2983ec74828fd8d9a587b09e6480" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.6 with APK
+      - name: Create release v3.6.1 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.6 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.6.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.6
+          «Windup Wonderland» 3.6.1 — исправления
 
-          **Новые персонажи**
-          - **Ennard** (аниматроник, 1100 монет). Клубок проводов под чужими масками.
-            - «Мимик»: выбери выжившего и на минуту стань им. Кто видел превращение, запомнит; на месте остаётся праздничный колпак.
-            - «Черви»: два проволочных червя ползут к выжившим, залезают даже в укрытия. Стряхнуть: 5 с кружиться на месте. Фонарь их сжигает.
-            - «Люки»: выбери на карте, из какого люка вылезти.
-          - **Mikami Teru** (убийца, 1000 монет).
-            - «Приговор»: 25 с выживший виден сквозь стены.
-            - «Пиксельный меч»: широкий взмах.
-            - «Удалить»: приговорённый в тупике удаляется сразу.
-            - «Он же человек»: оглушения действуют на него дольше.
-          - **Скоро:** карточки «?» для 001, Диктора, Пьера Микликанто, Ноли, гостя из Tokyo Ghoul и Шута (Сезон 3 «Остатки прошлого»).
+          - **Пропуск:** вернулись задания и блок «Сезон 2» с таймером в конце пропуска (в 3.6 экран пропуска падал и не дорисовывался).
+          - **Профиль:** баннер теперь подложка за именем и уровнем и не занимает место. Сетки «Рамки», «Значки», «Титулы», «Аватар», «Баннер» снова видны целиком.
+          - **Персонажи:** карточки «Скоро» того же размера, что и обычные: тёмный силуэт и «?».
+          - **Mikami Teru** больше не продаётся за монеты. Теперь он награда пропуска 2 сезона (бесплатная линия, уровень 48). Кто уже купил его в 3.6, оставляет его себе.
 
-          **Геймплей**
-          - **Награда за спасение:** +30 опыта и +25 монет за каждого снятого со сцены тиммейта (+20/+15 за поднятого). Видно во всплывашке и в итогах матча, идёт в прогресс пропуска.
-          - **Новый этап ремонта — «Шкатулка»:** крути ручку по часовой, но не слишком быстро, иначе пружина заклинит. Этапы ремонта чередуются: провода, аркада, шкатулка. Боты тоже её заводят. А если завести идеально, без единой ошибки… проверь сам.
-          - **Умнее боты:** каждый замечает убийцу в свете своего фонаря, помнит, где его видел, не бежит в тупики и не сбивается в кучу.
-          - **Баланс 2v6 в Доме Винслоу:** раньше погибали почти все, теперь в среднем около половины.
-
-          **Профиль и магазин**
-          - Звёзды сложности (1–5) у каждого персонажа.
-          - Титул за финальную веху мастерства у каждого персонажа (например, Michael — «Сталкер», Freddy — «Шеф пиццерии»).
-          - Аватар: портрет любого персонажа.
-          - Баннеры: за 3 вехи мастерства одного персонажа и в магазине.
-          - **Промокоды** в магазине: каждый срабатывает один раз на сохранение, регистр не важен. Где искать? Внимательно смотри трейлер 😉
-          - **Тыквенная пластинка** «Заведи меня перед закрытием» (150 тыкв). Оригинальный трек Luntik_pvp, вдохновлено Jack Stauber.
-          - Цитата Мусаси о мечте в его описании.
-
-          **Исправления**
-          - Freddy больше не пропадает из виду.
-          - Списки пластинок прокручиваются.
-          - Записки 16–20 не теряются.
-          - Джойстик не залипает.
-          - Нижний текст меню не наезжает на кнопки на маленьких экранах.
-          - Награды пропуска для новых сезонов.
-          - Секретная ссылка для разблокировки персонажей отключена.
-          - Перевод часов назад больше не продлевает события.
-          - Подтверждение покупки.
-          - Защита сохранения от повреждений и сообщение об ошибке записи.
-          - Подсказка про дверь больше не повторяется.
-          - Кнопка «Сдаться» не перекрывается.
-          - Мелкие правки внешнего вида на маленьких экранах.
-          - Musashi, Jason, скины снаряжения и рамка Сезона 1 остаются недоступными после своего сезона, но у владельцев сохраняются.
-
-          Неофициальная бесплатная фан-игра. Без доната и рекламы, никаких покупок за настоящие деньги. Springtrap, Freddy и Ennard взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им. Mikami Teru — персонаж манги «Тетрадь смерти» (Цугуми Ооба, Такэси Обата); Miyamoto Musashi — в образе из манги Vagabond (Такэхико Иноуэ). Джейсон Вурхиз (Friday the 13th) и Майкл Майерс («Хэллоуин», 1978) — персонажи фильмов. Все права принадлежат их правообладателям.
-
-          Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 10 / versionName 3.6. Подписан тем же ключом, что и прошлые версии: ставится поверх, сохранения не теряются.
-          SHA-256: 54048b75eb438c205f12a1a724ca980e983a73993c4764442e433a5531edbc51
+          Android 7.0+, versionCode 11 / versionName 3.6.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: fe98d9f3032a3b1c7bb487836ae691f2da0b2983ec74828fd8d9a587b09e6480
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.6 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.6" --notes-file /tmp/notes.md
+          gh release create v3.6.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.6.1" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -106,12 +66,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.6 bootstrap payload (APK published in Release v3.6)"
+          git commit -m "Remove v3.6.1 bootstrap payload (APK published in Release v3.6.1)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.6)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.6.1)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
