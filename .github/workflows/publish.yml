@@ -34,34 +34,35 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "1026d594aaba584e737dfe88f14a4d70c3d1124227e1a66398f714e9ad0fdcb7" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "5fb4165813b2a3c25993f395d26a1c2a68319336a2bbaa3cb401d1e8c1286420" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.7.2 with APK
+      - name: Create release v3.7.3 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.7.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.7.3 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.7.2
+          «Windup Wonderland» 3.7.3
 
-          - **Новое: режим «Сюжет».** Кнопка «Сюжет» в главном меню (и в лобби «Ночная смена»). Короткие кат-сцены прямо в игре: нарисованные сцены, диалоги на русском. Тап — следующая реплика, «Пропустить» — пропустить главу. Главы открываются по порядку, и их можно пересматривать.
-            - **Глава 1. «Ночь 13 ноября».** Brunville, Огайо, 1993 год. Буря, сбой, «режим охраны» — и пожар: сирены, дым и силуэты аниматроников в огне. Утром центр закрывают.
-            - **Глава 2. «Могила».** Вечер на кладбище Brunville. Разговор Винслоу с сыном у старой могилы. Имя на камне не прочесть.
-            - **Глава 3. «Остатки прошлого».** Тизер 3 сезона. Пепелище, мешковинная маска Шута в золе, тихий смешок и сломанная мелодия шкатулки. **Сезон 3. Остатки прошлого. Скоро…**
-          - **Награда:** 50 монет, если посмотреть все главы целиком, без пропуска (один раз).
-          - **История → Хроника:** новая страница «У могилы» с диалогом из 2 главы.
-          - В кат-сценах только звуки окружения (дождь, гром, огонь, сирена, ветер, вороны). Без пения и голосов.
+          - **001 доделан — больше не бета.** Метка «БЕТА» снята, сложность ★★★★. Пассивка «Не устаёт» осталась: чем дольше погоня, тем быстрее, но теперь максимум +10%.
+            - **Прыжок** (перезарядка 40 с): 001 пригибается и рычит (0,5 с), потом прыгает вперёд до половины карты. На кого приземлится — того рвёт когтями (это удар).
+            - **Кровь:** 001 — первый, кто оставляет кровь на выживших. На растерзанном видны следы крови и капли, пока его не вылечат.
+            - **«Укус 34»:** один раз за матч укус вплотную сразу выводит выжившего из игры. Нельзя укусить того, кого прямо сейчас лечат, поднимают или спасают. В описании — история того самого укуса, о котором говорит Father Maxim.
+            - **Бег** (5 с, перезарядка 24 с): 001 бежит со скоростью бегущего выжившего, но громко топает и оставляет следы. Выжившие слышат его и видят, куда он побежал.
+            - Новое описание, новые значки умений. Боты-аниматроники умеют пользоваться всеми умениями 001.
+          - **Матч заканчивается сразу,** если все выжившие пойманы, упали или на сцене и спасать их больше некому. Больше не нужно ждать.
+          - **Кнопка «Закончить сейчас»:** если ты сбежал раньше ботов, можно сразу закончить матч. Оставшихся ботов игра рассчитает честно (выход открыт — здоровые почти наверняка сбегут, упавшие и пойманные — нет). «Ускорить ×5» осталась для тех, кто хочет досмотреть.
 
-          Всё остальное — как в 3.7.1: Сезон 2 «Путь меча», Крик в подарок, Пьер Микликанто, Сузуя, 001 (бета), скин «Арима Спрингтрап», живые превью скинов в магазине.
+          Остальные персонажи и режимы не менялись.
 
-          Android 7.0+, versionCode 15 / versionName 3.7.2. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: 1026d594aaba584e737dfe88f14a4d70c3d1124227e1a66398f714e9ad0fdcb7
+          Android 7.0+, versionCode 16 / versionName 3.7.3. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: 5fb4165813b2a3c25993f395d26a1c2a68319336a2bbaa3cb401d1e8c1286420
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.7.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.7.2" --notes-file /tmp/notes.md
+          gh release create v3.7.3 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.7.3" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -71,12 +72,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.7.2 bootstrap payload (APK published in Release v3.7.2)"
+          git commit -m "Remove v3.7.3 bootstrap payload (APK published in Release v3.7.3)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.7.2)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.7.3)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
