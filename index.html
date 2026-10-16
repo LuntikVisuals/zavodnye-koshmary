@@ -356,7 +356,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.6.1</div>
+  <div class="ver">v3.6.2</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -843,7 +843,7 @@ LORE.push({t:'Священник',p:[PRIEST_STORY,'<span class="lq">'+PRIEST_QUO
 
 /* ================= v3.3 DATA: date gate, Miyamoto Musashi (fan tribute) ================= */
 // Season 1 and the Halloween event end at 2026-10-21 00:00 DEVICE-LOCAL time; the prepared update unlocks at the same moment.
-const ANIME_DATE=new Date(2026,9,21,0,0,0,0).getTime();
+const ANIME_DATE=Date.UTC(2026,9,17,13,0,0,0); // v3.6.2: Season 2 starts 17 Oct 2026 16:00 MSK (13:00 UTC); Halloween + S1 end then
 const HALLO_START=new Date(2026,9,1,0,0,0,0).getTime();
 // hidden test switch (not shown anywhere in the UI): ?unlock=anime
 // v3.6: the test switch works only in local debug builds (file:// or localhost), never on the published web build
@@ -1424,7 +1424,7 @@ function buildMapCanvas(scale){
  // objects
  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const o=objAt[I(x,y)];if(o&&o!==O.GEN&&o!==O.LOCKER&&o!==O.BIG)drawObj(c,o,x,y,R)}
  if(MAPDEF.outdoor)decorateParkTop(c,R);
- if(CUR_HALLO)decorateHalloween(c,R);
+ // v3.6.2: Halloween map decorations removed (event over)
  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){if(objAt[I(x,y)]===O.LOCKER)drawLocker(c,x*TS,y*TS,0)}
  SPEAKER_T.forEach(([x,y])=>{const px=x*TS+16,py=y*TS+16;c.fillStyle='#111';c.fillRect(px-7,py-9,14,18);c.fillStyle='#333';c.beginPath();c.arc(px,py-3,4.5,0,TAU);c.fill();c.beginPath();c.arc(px,py+5,2.5,0,TAU);c.fill();c.strokeStyle='#555';c.strokeRect(px-7,py-9,14,18)});
  GRATE_T.forEach(([x,y])=>{const px=x*TS+16,py=y*TS+16;c.fillStyle='#0b0b0c';c.fillRect(px-11,py-8,22,16);c.strokeStyle='#5d5f62';c.lineWidth=1.6;c.strokeRect(px-11,py-8,22,16);c.fillStyle='#46484b';for(let k=-5;k<=5;k+=3.4)c.fillRect(px-9,py+k-0.7,18,1.6);c.fillStyle='#777';[[-9,-6],[9,-6],[-9,6],[9,6]].forEach(([a,b])=>{c.beginPath();c.arc(px+a,py+b,1,0,TAU);c.fill()})});
@@ -1836,7 +1836,7 @@ function whOpenLock(why){
  G.fx.push({type:'ring',x,y,t:0,col:'#c0a0ff',r:60});
  msg(why==='code'?'Код подошёл: запертая комната на чердаке открыта!':'Питание есть — запертая комната на чердаке открылась!','#d8c0ff');
  // what Winslow kept behind the lock
- [[46,4,'med'],[49,6,'tool'],[50,9,'torch'],[46,8,'decoy']].forEach(([tx,ty,type])=>G.items.push({type,x:tx*TS+16,y:ty*TS+16}));
+ [[46,4,'med'],[49,6,'tool'],[50,9,'decoy']].forEach(([tx,ty,type])=>G.items.push({type,x:tx*TS+16,y:ty*TS+16}));
  makeNoise(x,y,300,'door',null);
 }
 /* random floor tiles never inside the locked room while it is locked */
@@ -2444,7 +2444,7 @@ function newRound(role,opt){
   const spots=shuffle(NOTE_SPOTS.filter(([x,y])=>tiles[I(x,y)]===0&&!objAt[I(x,y)]&&Math.hypot(x-sp[0],y-sp[1])>7));
   for(let i=0;i<want&&i<spots.length;i++){const p=spots[i];G.notes.push({id:left[i].id,x:p[0]*TS+16,y:p[1]*TS+16})}}
  const types=Object.keys(ITEMS);
- for(let i=0;i<8;i++){const [tx,ty]=randomFloor();G.items.push({type:pick(types),x:tx*TS+16,y:ty*TS+16})}
+ const nIt=typeof itemSpawnCount==='function'?itemSpawnCount(duo):8;for(let i=0;i<nIt;i++){const [tx,ty]=randomFloor();G.items.push({type:typeof pickItemType==='function'?pickItemType():pick(types),x:tx*TS+16,y:ty*TS+16})}
  let ids=shuffle(HUNTERS.filter(h=>h.id!=='jason'&&chVisible(h.id)).map(h=>h.id));
  if(role==='s'&&!chVisible(S.sel.h))S.sel.h='marina';
  v31Prep();
@@ -4614,8 +4614,8 @@ function teaserCard(){
  regAnim(cvT,t=>drawTeaser(cvT.getContext('2d'),cvT.width,cvT.height,t));
  const ms=Math.max(0,ANIME_DATE-Date.now());
  d.appendChild(el('div','ttl','Сезон 2: Путь меча'));
- d.appendChild(el('div','tsub','Новое обновление через <b class="cddays" data-end="'+ANIME_DATE+'">'+ruDays(Math.max(1,Math.ceil(ms/DAYMS)))+'</b><br><span class="cdlive" data-end="'+ANIME_DATE+'">'+fmtLeft(ms)+'</span> · 21 октября'));
- d.onclick=()=>{AU.click();toast('Следующее обновление откроется 21 октября в 00:00 по времени устройства',2000)};
+ d.appendChild(el('div','tsub','Новое обновление через <b class="cddays" data-end="'+ANIME_DATE+'">'+ruDays(Math.max(1,Math.ceil(ms/DAYMS)))+'</b><br><span class="cdlive" data-end="'+ANIME_DATE+'">'+fmtLeft(ms)+'</span> · 17 окт., 16:00 МСК'));
+ d.onclick=()=>{AU.click();toast('Сезон 2 откроется 17 октября в 16:00 МСК',2000)};
  return d;
 }
 /* ---- in-game v3.3 fx (world space, below darkness) ---- */
@@ -5767,7 +5767,7 @@ function renderPass(scroll){
  const q=$('passQuests');q.innerHTML='';
  for(const qq of S.quests.list){const d=QMAP[qq.id];if(!d)continue;const done=qq.prog>=d.n;const e=el('div','quest','<b>'+esc(d.t)+'</b><div class="bar"><i style="width:'+Math.round(qq.prog/d.n*100)+'%"></i></div>'+qq.prog+'/'+d.n+' · +'+QUEST_RW.px+' XP пропуска, +'+QUEST_RW.c+' монет ');
   if(qq.claimed)e.appendChild(el('span','','<b style="color:#7fff9a">✓ получено</b>'));else if(done){const b=el('button','btn small','Забрать');b.onclick=()=>{qq.claimed=true;S.stats.questsDone++;grant({c:QUEST_RW.c});addPassXP(QUEST_RW.px);save();AU.chime();rewardPopup('ЗАДАНИЕ ВЫПОЛНЕНО',d.t,[{c:QUEST_RW.c}]);toast('+'+QUEST_RW.px+' XP пропуска');const na=checkAch();if(na.length){save();toast('Достижение: '+na.map(a=>a.name).join(', '),2200)}renderPass()};e.appendChild(b)}q.appendChild(e)}
- q.appendChild(el('div','quest','<b>Новые задания</b><br>каждый день в 00:00. '+(si.i===0?'Первый сезон идёт до 21 октября (00:00 по времени устройства), следующие — по 30 дней':'Сезон длится 30 дней')+'; награды прошлых сезонов остаются у тебя; «Золотая» линия — только за монеты из игры, никаких покупок за деньги.'));
+ q.appendChild(el('div','quest','<b>Новые задания</b><br>каждый день в 00:00. '+(si.i===0?'Первый сезон идёт до 17 октября, 16:00 МСК, следующие — по 30 дней':'Сезон длится 30 дней')+'; награды прошлых сезонов остаются у тебя; «Золотая» линия — только за монеты из игры, никаких покупок за деньги.'));
 }
 function mergeRw(list){let c=0,p=0;const o=[];for(const r of list){if(r.c&&Object.keys(r).length===1)c+=r.c;else if(r.p&&Object.keys(r).length===1)p+=r.p;else o.push(r)}if(c)o.unshift({c});if(p)o.unshift({p});return o}
 $('passBack').addEventListener('click',()=>setMode('menu'));
@@ -5785,7 +5785,7 @@ function openHallo(){setMode('hallo');renderHallo()}
 function renderHallo(){
  const cv=$('halCv');regAnim(cv,t=>{portrait(cv,'k','jasonk',{jaw:0});const c=cv.getContext('2d');jackO(c,cv.width*0.16,cv.height*0.84,cv.width*0.1,true);jackO(c,cv.width*0.84,cv.height*0.86,cv.width*0.08,true)});
  const on=eventActive();
- $('halText').innerHTML=(on?'<b style="color:#ffb050">Событие идёт до 21 октября (00:00 по времени устройства).</b> Тыквы и купленное остаются навсегда. ':'<b style="color:#998">Событие сейчас не проходит.</b> ')+'Тёмный парк, рассвет через 2,5 минуты. Собирай светящиеся тыквы и не попадись <b>Джейсону</b>: он ходит медленно, но не устаёт и умеет появляться за спиной, когда на него не смотрят. Большие тыквы = 3.<div style="font-size:9.5px;color:#a08868;margin-top:3px">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям. Неофициальная бесплатная фан-игра.</div>';
+ $('halText').innerHTML=(on?'<b style="color:#ffb050">Событие идёт до 17 октября, 16:00 МСК.</b> Тыквы и купленное остаются навсегда. ':'<b style="color:#998">Событие сейчас не проходит.</b> ')+'Тёмный парк, рассвет через 2,5 минуты. Собирай светящиеся тыквы и не попадись <b>Джейсону</b>: он ходит медленно, но не устаёт и умеет появляться за спиной, когда на него не смотрят. Большие тыквы = 3.<div style="font-size:9.5px;color:#a08868;margin-top:3px">Джейсон Вурхиз — персонаж фильмов Friday the 13th; все права принадлежат их правообладателям. Неофициальная бесплатная фан-игра.</div>';
  $('halPlay').classList.toggle('dis',!on);
  const g=$('halGrid');g.innerHTML='';
  for(const o of EV_SHOP){const r=o.ch?{ch:o.ch}:o.sk?{sk:o.sk}:o.fr?{fr:o.fr}:o.bd?{bd:o.bd}:{c:o.c};const owned=!o.rep&&hasReward(r);const d=el('div','it'+(owned?' on':''));d.appendChild(rewardCanvas(r,96));
@@ -6682,7 +6682,7 @@ function drawBanner(cv,id,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;
  c.fillStyle='rgba(255,240,215,.85)';c.font='bold '+Math.round(h*0.16)+'px serif';c.textAlign='left';c.fillText(side==='s'?FULLNAME(ch):ch.name,w*0.04,h*0.88)}
 
 /* ================= v3.6 UI & META: buttons, menus, collection (stars, teasers, confirm), profile (titles/avatar/banner), promo codes, pumpkin record, fixes ================= */
-const WW_VERSION='3.6.1';
+const WW_VERSION='3.6.2';
 const TELEGRAM_URL=''; // TODO: Telegram link of Luntik_pvp (pending) — leave empty to hide
 const REPO_URL='https://github.com/LuntikVisuals/zavodnye-koshmary';
 /* ---------- clock-exploit mitigation: the game clock never goes backwards from the latest time ever seen ---------- */
@@ -6797,6 +6797,7 @@ promoRegister('95aef344fc9196d3',[{c:100},{bn:'bn_s_park'}]);
 promoRegister('8e148e908b533314',[{p:50}]);
 promoRegister('167aea1ddb10c77e',[{c:150},{p:25}]);
 promoRegister('523fa10c58063321',[{bn:'bn_s_carousel'},{c:50}]);
+promoRegister('9409661516d75308',[{p:500}]); // v3.6.2 (pumpkins stay spendable on records after the event, so no expiry)
 
 /* v3.6 (m): Winslow 2v6 balance — tight house corridors made two killers too lethal */
 {const _sn=startNight;startNight=function(role,opt){const r=_sn.apply(this,arguments);try{if(G&&G.duo&&isWinslow()){G.whDuo=true;G.gensNeed=Math.max(3,Math.min(G.gensNeed,4));G.timer+=30}}catch(e){}return r}}
@@ -6813,6 +6814,58 @@ if(typeof PASS2_FREE!=='undefined')PASS2_FREE[MIKAMI_PASS_TIER]={kc:'mikami'};
 {const _rc=renderColl;renderColl=function(){_rc.apply(this,arguments);if(collSide!=='k'||S.unl.k.includes('mikami'))return;
  for(const d of document.querySelectorAll('#collGrid .card')){if(/Mikami/.test(d.textContent)){const l=d.querySelector('.lock');if(l){l.textContent='🎫 Пропуск 2 сезона';l.style.fontSize='8.5px'}}}
  const p=$('detPass');if(p&&collSel==='mikami')p.textContent='Пропуск 2 сезона · ур. '+MIKAMI_PASS_TIER}}
+
+/* ================= v3.6.2: items rework («предметы на вес золота») ================= */
+const IT362={MED_T:4.5,TOOL_T:2.5,N:4,N_DUO:5,W:{decoy:0.40,med:0.28,tool:0.22,torch:0.10}};
+ITEMS.torch.uses=1;ITEMS.tool.uses=1;ITEMS.decoy.uses=2;
+ITEMS.torch.desc='Редкий. Один ослепляющий разряд в луче фонаря';
+ITEMS.tool.desc='Открыть ящик (2,5 с, не двигаясь) и сразу +25% к ремонту генератора рядом. Один раз';
+ITEMS.med.desc='Вскрыть и перевязать (4,5 с, не двигаясь, удар прерывает): лечит одно ранение или поднимает союзника';
+ITEMS.decoy.desc='Шумная хлопушка отвлекает аниматроника';
+function itemSpawnCount(duo){return duo?IT362.N_DUO:IT362.N}
+function pickItemType(){let r=Math.random(),a=0;for(const [k,w] of Object.entries(IT362.W)){a+=w;if(r<a)return k}return 'decoy'}
+const isItemChan=c=>c&&(c.type==='imed'||c.type==='itool');
+{const _u=useItem;useItem=function(s){
+ if(!s||!s.item||s.ch.noItems||s.state!=='normal'||s.cocoon>0||s.chan)return _u.apply(this,arguments);
+ const t=s.item.type;
+ if(t==='med'){let tgt=null;if(s.hp>=s.maxHp){tgt=nearestBy(G.surv,s,56,x=>x!==s&&x.state==='downed');if(!tgt){if(s===G.you)toast('Ты цел — аптечка пока не нужна');return false}}
+  if(s.bot){const k=nearestKiller(s);if(k&&!k.gone&&k.stun<=0&&dist(s,k)<260)return false}
+  s.chan={type:'imed',t:0,dur:IT362.MED_T,beat:0,tgt};s.act=null;s.sprint=false;if(s.bot&&s.ai)s.ai.repairGen=null;
+  AU.click();if(s===G.you)toast('Аптечка: вскрываешь и перевязываешь… 4,5 с. Не двигайся!',1600);return true}
+ if(t==='tool'){const g=nearestBy(G.gens,s,64,g=>!g.done);if(!g||G.power){if(s===G.you)toast('Подойди к генератору');return false}
+  s.chan={type:'itool',t:0,dur:IT362.TOOL_T,beat:0,gen:g};s.act=null;s.sprint=false;AU.click();if(s===G.you)toast('Открываешь ящик с инструментами… 2,5 с',1400);return true}
+ return _u.apply(this,arguments)}}
+{const _cs=chanStop;chanStop=function(s,why){const c=s&&s.chan;if(!isItemChan(c))return _cs.apply(this,arguments);s.chan=null;
+ if(s===G.you)toast((why==='hit'?'Удар! ':'')+(c.type==='imed'?'Перевязка прервана':'Ящик не открыт'),1300)}}
+{const _v=v32SurvT;v32SurvT=function(s,dt){_v.apply(this,arguments);const c=s.chan;if(!isItemChan(c))return;
+ c.beat-=0;if(c.type==='imed'&&Math.random()<dt*2)AU.noise(0.05,0.05*Math.max(0.2,vAt(s.x,s.y,300)),{f:3000,q:0.6});
+ if(c.t<c.dur)return;s.chan=null;if(!s.item){return}
+ if(c.type==='imed'){const o=c.tgt;if(o){if(o.state==='downed'&&dist(o,s)<80)revive(o,s);else{if(s===G.you)toast('Союзник уже не здесь');return}}else if(s.hp<s.maxHp){s.hp++;AU.heal()}else return;
+  if(s===G.you)toast(o?'Союзник поднят!':'Перевязано: +1 здоровье',1200)}
+ else{const g=c.gen;if(!g||g.done||G.power||dist(g,s)>90){if(s===G.you)toast('Генератор далеко');return}
+  if(s===G.you&&MG&&MG.gen===g)mgForceWin();else genAddProgress(g,0.25,s);AU.spark()}
+ s.item.uses--;if(s.item.uses<=0)s.item=null}}
+/* bots: stay still while channelling an item, abort if the killer comes close */
+{const _b=botSurv;botSurv=function(s,dt){if(s&&isItemChan(s.chan)&&s.state==='normal'){const k=nearestKiller(s);const dk=k?dist(s,k):1e9;const seeK=k?killerVisibleTo(s,k):false;
+  if(k&&!k.gone&&k.stun<=0&&k.channel<=0&&(dk<150||(seeK&&dk<240))){chanStop(s,'flee');s.ai.fear=Math.max(s.ai.fear||0,3);s.ai.flee=null}else{s.wantX=s.wantY=0;s.act=null;return}}
+ return _b.apply(this,arguments)}}
+/* priest visuals only for prayers/crosses: hide item channels from those painters */
+for(const nm of ['crossTint','crossDarkLight']){if(typeof window[nm]!=='function')continue}
+{const wrap=f=>function(){const hid=[];if(G)for(const s of G.surv){if(isItemChan(s.chan)){hid.push([s,s.chan]);s.chan=null}}try{return f.apply(this,arguments)}finally{for(const [s,c] of hid)s.chan=c}};
+ crossTint=wrap(crossTint);crossDarkLight=wrap(crossDarkLight)}
+/* label over a channelling survivor */
+{const _d=drawV32Above;drawV32Above=function(c,t){const r=_d.apply(this,arguments);if(G)for(const s of G.surv){if(!isItemChan(s.chan)||s.state!=='normal')continue;c.font='bold 9px sans-serif';c.textAlign='center';c.fillStyle=s.chan.type==='imed'?'#ff9aa8':'#ffd08a';c.fillText(s.chan.type==='imed'?'перевязка…':'ящик…',s.x,s.y-36)}return r}}
+/* rare strobe hits harder: 3.5 s blind instead of 2.5 s */
+{const _sk=stunKiller;stunKiller=function(k,d,by){if(by&&by.item&&by.item.type==='torch'&&d===2.5&&by.__strobe)d=3.5;return _sk.apply(this,arguments)}}
+{const _u2=useItem;useItem=function(s){if(s&&s.item&&s.item.type==='torch'){s.__strobe=1;try{return _u2.apply(this,arguments)}finally{s.__strobe=0}}return _u2.apply(this,arguments)}}
+/* bots: bandage proactively when hurt and the killer is far (a 4.5 s channel can't be done mid-chase) */
+{const _b2=botSurv;botSurv=function(s,dt){if(s&&s.state==='normal'&&!s.chan&&s.item&&s.item.type==='med'&&s.hp<s.maxHp&&!s.act&&!s.hide){const k=nearestKiller(s);if(!k||k.gone||dist(s,k)>340&&!killerVisibleTo(s,k)){if(useItem(s))return}}return _b2.apply(this,arguments)}}
+/* balance: fewer/slower items → survivor bots repair 22% faster (bot-only factor; player minigames unchanged) */
+{const _sn=startNight;startNight=function(){const r=_sn.apply(this,arguments);try{if(G&&G.diff&&!G.diff.__it362){G.diff=Object.assign({},G.diff,{sRep:G.diff.sRep*1.22,__it362:1})}}catch(e){}return r}}
+/* fix: invisible obstacles. The Halloween pumpkin mode removes generators (G.gens=[]) but their tiles stayed solid,
+   leaving invisible blocks where generators used to be. Clear them for that round and restore afterwards. */
+{const _sn=startNight;startNight=function(){try{for(const [tx,ty] of GEN_T){const i=I(tx,ty);if(!objAt[i])objAt[i]=O.GEN}}catch(e){}
+ const r=_sn.apply(this,arguments);try{if(G&&G.ev&&!G.gens.length){for(const [tx,ty] of GEN_T)objAt[I(tx,ty)]=O.NONE}}catch(e){}return r}}
 
 /* ---- boot ---- */
 loadMap('pizza',eventActive());checkSeason();checkQuests();checkShopDay();

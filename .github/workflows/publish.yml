@@ -34,29 +34,36 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "fe98d9f3032a3b1c7bb487836ae691f2da0b2983ec74828fd8d9a587b09e6480" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "64315f944c201514ae0fb5bd5c864b32fcaa8073d7819fd1043bebffc8565c5d" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.6.1 with APK
+      - name: Create release v3.6.2 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.6.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.6.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.6.1 — исправления
+          «Windup Wonderland» 3.6.2
 
-          - **Пропуск:** вернулись задания и блок «Сезон 2» с таймером в конце пропуска (в 3.6 экран пропуска падал и не дорисовывался).
-          - **Профиль:** баннер теперь подложка за именем и уровнем и не занимает место. Сетки «Рамки», «Значки», «Титулы», «Аватар», «Баннер» снова видны целиком.
-          - **Персонажи:** карточки «Скоро» того же размера, что и обычные: тёмный силуэт и «?».
-          - **Mikami Teru** больше не продаётся за монеты. Теперь он награда пропуска 2 сезона (бесплатная линия, уровень 48). Кто уже купил его в 3.6, оставляет его себе.
+          - **Сезон 2 «Путь меча»** стартует 17 октября в 16:00 МСК. В этот момент заканчиваются 1 сезон и Хэллоуин. Предметы, которые были только в 1 сезоне, остаются у тех, кто их получил.
+          - **Хэллоуинские украшения убраны** со всех карт.
+          - **Предметы на вес золота:**
+            - на карте их стало заметно меньше;
+            - аптечку нужно вскрыть и перевязаться: 4,5 с на месте, движение или удар прерывают;
+            - ящик с инструментами одноразовый и открывается 2,5 с;
+            - стробоскоп редкий и с одним зарядом, зато слепит дольше;
+            - хлопушка встречается чаще остальных предметов.
+          - Выжившие-боты умеют перевязываться и чинят чуть быстрее, баланс матчей сохранён.
+          - **Исправлены невидимые препятствия:** в тыквенном режиме Хэллоуина на месте генераторов оставались невидимые блоки.
+          - Новый промокод, который приносит тыквы. Тыквы и после Хэллоуина можно тратить на пластинки.
 
-          Android 7.0+, versionCode 11 / versionName 3.6.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: fe98d9f3032a3b1c7bb487836ae691f2da0b2983ec74828fd8d9a587b09e6480
+          Android 7.0+, versionCode 12 / versionName 3.6.2. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: 64315f944c201514ae0fb5bd5c864b32fcaa8073d7819fd1043bebffc8565c5d
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.6.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.6.1" --notes-file /tmp/notes.md
+          gh release create v3.6.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.6.2" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -66,12 +73,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.6.1 bootstrap payload (APK published in Release v3.6.1)"
+          git commit -m "Remove v3.6.2 bootstrap payload (APK published in Release v3.6.2)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.6.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.6.2)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
