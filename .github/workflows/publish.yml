@@ -34,28 +34,34 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "e2921be82f89cd637f66f9cf69ced149b1e8eff45ecde9461dbe7393ae17dbd6" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "1026d594aaba584e737dfe88f14a4d70c3d1124227e1a66398f714e9ad0fdcb7" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.7.1 with APK
+      - name: Create release v3.7.2 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.7.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.7.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.7.1
+          «Windup Wonderland» 3.7.2
 
-          - **Магазин и карточки персонажей: превью скинов снова анимируются.** Раньше превью было неподвижным, а при быстром переключении скинов кадры анимации «прыгали». Теперь выбранный скин и скины с эффектами анимируются плавно и без остановки, а переключение сразу показывает готовое превью: кадры заранее подгружаются, старые анимации останавливаются.
+          - **Новое: режим «Сюжет».** Кнопка «Сюжет» в главном меню (и в лобби «Ночная смена»). Короткие кат-сцены прямо в игре: нарисованные сцены, диалоги на русском. Тап — следующая реплика, «Пропустить» — пропустить главу. Главы открываются по порядку, и их можно пересматривать.
+            - **Глава 1. «Ночь 13 ноября».** Brunville, Огайо, 1993 год. Буря, сбой, «режим охраны» — и пожар: сирены, дым и силуэты аниматроников в огне. Утром центр закрывают.
+            - **Глава 2. «Могила».** Вечер на кладбище Brunville. Разговор Винслоу с сыном у старой могилы. Имя на камне не прочесть.
+            - **Глава 3. «Остатки прошлого».** Тизер 3 сезона. Пепелище, мешковинная маска Шута в золе, тихий смешок и сломанная мелодия шкатулки. **Сезон 3. Остатки прошлого. Скоро…**
+          - **Награда:** 50 монет, если посмотреть все главы целиком, без пропуска (один раз).
+          - **История → Хроника:** новая страница «У могилы» с диалогом из 2 главы.
+          - В кат-сценах только звуки окружения (дождь, гром, огонь, сирена, ветер, вороны). Без пения и голосов.
 
-          Всё остальное — как в 3.7: Сезон 2 «Путь меча», Крик в подарок, повар Пьер Микликанто, Сузуя, 001 (бета), нож Springtrap и скин «Арима Спрингтрап», заставки перед матчем, отдельная полоска «Перевязка…» у аптечки.
+          Всё остальное — как в 3.7.1: Сезон 2 «Путь меча», Крик в подарок, Пьер Микликанто, Сузуя, 001 (бета), скин «Арима Спрингтрап», живые превью скинов в магазине.
 
-          Android 7.0+, versionCode 14 / versionName 3.7.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: e2921be82f89cd637f66f9cf69ced149b1e8eff45ecde9461dbe7393ae17dbd6
+          Android 7.0+, versionCode 15 / versionName 3.7.2. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: 1026d594aaba584e737dfe88f14a4d70c3d1124227e1a66398f714e9ad0fdcb7
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.7.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.7.1" --notes-file /tmp/notes.md
+          gh release create v3.7.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.7.2" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -65,12 +71,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.7.1 bootstrap payload (APK published in Release v3.7.1)"
+          git commit -m "Remove v3.7.2 bootstrap payload (APK published in Release v3.7.2)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.7.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.7.2)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
