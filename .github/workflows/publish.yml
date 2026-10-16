@@ -34,36 +34,34 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "64315f944c201514ae0fb5bd5c864b32fcaa8073d7819fd1043bebffc8565c5d" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "fca55f091bcaf494797724c30de8967ab1a6248953a64f5e3277f237418307d1" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.6.2 with APK
+      - name: Create release v3.7 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.6.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.7 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.6.2
+          «Windup Wonderland» 3.7
 
-          - **Сезон 2 «Путь меча»** стартует 17 октября в 16:00 МСК. В этот момент заканчиваются 1 сезон и Хэллоуин. Предметы, которые были только в 1 сезоне, остаются у тех, кто их получил.
-          - **Хэллоуинские украшения убраны** со всех карт.
-          - **Предметы на вес золота:**
-            - на карте их стало заметно меньше;
-            - аптечку нужно вскрыть и перевязаться: 4,5 с на месте, движение или удар прерывают;
-            - ящик с инструментами одноразовый и открывается 2,5 с;
-            - стробоскоп редкий и с одним зарядом, зато слепит дольше;
-            - хлопушка встречается чаще остальных предметов.
-          - Выжившие-боты умеют перевязываться и чинят чуть быстрее, баланс матчей сохранён.
-          - **Исправлены невидимые препятствия:** в тыквенном режиме Хэллоуина на месте генераторов оставались невидимые блоки.
-          - Новый промокод, который приносит тыквы. Тыквы и после Хэллоуина можно тратить на пластинки.
+          - **Сезон 2 «Путь меча» начался!** 1 сезон и Хэллоуин закончились. Тыквенные предметы остаются у тех, кто их получил. В конце пропуска — блок 2 сезона с таймером до конца. Mikami Teru — в бесплатной линии на 48 уровне.
+          - **Подарок — Крик** (вдохновлено Scream), бесплатно для всех. Умения: «Звонок», «Из тени», «Любимый фильм ужасов?», пассивка «Он позирует».
+          - **Новый выживший — Пьер Микликанто**, повар. Собирает ингредиенты и варит в котле 3 супа. Аниматроник может сломать котёл. Пьер медленный и быстро устаёт, зато падает только после 4 ударов.
+          - **Новый аниматроник — Сузуя** (фан-трибьют, вдохновлено Tokyo Ghoul), 1200 монет. 4 кровавых кинжала: раненые видны на всей карте, а Сузуя ускоряется до +20%. Кинжал может вытащить союзник с аптечкой. Два рывка и скачущий бег.
+          - **001 — БЕТА:** пока работает только пассивка, умения появятся позже.
+          - **Springtrap** получил метательный нож.
+          - **Новый скин «Арима Спрингтрап»:** меч вместо ножа, свои фразы и эффекты. Продаётся в магазине и есть в «Золотой» линии пропуска (ур. 45).
+          - **Заставка перед матчем** у каждого аниматроника, у Аримы — своя. Тап — пропустить.
+          - **Исправлено:** при перевязке аптечкой показывалась молитва священника. Теперь у аптечки своя полоска «Перевязка…», у ящика с инструментами — своя.
 
-          Android 7.0+, versionCode 12 / versionName 3.6.2. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: 64315f944c201514ae0fb5bd5c864b32fcaa8073d7819fd1043bebffc8565c5d
+          Android 7.0+, versionCode 13 / versionName 3.7. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: fca55f091bcaf494797724c30de8967ab1a6248953a64f5e3277f237418307d1
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.6.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.6.2" --notes-file /tmp/notes.md
+          gh release create v3.7 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.7" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -73,12 +71,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull -q --ff-only origin main || true
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.6.2 bootstrap payload (APK published in Release v3.6.2)"
+          git commit -m "Remove v3.7 bootstrap payload (APK published in Release v3.7)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.6.2)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.7)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
