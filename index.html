@@ -371,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.9</div>
+  <div class="ver">v3.9.1</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -8277,7 +8277,7 @@ function v38Voice(k,ev){if(!G||!k||!k.ch)return;const id=k.ch.id;const set=id;co
 {const _h=drawV38HUD;drawV38HUD=function(V){_h(V);const s=G.v38sub;if(!s||s.t<=0)return;s.t-=1/60;const c=ctx,txt=s.who+': «'+s.txt+'»';c.save();c.globalAlpha=Math.min(1,s.t*2);c.font='bold 13px sans-serif';c.textAlign='center';const w=c.measureText(txt).width+20;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(W/2-w/2,46,w,22);c.fillStyle=s.col;c.fillText(txt,W/2,62);c.restore()}}
 
 /* ================= v3.8: Season 3 «Остатки прошлого», говорящая маска, новые главы «Сюжета», Артур Винслоу, версия 3.8 ================= */
-const V38_VERSION='3.9',V38_VCODE=20;
+const V38_VERSION='3.9.1',V38_VCODE=21;
 // --- save fix: loadSave() whitelists DEF_SAVE keys, so story progress (S.sg) and v3.8 data were dropped on reload. Restore them from the raw save.
 (function(){try{const raw=rawSave();if(raw&&typeof raw==='object'){
  if(raw.sg&&typeof raw.sg==='object'&&(!S.sg||!(S.sg.seen||[]).length))S.sg=raw.sg;
@@ -8540,7 +8540,7 @@ save();
 /* ================= v3.9 «Революция»: economy migration, «Олимп» banner, S3 banners in the profile, «Купить уровень»,
    bot difficulty by rank (Нуб / Нормальный / Профи / Бог), invisible-Freddy fix for survivor bots.
    Loaded after every content module (all skins/frames/badges/banners are registered) and before n_boot. ================= */
-const V39_REFUND_ARIMA=1200,V39_COIN_CAP=2000,V39_GIFT=100,V39_LEVEL_PRICE=1000,V39_GOLD_PRICE=5000,V39_MIN_CHAR=500;
+const V39_REFUND_ARIMA=1200,V39_COIN_RESET=2000,V39_GIFT=100,V39_LEVEL_PRICE=1000,V39_GOLD_PRICE=5000,V39_MIN_CHAR=500;
 /* ---------- save field: S.v39 (loadSave() whitelists DEF_SAVE keys, so restore it from the raw save) ---------- */
 (function(){let raw=null;try{raw=rawSave()}catch(e){}
  S.v39=raw&&isObj(raw.v39)?raw.v39:{};if(!isObj(S.v39))S.v39={}})();
@@ -8589,28 +8589,32 @@ function wwIsRegularShopChar(c){return !!c&&typeof c.price==='number'&&c.price>0
 function wwTakeBack(sd,id){const M=sd==='h'?HMAP:KMAP;const c=M[id];if(!wwIsRegularShopChar(c))return false;if(wwClaimedFromPass(id))return false;return true}
 /* ---------- the one-time «Революция» migration ---------- */
 function wwRevolution(){const V=S.v39;if(V.rev)return null;const rep={before:S.coins,refund:0,taken:[],capped:0};
- // 1) Arima: bought in the shop AND claimed from the Season 2 pass → refund (3.7.4 only refunded buyers who had not claimed her)
- try{const bought=Array.isArray(S.shop.bought)&&S.shop.bought.includes('sk:'+ARIMA_ID);if(bought&&S.fix374!==2&&wwArimaPassClaimed()){S.coins+=V39_REFUND_ARIMA;rep.refund=V39_REFUND_ARIMA}}catch(e){console.error(e)}
  // 2) purchased regular characters go back to the shop; XP, mastery and skins stay
  for(const sd of ['h','k']){const keep=[];for(const id of S.unl[sd]){if(wwTakeBack(sd,id))rep.taken.push((sd==='h'?HMAP:KMAP)[id].name);else keep.push(id)}S.unl[sd]=keep}
  if(!S.unl.h.includes(S.sel.h))S.sel.h=S.unl.h.includes('marina')?'marina':S.unl.h[0];if(!S.unl.k.includes(S.sel.k))S.sel.k=S.unl.k.includes('chorist')?'chorist':S.unl.k[0];
- // 3) cap, then the gift
- if(S.coins>V39_COIN_CAP){rep.capped=S.coins-V39_COIN_CAP;S.coins=V39_COIN_CAP}
+ // 3) reset every existing player's coins to exactly 2000 (one time, no lasting limit), then the gift; fresh installs keep the normal start
+ const fresh=!rawSave();if(!fresh)S.coins=V39_COIN_RESET;
  S.coins+=V39_GIFT;if(!S.own.banners.includes('bn_olymp'))S.own.banners.push('bn_olymp');
- V.rev=1;V.revAt=Date.now();V.revRep={refund:rep.refund,taken:rep.taken,capped:rep.capped,before:rep.before,after:S.coins,shown:!rawSave()};return rep}
-try{wwPurgeGone();wwRevolution()}catch(e){console.error('v39 migration',e)}
+ V.rev=1;V.r391=1;V.revAt=Date.now();V.revRep={taken:rep.taken,before:rep.before,after:S.coins,shown:fresh};return rep}
+// v3.9.1: saves already migrated by 3.9 (which only capped coins) get the reset too: exactly 2000 + 100
+function wwRev391(){const V=S.v39;if(!V.rev||V.r391)return false;const before=S.coins;S.coins=V39_COIN_RESET+V39_GIFT;if(!S.own.banners.includes('bn_olymp'))S.own.banners.push('bn_olymp');
+ V.r391=1;V.revRep={taken:[],before,after:S.coins,shown:false};return true}
+try{wwPurgeGone();wwRev391();wwRevolution()}catch(e){console.error('v39 migration',e)}
 save();
 {const _gm=setMode;setMode=function(m){_gm.apply(this,arguments);if(m!=='menu')return;const R=S.v39&&S.v39.revRep;if(!R||R.shown)return;R.shown=true;save();
- setTimeout(()=>{try{let t='Экономика игры обновлена. Монеты выше '+V39_COIN_CAP+' урезаны, купленные персонажи вернулись в магазин (опыт, мастерство и скины сохранены).';
-  if(R.refund)t+=' За «Арима Спрингтрап» (куплен и получен в пропуске) возвращено '+R.refund+' монет.';if(R.taken.length)t+=' Вернулись в магазин: '+R.taken.join(', ')+'.';
+ setTimeout(()=>{try{let t='Экономика игры обновлена: монеты у всех игроков сброшены до '+V39_COIN_RESET+', и ещё +'+V39_GIFT+' в подарок. Дальше можно копить сколько угодно.';
+  if(R.taken&&R.taken.length)t+=' Купленные персонажи вернулись в магазин (опыт, мастерство и скины сохранены): '+R.taken.join(', ')+'.';
   rewardPopup('«РЕВОЛЮЦИЯ»',t,[{c:V39_GIFT},{bn:'bn_olymp'}]);updCoins()}catch(e){console.error(e)}},700)}}
 /* ---------- pass coins 10–30 per level (all tables, incl. the fallback), gold line 5000 for new purchases ---------- */
-const wwPassCoin=c=>c>=300?30:c>=100?20:10;
+const wwPassCoinOld=c=>c>=300?30:c>=100?20:10;
+// v3.9.1: coins by level, not by the old value (old values <100 all became 10): 10/15/20/25/30, milestones (every 5th level, incl. 50) 30
+const wwPassCoinLv=t=>(t%5===0||t===50)?30:[30,10,15,20,25][t%5];
+const wwPassCoin=wwPassCoinLv;
 (function(){const T=[[PASS_FREE,0],[PASS_GOLD,1]];if(typeof PASS2_FREE!=='undefined')T.push([PASS2_FREE,0],[PASS2_GOLD,1]);T.push([PASS_FREE_N,0],[PASS_GOLD_N,1]);
  if(typeof S3_FREE!=='undefined')T.push([S3_FREE,0],[S3_GOLD,1]);
  for(const [tab,gold] of T)for(let t=1;t<=50;t++){const d=Object.getOwnPropertyDescriptor(tab,t);const get=d?(d.get?d.get:(()=>d.value)):(()=>undefined);
   const fb=()=>({c:gold?(t%5===0?160:80):(t%5===0?100:40)});
-  Object.defineProperty(tab,t,{configurable:true,enumerable:true,get(){const r=get.call(tab)||fb();return r.c?Object.assign({},r,{c:wwPassCoin(r.c)}):r}})}})();
+  Object.defineProperty(tab,t,{configurable:true,enumerable:true,get(){const r=get.call(tab)||fb();return r.c?Object.assign({},r,{c:wwPassCoinLv(t)}):r}})}})();
 function wwGoldPrice(){return V39_GOLD_PRICE}
 function wwBuyLevel(){if(passTier()>=PASS_TIERS){toast('Максимальный уровень пропуска');return false}if(S.coins<V39_LEVEL_PRICE){toast('Нужно '+V39_LEVEL_PRICE+' монет');return false}
  S.coins-=V39_LEVEL_PRICE;addPassXP(PASS_XP);try{s3Tier()}catch(e){}save();AU.chime();updCoins();toast('Пропуск: уровень '+passTier()+'!');return true}
@@ -8646,7 +8650,7 @@ window.WW39={BOT_TIERS,wwBotTierIdx,wwBotDiff,wwRevolution,wwPurgeGone,wwIsRegul
    lobby (UDP) or join by its code/IP, send their inputs and render full world snapshots (12 Hz).
    Offline single-player never touches this code path (everything is gated by LAN.inMatch / LAN.role). ================= */
 const LAN_PROTO=1,LAN_PORT=47391,LAN_SNAP_MS=83,LAN_IN_MS=50,LAN_TIMEOUT=7000;
-const LAN={role:'',ws:null,key:'',ip:'',port:LAN_PORT,peers:{},order:[],lobby:null,myId:0,inMatch:false,go:false,cfg:{map:'rot',team:'1v4'},
+const LAN={role:'',ws:null,key:'',ip:'',port:LAN_PORT,peers:{},order:[],lobby:null,myId:0,inMatch:false,go:false,cfg:{map:'rot',team:'1v4',ranked:false},
  found:[],status:'',snapT:null,inT:0,pend:{},lastSnap:0,REG:{},ctlPeer:null,slotTok:'',myRole:'s',nick:'',seq:0,ended:false,hostLost:false,netIdN:0};
 const lanNative=()=>{try{return window.WWLan||window.__wwLanShim||null}catch(e){return null}};
 const lanCanHost=()=>!!lanNative();
@@ -8659,10 +8663,35 @@ function lanSend(o){const w=LAN.ws;if(w&&w.readyState===1)try{w.send(JSON.string
 function lanTo(id,o){const w=LAN.ws;if(!w||w.readyState!==1)return;try{w.send('@'+(id==='*'?'*':String(id|0))+'|'+JSON.stringify(o))}catch(e){}}
 function lanStatus(t){LAN.status=t;const e=$('lanStat');if(e)e.textContent=t}
 /* ---------- characters that a human may bring ---------- */
-const lanOkH=id=>id&&HMAP[id]&&id!=='jason'&&chVisible(id)?id:null;
-const lanOkK=id=>id&&KMAP[id]&&id!=='catdog'&&id!=='jasonk'&&chVisible(id)?id:null;
+// v3.9.1: the host only checks that a character exists and is playable over Wi-Fi; ownership is checked on the owner's phone
+// (the host's own unlocks/anime setting must not override a client's choice — that silently replaced e.g. Jason with Марина)
+const lanOkH=id=>typeof id==='string'&&HMAP[id]?id:null;
+const lanOkK=id=>typeof id==='string'&&KMAP[id]&&id!=='catdog'&&id!=='jasonk'?id:null;
 const lanOkSk=(id,sk)=>sk&&SKINS[sk]&&SKINS[sk].ch===id?sk:'';
-function lanMyChoice(){return {sc:lanOkH(S.sel.h)||'marina',kc:lanOkK(S.sel.k)||'chorist',sks:curSkin(S.sel.h)||'',skk:curSkin(S.sel.k)||''}}
+const lanOwnH=id=>lanOkH(id)&&S.unl.h.includes(id)&&chVisible(id)?id:null;
+const lanOwnK=id=>lanOkK(id)&&S.unl.k.includes(id)&&chVisible(id)?id:null;
+function lanMyChoice(){const sc=lanOwnH(S.sel.h)||lanOwnH('marina')||S.unl.h.find(lanOwnH)||'marina',kc=lanOwnK(S.sel.k)||lanOwnK('chorist')||S.unl.k.find(lanOwnK)||'chorist';
+ return {sc,kc,sks:curSkin(sc)||'',skk:curSkin(kc)||''}}
+/* v3.9.1: role/character resolution, computed in the lobby (everyone sees the result before the start) and used as-is at the start.
+   Players keep their role choice; only when more players want the animatronic than there are killer slots, a lottery
+   (random ticket per player, re-rolled after every match) decides, and the lobby says so. */
+function lanEffPref(){const r=(typeof roleRefuse==='function')?roleRefuse():'';const p=LAN.cfg.pref||'any';if(r==='k')return 's';if(r==='s')return 'k';return p}
+function lanTicket(o){if(typeof o.tk!=='number')o.tk=Math.random();return o.tk}
+function lanResolve(pool,duo){const NS=duo?6:4,NK=duo?2:1;const by=a=>a.slice().sort((x,y)=>lanTicket(x)-lanTicket(y));const R={K:[],S:[],why:{}};
+ const ks=by(pool.filter(h=>h.pref==='k'));ks.forEach((h,i)=>{if(i<NK)R.K.push(h);else{R.S.push(h);R.why[h.id]='жребий: аниматроников '+NK+', хотят '+ks.length}});
+ const any=by(pool.filter(h=>h.pref==='any'));if(!R.K.length&&any.length&&pool.length>1){const h=any.shift();R.K.push(h);R.why[h.id]='«любая роль» → аниматроник'}
+ for(const h of any)R.S.push(h);for(const h of pool)if(h.pref==='s')R.S.push(h);
+ // more humans than survivor slots (e.g. 5 survivors in 1 на 4): «любая» first, then a lottery among survivors
+ while(R.S.length>NS&&R.K.length<NK){const c=by(R.S.filter(h=>h.pref==='any'))[0]||by(R.S.filter(h=>!R.why[h.id]&&!h.ref))[0]||by(R.S.filter(h=>!h.ref))[0]||by(R.S)[0];R.S.splice(R.S.indexOf(c),1);R.K.push(c);R.why[c.id]='мест выживших только '+NS+' — жребий'}
+ // characters: each keeps the chosen one; if two pick the same, the lottery winner keeps it and the other gets a random free one
+ const usedS=new Set(),usedK=new Set();R.ch={};
+ for(const h of by(R.S)){if(!usedS.has(h.sc)){usedS.add(h.sc);R.ch[h.id]={id:h.sc,sk:h.sks||''}}}
+ for(const h of by(R.K)){if(!usedK.has(h.kc)){usedK.add(h.kc);R.ch[h.id]={id:h.kc,sk:h.skk||''}}}
+ for(const h of R.S)if(!R.ch[h.id]){const id=shuffle(HUNTERS.filter(x=>x.id!=='jason'&&!usedS.has(x.id)).map(x=>x.id))[0]||'marina';usedS.add(id);R.ch[h.id]={id,sk:'',taken:1};R.why[h.id]=(R.why[h.id]?R.why[h.id]+'; ':'')+(HMAP[h.sc]||{}).name+' уже занят(а)'}
+ for(const h of R.K)if(!R.ch[h.id]){const id=shuffle(KILLERS.filter(x=>lanOkK(x.id)&&!usedK.has(x.id)).map(x=>x.id))[0]||'chorist';usedK.add(id);R.ch[h.id]={id,sk:'',taken:1};R.why[h.id]=(R.why[h.id]?R.why[h.id]+'; ':'')+(KMAP[h.kc]||{}).name+' уже занят'}
+ R.as={};for(const h of R.K)R.as[h.id]='k';for(const h of R.S)R.as[h.id]='s';return R}
+function lanPool(){const me=lanMyChoice();LAN.hostTk=LAN.hostTk||{};
+ return lanPeerList().map(h=>h.host?Object.assign({},h,me,{tk:lanTicket(LAN.hostTk)}):Object.assign({},h,{sc:LAN.peers[h.id].sc,kc:LAN.peers[h.id].kc,sks:LAN.peers[h.id].sks,skk:LAN.peers[h.id].skk,tk:lanTicket(LAN.peers[h.id])}))}
 /* =================================================== HOST =================================================== */
 function lanHostOpen(){const N=lanNative();if(!N){lanStatus('Хостить можно только в Android-приложении');return}
  const nick=lanNickOk($('lanNick').value)||lanNickOk(S.prof.name)||'Хост';LAN.nick=nick;localStorage.setItem('zk_lan_nick',nick);
@@ -8676,9 +8705,10 @@ function lanHostOpen(){const N=lanNative();if(!N){lanStatus('Хостить мо
  lanRender()}
 function lanHostClose(){const N=lanNative();try{lanTo('*',{k:'kick',why:'host_left'})}catch(e){}LAN.role='';try{LAN.ws&&LAN.ws.close()}catch(e){}try{N&&N.stopHost()}catch(e){}lanReset();lanRender()}
 function lanReset(){clearInterval(LAN.snapT);LAN.snapT=null;LAN.ws=null;LAN.role='';LAN.peers={};LAN.order=[];LAN.lobby=null;LAN.inMatch=false;LAN.go=false;LAN.REG={}}
-function lanPeerList(){const me=lanMyChoice();const L=[{id:0,nick:LAN.nick,pref:LAN.cfg.pref||'any',host:true,fid:frMyId()}];for(const id of LAN.order){const p=LAN.peers[id];if(p&&p.hello)L.push({id:p.id,nick:p.nick,pref:p.pref,host:false,fid:p.fid||''})}void me;return L}
-function lanHostLobby(){if(LAN.role!=='host')return;const players=lanPeerList();const max=LAN.cfg.team==='2v6'?8:5;
- const lob={k:'lobby',players,cfg:{map:LAN.cfg.map,team:LAN.cfg.team},max,state:LAN.inMatch?'play':'lobby',host:LAN.nick};LAN.lobby=Object.assign({},lob,{you:0});
+function lanPeerList(){const me=lanMyChoice();const L=[{id:0,nick:LAN.nick,pref:lanEffPref(),host:true,fid:frMyId(),ref:!!(typeof roleRefuse==='function'&&roleRefuse())}];for(const id of LAN.order){const p=LAN.peers[id];if(p&&p.hello)L.push({id:p.id,nick:p.nick,pref:p.pref,host:false,fid:p.fid||'',ref:!!p.ref})}void me;return L}
+function lanHostLobby(){if(LAN.role!=='host')return;const max=LAN.cfg.team==='2v6'?8:5;const pool=lanPool();const Rz=lanResolve(pool,LAN.cfg.team==='2v6');LAN.res=Rz;
+ const players=pool.map(h=>{const c=Rz.ch[h.id]||{},as=Rz.as[h.id]||'s';const ch=as==='k'?KMAP[c.id]:HMAP[c.id];return {id:h.id,nick:h.nick,pref:h.pref,host:h.host,fid:h.fid,as,ch:c.id||'',sk:c.sk||'',chn:ch?(as==='k'?ch.name:FULLNAME(ch)):'',why:Rz.why[h.id]||''}});
+ const lob={k:'lobby',players,cfg:{map:LAN.cfg.map,team:LAN.cfg.team,ranked:!!LAN.cfg.ranked},max,state:LAN.inMatch?'play':'lobby',host:LAN.nick};LAN.lobby=Object.assign({},lob,{you:0});
  for(const id of LAN.order)if(LAN.peers[id]&&LAN.peers[id].hello)lanTo(id,Object.assign({},lob,{you:id}));
  try{const N=lanNative();N&&N.updateBeacon&&N.updateBeacon(JSON.stringify({name:LAN.nick,n:players.length,max,state:lob.state}))}catch(e){}lanRender()}
 function lanHostMsg(d){
@@ -8697,7 +8727,7 @@ function lanHostMsg(d){
  if(m.k==='mg'){lanHostMg(P,m);return}
  if(m.k==='bye'){lanPeerGone(d.id);return}}
 function msgLobby(t){lanStatus(t)}
-function lanHostPeerPrefs(P,m){P.pref=m.pref==='k'||m.pref==='s'?m.pref:'any';P.sc=lanOkH(m.sc)||'marina';P.kc=lanOkK(m.kc)||'chorist';P.sks=lanOkSk(P.sc,m.sks);P.skk=lanOkSk(P.kc,m.skk)}
+function lanHostPeerPrefs(P,m){P.pref=m.pref==='k'||m.pref==='s'?m.pref:'any';P.ref=!!m.ref&&P.pref!=='any';P.sc=lanOkH(m.sc)||'marina';P.kc=lanOkK(m.kc)||'chorist';P.sks=lanOkSk(P.sc,m.sks);P.skk=lanOkSk(P.kc,m.skk)}
 function lanPeerGone(id){const P=LAN.peers[id];if(!P)return;delete LAN.peers[id];LAN.order=LAN.order.filter(x=>x!==id);
  if(LAN.inMatch&&G){for(const e of G.surv.concat(G.killers))if(e.netHuman===id){e.netHuman=0;e.bot=true;e.netNick='';if(e.ai){e.ai.path=null;e.ai.repath=0;if(e.kind==='s'){e.ai.repairGen=null}}e.repairing=null;
    msg((P.nick||'Игрок')+' вышел — его место занял бот','#ffd27a');toast((P.nick||'Игрок')+' отключился — его место занял бот',2000)}}
@@ -8706,25 +8736,21 @@ function lanPeerGone(id){const P=LAN.peers[id];if(!P)return;delete LAN.peers[id]
 function lanHostStart(){if(LAN.role!=='host'||LAN.inMatch)return;const humans=lanPeerList();if(humans.length<2){lanStatus('Нужно минимум 2 игрока');return}
  const duo=LAN.cfg.team==='2v6',NS=duo?6:4,NK=duo?2:1;const me=lanMyChoice();
  const pool=humans.map(h=>h.host?Object.assign({},h,{sc:me.sc,kc:me.kc,sks:me.sks,skk:me.skk}):Object.assign({},h,LAN.peers[h.id]?{sc:LAN.peers[h.id].sc,kc:LAN.peers[h.id].kc,sks:LAN.peers[h.id].sks,skk:LAN.peers[h.id].skk}:{}));
- const killers=[],survs=[];const rnd0=a=>a.sort(()=>Math.random()-0.5);
- for(const h of rnd0(pool.filter(h=>h.pref==='k')))if(killers.length<NK)killers.push(h);else survs.push(h);
- const any=rnd0(pool.filter(h=>h.pref==='any'));if(!killers.length&&any.length&&pool.filter(h=>h.pref!=='k').length>1)killers.push(any.shift());
- if(!killers.length&&!any.length){const s=rnd0(pool.filter(h=>h.pref==='s'));if(s.length>1)killers.push(s.shift())}
- for(const h of pool)if(!killers.includes(h)&&!survs.includes(h))survs.push(h);
- while(survs.length>NS&&killers.length<NK)killers.push(survs.pop());
- if(survs.length>NS){lanStatus('Слишком много игроков для этого режима');return}
+ const Rz=lanResolve(pool,duo);const killers=Rz.K,survs=Rz.S;
+ if(survs.length>NS||killers.length>NK){lanStatus('Слишком много игроков для этого режима');return}
  const hostK=killers.some(h=>h.host);const role=hostK?'k':'s';
- // survivor slots: host first when survivor; then remote humans; bots get random unused characters
+ // survivor slots: host first when survivor; then remote humans (each with the character resolved in the lobby); bots get random unused characters
  const sOrder=survs.slice().sort((a,b)=>(b.host?1:0)-(a.host?1:0));const used=new Set();const slotsS=[];
- for(const h of sOrder){let id=h.sc;if(used.has(id))id=null;slotsS.push({h,id,sk:id?h.sks:''});if(id)used.add(id)}
+ for(const h of sOrder){const c=Rz.ch[h.id];slotsS.push({h,id:c.id,sk:c.sk});used.add(c.id)}
  const free=shuffle(HUNTERS.filter(x=>x.id!=='jason'&&chVisible(x.id)&&!used.has(x.id)).map(x=>x.id));
- for(const s of slotsS)if(!s.id){s.id=free.shift()||'marina';used.add(s.id)}
  const planS=[];for(let i=0;i<NS;i++)planS.push(slotsS[i]?{id:slotsS[i].id,sk:slotsS[i].sk,peer:slotsS[i].h.host?0:slotsS[i].h.id}:{id:free.shift()||'marina',sk:'',peer:-1});
  const kOrder=killers.slice().sort((a,b)=>(b.host?1:0)-(a.host?1:0));const planK=[];const kUsed=new Set();
- for(const h of kOrder){let id=h.kc;if(kUsed.has(id))id=pick(KILLERS.filter(x=>lanOkK(x.id)&&!kUsed.has(x.id))).id;kUsed.add(id);planK.push({id,sk:id===h.kc?h.skk:'',peer:h.host?0:h.id})}
+ for(const h of kOrder){const c=Rz.ch[h.id];kUsed.add(c.id);planK.push({id:c.id,sk:c.sk,peer:h.host?0:h.id})}
+ if(duo&&planK.length<2){const pk=shuffle(KILLERS.filter(x=>lanOkK(x.id)&&chVisible(x.id)&&!kUsed.has(x.id)).map(x=>x.id))[0];if(pk&&planK.length===1)planK.push({id:pk,sk:'',peer:-1})}
+ for(const p of pool){delete p.tk}for(const id of LAN.order)if(LAN.peers[id])delete LAN.peers[id].tk;LAN.hostTk={};
  const map=LAN.cfg.map==='rot'?pickMap(false):LAN.cfg.map;
  LAN.plan={S:planS,K:planK,map,duo};
- lanBuildWorld(role,map,duo,LAN.plan);
+ LAN.ranked=!!LAN.cfg.ranked;lanBuildWorld(role,map,duo,LAN.plan,LAN.ranked);
  // humans on the host's world
  G.surv.forEach((e,i)=>{const p=planS[i];if(p&&p.peer>0){e.netHuman=p.peer;e.bot=false;e.netNick=(LAN.peers[p.peer]||{}).nick||''}});
  const kh=G.killers.filter(k=>k.half!=='cat');planK.forEach((p,j)=>{const e=kh[j];if(e&&p.peer>0){e.netHuman=p.peer;e.bot=false;e.netNick=(LAN.peers[p.peer]||{}).nick||''}});
@@ -8732,19 +8758,22 @@ function lanHostStart(){if(LAN.role!=='host'||LAN.inMatch)return;const humans=la
  LAN.inMatch=true;LAN.go=false;LAN.ended=false;LAN.seq=0;lanAssignIds();
  for(const id of LAN.order){const P=LAN.peers[id];if(!P||!P.hello)continue;const e=G.surv.concat(G.killers).find(x=>x.netHuman===id);if(!e){lanTo(id,{k:'kick',why:'no_slot'});continue}
   P.inp={mx:0,my:0,btn:{},pressed:{}};P.mg=-1;P.stats={gens:0,hits:0,downs:0,elims:0,rescues:0,stuns:0};
-  lanTo(id,{k:'start',map,duo,role:e.kind,tok:'e'+e.netId,snap:lanSnapshot(true)})}
+  lanTo(id,{k:'start',map,duo,ranked:LAN.ranked,role:e.kind,tok:'e'+e.netId,snap:lanSnapshot(true)})}
  clearInterval(LAN.snapT);LAN.snapT=setInterval(lanHostTick,LAN_SNAP_MS);
  setTimeout(()=>{if(!LAN.inMatch||!G)return;LAN.go=true;lanTo('*',{k:'go'});beginGame()},6500);
  lanClose();lanHostLobby()}
-function lanBuildWorld(role,map,duo,plan){
+function lanBuildWorld(role,map,duo,plan,ranked){
  const keep={mode:S.rank.mode,last:S.lastMap,roles:S.roles.slice(),fm:window.__forceMap,fk:window.__forceKiller,fp:window.__forcePartner};
  S.rank.mode='casual';window.__forceMap=map;
  const mk=mkSurv,ak=addKillerEnt;let kc=0;
  if(plan){window.__forceKiller=role==='k'?undefined:plan.K[0]&&plan.K[0].id;window.__forcePartner=duo?(plan.K[1]&&plan.K[1].id)||undefined:undefined;
+  if(role==='k'&&plan.K[0]){keep.selk=S.sel.k;S.sel.k=plan.K[0].id}
   mkSurv=function(id,bot,i){const p=plan.S[i];if(p){id=p.id;bot=p.peer!==0}const e=mk.call(this,id,bot,i);if(p&&p.peer>0&&p.sk)e.ch=skinnedCh(id,p.sk);return e};
-  addKillerEnt=function(id,bot,sk,sp){const p=plan.K[kc];if(p&&p.id===id&&p.peer>0&&!sk)sk=p.sk||'';kc++;return ak.call(this,id,bot,sk,sp)}}
- try{startNight(role,{duo})}finally{mkSurv=mk;addKillerEnt=ak;S.rank.mode=keep.mode;S.lastMap=keep.last;S.roles=keep.roles;window.__forceMap=keep.fm;window.__forceKiller=keep.fk;window.__forcePartner=keep.fp;save()}
- G.lan=true;G.timeScale=1}
+  addKillerEnt=function(id,bot,sk,sp){const p=plan.K[kc];if(p){id=p.id;if(p.peer!==0)bot=true;if(p.peer>0&&!sk)sk=p.sk||''}kc++;return ak.call(this,id,bot,sk,sp)}}
+ try{startNight(role,{duo,ranked:!!ranked})}finally{if(keep.selk!==undefined)S.sel.k=keep.selk;mkSurv=mk;addKillerEnt=ak;S.rank.mode=keep.mode;S.lastMap=keep.last;S.roles=keep.roles;window.__forceMap=keep.fm;window.__forceKiller=keep.fk;window.__forcePartner=keep.fp;save()}
+ G.lan=true;G.timeScale=1;G.ranked=!!ranked;
+ // ranked Wi-Fi match: a role refusal counts its rounds like in solo ranked
+ if(ranked&&typeof roleRefuse==='function'&&roleRefuse()){const V=S.v38;V.roleLeft--;V.roleUsed=(V.roleUsed|0)+1;if(V.roleLeft<=0)roleStop(true);else save()}}
 function lanAssignIds(){if(!G)return;for(const e of G.surv.concat(G.killers))if(!e.netId)e.netId=++LAN.netIdN}
 /* ---------- per-frame host control of remote humans ---------- */
 function lanCtl(orig,e,dt){const P=LAN.peers[e.netHuman];const I=P?P.inp:{mx:0,my:0,btn:{},pressed:{}};
@@ -8793,7 +8822,7 @@ function lanJoin(ipOrCode){const ip=lanCodeToIp(ipOrCode);if(!ip){lanStatus('Н�
  lanLeaveClient(true);LAN.role='client';LAN.hostLost=false;let ws;try{ws=new WebSocket('ws://'+ip+':'+LAN_PORT+'/peer')}catch(e){lanStatus('Не удалось подключиться');LAN.role='';return}
  LAN.ws=ws;LAN.ip=ip;lanStatus('Подключение к '+ip+'…');
  const to=setTimeout(()=>{if(ws.readyState!==1){try{ws.close()}catch(e){}lanStatus('Хост не отвечает ('+ip+')')}},6000);
- ws.onopen=()=>{clearTimeout(to);const c=lanMyChoice();lanSend({k:'hello',v:LAN_PROTO,ver:V38_VERSION,nick,fid:frMyId(),pref:LAN.cfg.pref||'any',sc:c.sc,kc:c.kc,sks:c.sks,skk:c.skk});lanStatus('Подключено')};
+ ws.onopen=()=>{clearTimeout(to);const c=lanMyChoice();lanSend({k:'hello',v:LAN_PROTO,ver:V38_VERSION,nick,fid:frMyId(),pref:lanEffPref(),ref:!!roleRefuse(),sc:c.sc,kc:c.kc,sks:c.sks,skk:c.skk});lanStatus('Подключено')};
  ws.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}lanClientMsg(d)};
  ws.onclose=()=>{clearTimeout(to);if(LAN.ws!==ws)return;const was=LAN.inMatch;LAN.ws=null;LAN.role='';LAN.lobby=null;LAN.inMatch=false;lanRender();
   if(was&&G&&!G.over&&!LAN.ended){LAN.hostLost=true;toast('Связь с хостом потеряна — матч окончен',3000);lanEndLocal()}else if(!LAN.kicked)lanStatus('Отключено от хоста');LAN.kicked=false}}
@@ -8810,7 +8839,7 @@ function lanClientMsg(d){
  if(d.k==='fr'){frIncoming(d);return}}
 function lanClientStart(d){AU.init();if(MG)closeMinigame('cancel');lanClose();
  LAN.inMatch=true;LAN.go=false;LAN.ended=false;LAN.REG={};LAN.myRole=d.role==='k'?'k':'s';LAN.slotTok=d.tok;LAN.lastSnap=Date.now();
- lanBuildWorld(LAN.myRole,d.map,!!d.duo,null);G.notes=[];G.stats=G.stats||{};
+ lanBuildWorld(LAN.myRole,d.map,!!d.duo,null,!!d.ranked);G.notes=[];G.stats=G.stats||{};
  // seed the registry with this world's static objects so references (GATEMAP, DOORS) stay valid
  G.gens.forEach((o,i)=>LAN.REG['g'+i]=o);G.gates.forEach((o,i)=>LAN.REG['t'+i]=o);G.hides.forEach((o,i)=>LAN.REG['h'+i]=o);G.vents.forEach((o,i)=>LAN.REG['v'+i]=o);DOORLIST.forEach((o,i)=>LAN.REG['d'+i]=o);
  lanApply(d.snap);
@@ -8864,6 +8893,7 @@ function lanClientUpdate(dt){if(!G||G.over)return;G.t+=dt;if(G.endT<0)G.timer=Ma
  if(type!=='tent'&&g){if(reason==='success'){G.mgCount[type]=(G.mgCount[type]||0)+1;toast('Этап ремонта готов!')}else if(reason==='fail'){toast('Сбой! Громкий шум мог привлечь аниматроника…',2200);G.shake=0.3;vib(100)}}}}
 function lanClientEnd(d){if(!G||!G.lan){LAN.inMatch=false;return}if(d.snap)lanApply(d.snap);LAN.ended=true;LAN.inMatch=false;LAN.lastMatch=true;
  if(d.st)for(const k in d.st)if(typeof d.st[k]==='number')G.stats[k]=(G.stats[k]||0)+d.st[k];
+ for(const k of ['gens','hits','downs','elims','rescues','revives','stuns','braceT','traps'])if(typeof G.stats[k]!=='number')G.stats[k]=0;
  if(d.why==='host_quit')toast('Хост завершил матч',2400);
  if(MG)closeMinigame('cancel');if(!G.lanEndDone){G.lanEndDone=true;G.over=true;endRound()}}
 function lanEndLocal(){LAN.inMatch=false;LAN.lastMatch=true;if(!G||G.lanEndDone)return;G.lanEndDone=true;if(MG){try{MG=null;mgEl.classList.add('hidden')}catch(e){}}G.over=true;try{endRound()}catch(e){console.error(e);goMenu()}}
@@ -8898,12 +8928,13 @@ $('resMenu').addEventListener('click',()=>{LAN.lastMatch=false},true);
  d.innerHTML='<div class="lanBox"><div class="col"><div class="row" style="justify-content:space-between"><h3>ПО WI-FI</h3><button class="btn alt small" id="lanClose">Назад</button></div>'+
   '<div class="row"><input id="lanNick" maxlength="16" placeholder="Ник (2–16)"></div>'+
   '<div class="row"><span class="muted">Роль:</span><span class="tg" data-pref="any">Любая</span><span class="tg" data-pref="s">Выживший</span><span class="tg" data-pref="k">Аниматроник</span></div>'+
+  '<div class="row"><span class="muted">Герой:</span><select id="lanSelS" style="flex:1 1 0"></select><select id="lanSelK" style="flex:1 1 0"></select></div>'+
   '<div id="lanHostNote" class="note hidden"></div>'+
   '<div id="lanIdle"><div class="row"><button class="btn small" id="lanHost">Создать комнату</button><span class="muted">Твой телефон станет хостом</span></div>'+
   '<div class="row" style="margin-top:4px"><input id="lanCode" maxlength="21" placeholder="Код или IP хоста"><button class="btn alt small" id="lanJoin">Войти</button></div>'+
   '<div class="muted" style="margin-top:2px">Комнаты рядом:</div><div id="lanFound" class="col"></div></div>'+
   '<div id="lanRoom" class="hidden"><div class="row" style="justify-content:space-between"><span>Код: <span class="code" id="lanRoomCode"></span></span><button class="btn alt small" id="lanLeave">Выйти</button></div>'+
-  '<div class="muted" id="lanRoomIp"></div><div id="lanCfg" class="row"><select id="lanMap"><option value="rot">Карта: по очереди</option></select><select id="lanTeam"><option value="1v4">1 на 4</option><option value="2v6">2 на 6</option></select></div>'+
+  '<div class="muted" id="lanRoomIp"></div><div id="lanCfg" class="row"><select id="lanMap"><option value="rot">Карта: по очереди</option></select><select id="lanTeam"><option value="1v4">1 на 4</option><option value="2v6">2 на 6</option></select><select id="lanRank"><option value="0">Обычный</option><option value="1">Рейтинг</option></select></div>'+
   '<div class="row"><button class="btn small" id="lanStart">Начать матч</button><span class="muted" id="lanHint"></span></div></div>'+
   '<div class="muted" id="lanStat"></div></div><div class="col"><h3>ИГРОКИ</h3><div id="lanPlayers" class="col"></div><div class="muted">Пустые места займут боты. Все телефоны должны быть в одной сети Wi-Fi; хост держит игру открытой.</div></div></div>';
  document.body.appendChild(d);
@@ -8912,10 +8943,16 @@ $('resMenu').addEventListener('click',()=>{LAN.lastMatch=false},true);
  mb.addEventListener('click',()=>{AU.init();AU.click&&AU.click();lanOpen()});
  $('lanClose').onclick=lanClose;$('lanHost').onclick=()=>lanHostOpen();$('lanJoin').onclick=()=>lanJoin($('lanCode').value);
  $('lanLeave').onclick=()=>{if(LAN.role==='host')lanHostClose();else lanLeaveClient()};$('lanStart').onclick=()=>lanHostStart();
- d.querySelectorAll('[data-pref]').forEach(t=>t.onclick=()=>{LAN.cfg.pref=t.dataset.pref;localStorage.setItem('zk_lan_pref',LAN.cfg.pref);if(LAN.role==='client'){const c=lanMyChoice();lanSend(Object.assign({k:'pref',pref:LAN.cfg.pref},c))}else if(LAN.role==='host')lanHostLobby();lanRender()});
+ d.querySelectorAll('[data-pref]').forEach(t=>t.onclick=()=>{LAN.cfg.pref=t.dataset.pref;localStorage.setItem('zk_lan_pref',LAN.cfg.pref);if(LAN.role==='client'){const c=lanMyChoice();lanSend(Object.assign({k:'pref',pref:lanEffPref(),ref:!!roleRefuse()},c))}else if(LAN.role==='host')lanHostLobby();lanRender()});
  const ms=$('lanMap');for(const id of ['pizza','park','winslow','anime'])if(MAPS[id]){const o=document.createElement('option');o.value=id;o.textContent='Карта: '+MAPS[id].name;ms.appendChild(o)}
- ms.onchange=()=>{LAN.cfg.map=ms.value;lanHostLobby()};$('lanTeam').onchange=()=>{const v=$('lanTeam').value;if(v==='1v4'&&lanPeerList().length>5){toast('В комнате больше 5 игроков');$('lanTeam').value='2v6';return}LAN.cfg.team=v;lanHostLobby()};
+ ms.onchange=()=>{LAN.cfg.map=ms.value;lanHostLobby()};$('lanRank').onchange=()=>{LAN.cfg.ranked=$('lanRank').value==='1';lanHostLobby()};$('lanTeam').onchange=()=>{const v=$('lanTeam').value;if(v==='1v4'&&lanPeerList().length>5){toast('В комнате больше 5 игроков');$('lanTeam').value='2v6';return}LAN.cfg.team=v;lanHostLobby()};
  LAN.cfg.pref=localStorage.getItem('zk_lan_pref')||'any'})();
+function lanFillSel(){const sS=$('lanSelS'),sK=$('lanSelK');if(!sS)return;const c=lanMyChoice();
+ const opt=(arr,own,cur,k)=>arr.filter(x=>own(x.id)).map(x=>'<option value="'+x.id+'"'+(x.id===cur?' selected':'')+'>'+(k?'🔪 ':'🙂 ')+esc(x.name)+(curSkin(x.id)?' ★':'')+'</option>').join('');
+ const hs=opt(HUNTERS,lanOwnH,c.sc,0),ks=opt(KILLERS,lanOwnK,c.kc,1);if(sS.dataset.h!==hs){sS.innerHTML=hs;sS.dataset.h=hs}if(sK.dataset.h!==ks){sK.innerHTML=ks;sK.dataset.h=ks}sS.value=c.sc;sK.value=c.kc}
+function lanChoiceChanged(){if(LAN.role==='client'){lanSend(Object.assign({k:'pref',pref:lanEffPref(),ref:!!roleRefuse()},lanMyChoice()))}else if(LAN.role==='host')lanHostLobby();lanRender()}
+$('lanSelS').onchange=()=>{const v=lanOwnH($('lanSelS').value);if(v){S.sel.h=v;save()}lanChoiceChanged()};
+$('lanSelK').onchange=()=>{const v=lanOwnK($('lanSelK').value);if(v){S.sel.k=v;save()}lanChoiceChanged()};
 let lanPollT=null;
 function lanOpen(){$('lanNick').value=localStorage.getItem('zk_lan_nick')||S.prof.name||'';$('lan').classList.remove('hidden');
  const N=lanNative();try{N&&N.startDiscovery&&N.startDiscovery()}catch(e){}clearInterval(lanPollT);lanPollT=setInterval(lanPoll,1000);lanPoll();lanRender()}
@@ -8928,16 +8965,18 @@ function lanRender(){if(!$('lan'))return;const host=LAN.role==='host',cli=LAN.ro
  $('lanIdle').classList.toggle('hidden',host||cli);$('lanRoom').classList.toggle('hidden',!(host||cli));
  document.querySelectorAll('#lan [data-pref]').forEach(t=>t.classList.toggle('on',t.dataset.pref===(LAN.cfg.pref||'any')));
  $('lanCfg').classList.toggle('hidden',!host);$('lanStart').classList.toggle('hidden',!host);
- if(host){$('lanRoomCode').textContent=lanIpToCode(LAN.ip)||'—';$('lanRoomIp').textContent='IP: '+(LAN.ip||'нет Wi-Fi')+' · друзья вводят код или IP';$('lanMap').value=LAN.cfg.map;$('lanTeam').value=LAN.cfg.team;
+ if(host){$('lanRoomCode').textContent=lanIpToCode(LAN.ip)||'—';$('lanRoomIp').textContent='IP: '+(LAN.ip||'нет Wi-Fi')+' · друзья вводят код или IP';$('lanMap').value=LAN.cfg.map;$('lanTeam').value=LAN.cfg.team;$('lanRank').value=LAN.cfg.ranked?'1':'0';
   const n=lanPeerList().length;$('lanStart').classList.toggle('dis',n<2||LAN.inMatch);$('lanHint').textContent=LAN.inMatch?'Идёт матч…':n<2?'Ждём игроков…':''}
- else if(cli){$('lanRoomCode').textContent=lanIpToCode(LAN.ip);$('lanRoomIp').textContent='Хост: '+(L?L.host:'…')+' · '+LAN.ip+(L?' · '+(L.cfg.team==='2v6'?'2 на 6':'1 на 4')+(L.cfg.map!=='rot'&&MAPS[L.cfg.map]?' · '+MAPS[L.cfg.map].name:''):'');$('lanHint').textContent=L&&L.state==='play'?'Идёт матч…':'Ждём, когда хост начнёт'}
- const P=host?lanPeerList():L?L.players:[];const max=host?(LAN.cfg.team==='2v6'?8:5):L?L.max:0;const pref={s:'выживший',k:'аниматроник',any:'любая роль'};
- $('lanPlayers').innerHTML=P.map(p=>'<div class="pl"><span>'+(p.host?'👑 ':'')+esc(p.nick)+((host&&p.id===0)||(cli&&L&&p.id===L.you)?' (ты)':'')+'</span><span class="muted">'+(pref[p.pref]||'')+'</span></div>').join('')+(P.length&&max>P.length?'<div class="muted">Свободно: '+(max-P.length)+' (боты)</div>':'')+(!P.length?'<div class="muted">Создай комнату или войди в чужую</div>':'');
+ else if(cli){$('lanRoomCode').textContent=lanIpToCode(LAN.ip);$('lanRoomIp').textContent='Хост: '+(L?L.host:'…')+' · '+LAN.ip+(L?' · '+(L.cfg.ranked?'РЕЙТИНГ · ':'')+(L.cfg.team==='2v6'?'2 на 6':'1 на 4')+(L.cfg.map!=='rot'&&MAPS[L.cfg.map]?' · '+MAPS[L.cfg.map].name:''):'');$('lanHint').textContent=L&&L.state==='play'?'Идёт матч…':'Ждём, когда хост начнёт'}
+ lanFillSel();const P=host?((LAN.lobby&&LAN.lobby.players)||lanPeerList()):L?L.players:[];const max=host?(LAN.cfg.team==='2v6'?8:5):L?L.max:0;const pref={s:'выживший',k:'аниматроник',any:'любая роль'};
+ $('lanPlayers').innerHTML=P.map(p=>'<div class="pl"><span>'+(p.host?'👑 ':'')+esc(p.nick)+((host&&p.id===0)||(cli&&L&&p.id===L.you)?' (ты)':'')+'</span><span class="muted">'+(p.as?'<b style="color:'+(p.as==='k'?'#ff9a9a':'#bfe8ff')+'">'+(p.as==='k'?'Аниматроник':'Выживший')+'</b> · '+esc(p.chn||'')+(p.why?' <span style="color:#ffd27a">('+esc(p.why)+')</span>':'')+(p.pref!=='any'&&p.pref!==p.as?' ✗':''):(pref[p.pref]||''))+'</span></div>').join('')+(P.length&&max>P.length?'<div class="muted">Свободно: '+(max-P.length)+' (боты)</div>':'')+(!P.length?'<div class="muted">Создай комнату или войди в чужую</div>':'');
  const F=$('lanFound');F.innerHTML=LAN.found.length?LAN.found.map((f,i)=>'<div class="pl"><span>'+esc(f.name||'Хост')+' · '+(f.n|0)+'/'+(f.max|0)+(f.state==='play'?' · идёт матч':'')+'</span><button class="btn small" data-fi="'+i+'">Войти</button></div>').join(''):'<div class="muted">'+(lanNative()?'Ищем комнаты в этой сети…':'Поиск доступен в Android-приложении')+'</div>';
  F.querySelectorAll('[data-fi]').forEach(b=>b.onclick=()=>{const f=LAN.found[+b.dataset.fi];if(f)lanJoin(f.ip)});try{frDecor(P,host,L)}catch(e){console.error(e)}}
 window.__lanBack=()=>{if(!$('lan').classList.contains('hidden')){lanClose();return true}return false};
 {const o=window.__gameBack;window.__gameBack=function(){if(window.__lanBack())return true;return o?o.apply(this,arguments):false}}
-window.ZK_LAN={LAN,lanHostOpen,lanHostStart,lanJoin,lanSnapshot,lanApply,lanIpToCode,lanCodeToIp,lanOpen,lanClose,lanLeaveClient,lanHostClose};
+window.ZK_LAN={LAN,lanResolve,lanMyChoice,lanHostOpen,lanHostStart,lanJoin,lanSnapshot,lanApply,lanIpToCode,lanCodeToIp,lanOpen,lanClose,lanLeaveClient,lanHostClose};
+/* v3.9.1: lobby rows show the resolved role + character; let that part wrap instead of being cut off */
+(function(){const st=document.createElement('style');st.textContent='#lan .pl{flex-wrap:wrap}#lan .pl>span.muted{white-space:normal;overflow:visible}';document.head.appendChild(st)})();
 
 /* ================= v3.9 FRIENDS over Wi-Fi (no server): stable random ID in the save, requests through the room's host,
    online status from UDP presence beacons, invites by UDP unicast (Android app). ================= */
