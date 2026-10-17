@@ -371,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.8</div>
+  <div class="ver">v3.8.1</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -8497,7 +8497,7 @@ function v38Voice(k,ev){if(!G||!k||!k.ch)return;const id=k.ch.id;let set=id==='a
 {const _h=drawV38HUD;drawV38HUD=function(V){_h(V);const s=G.v38sub;if(!s||s.t<=0)return;s.t-=1/60;const c=ctx,txt=s.who+': «'+s.txt+'»';c.save();c.globalAlpha=Math.min(1,s.t*2);c.font='bold 13px sans-serif';c.textAlign='center';const w=c.measureText(txt).width+20;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(W/2-w/2,46,w,22);c.fillStyle=s.col;c.fillText(txt,W/2,62);c.restore()}}
 
 /* ================= v3.8: Season 3 «Остатки прошлого», говорящая маска, новые главы «Сюжета», Артур Винслоу, версия 3.8 ================= */
-const V38_VERSION='3.8',V38_VCODE=18;
+const V38_VERSION='3.8.1',V38_VCODE=19;
 // --- save fix: loadSave() whitelists DEF_SAVE keys, so story progress (S.sg) and v3.8 data were dropped on reload. Restore them from the raw save.
 (function(){try{const raw=JSON.parse(localStorage.getItem(SKEY)||'null');if(raw&&typeof raw==='object'){
  if(raw.sg&&typeof raw.sg==='object'&&(!S.sg||!(S.sg.seen||[]).length))S.sg=raw.sg;
@@ -8715,7 +8715,7 @@ const SG3_SC=new Set(['workshop','stage','strings','vanish','servers','finale'])
 {const _sc=sgScene;sgScene=function(c,w,h,sc,t,thumb,dt){if(!SG3_SC.has(sc))return _sc.apply(this,arguments);c.save();try{sg3Scene(c,w,h,sc,t||0)}finally{c.restore()}}}
 /* ---------- season-2-ended popup + version toast ---------- */
 {const _gm=setMode;setMode=function(m){_gm.apply(this,arguments);if(m==='menu'){const e=S.v38&&S.v38.s2end;if(e&&!e.shown){e.shown=true;save();setTimeout(()=>{rewardPopup('СЕЗОН 2 «ПУТЬ МЕЧА» ЗАВЕРШЁН','Полученные награды остаются у тебя. Начался Сезон 3 «Остатки прошлого»!'+(e.n?' Незабранные награды выданы автоматически.':''),e.rw.length?e.rw:[{c:0}].filter(x=>x.c))},600)}
-  if(S.v38.verSeen!==V38_VERSION){S.v38.verSeen=V38_VERSION;save();setTimeout(()=>toast('Windup Wonderland v'+V38_VERSION+': Сезон 3 «Остатки прошлого», Шут и Эхо, кампании Кратоса и Артаса',3200),900)}}}}
+  if(S.v38.verSeen!==V38_VERSION){S.v38.verSeen=V38_VERSION;save();setTimeout(()=>toast('Windup Wonderland v'+V38_VERSION+': Сезон 3 «Остатки прошлого», Шут и Эхо, кампании Кратоса и Артаса; бои с боссами сбалансированы',3200),900)}}}}
 {const _rr=recRender;recRender=function(){const a=arguments;return withoutLockedPassRecs(()=>_rr.apply(this,a))}}
 /* ---------- role preference: refuse killer OR survivor (never both). Lasts 10 rounds, then a shared 24 h real-time cooldown. ---------- */
 const ROLE_ROUNDS=10,ROLE_CD=24*3600*1000;
@@ -8833,34 +8833,36 @@ function campBtns(){const W=CP.W,H=CP.H,u=Math.min(W/1024,H/461)*1.15+0.15;const
 const campSpcName=()=>CP.id==='kratos'?'Цепи':(CP.A&&CP.A.f2)?'Лёд':'Свет';
 /* ---------- arena ---------- */
 const AW=960,AH=420;
+// v3.8.1 balance (measured with a simulated player, see report): stronger hero, less boss HP, heal pickups in boss fights
+const CAMP_BAL={php:120,pdK:21,pdA:19,spc:48,bhp:0.6,bdmg:0.8,healEvery:11};
 function campStart(i){const m=campMission(CP.id,i);const A={m,mi:i,t:0,type:m.type,f2:CP.id==='arthas'&&(m.f2||i>=10),end:null,paused:false,ens:[],shots:[],zones:[],fx:[],orbs:[],npc:null,runes:null,wave:0,waves:0,timer:0,goal:0,got:0,boss:null,beam:null,sweep:null,flash:0,storm:!!m.storm,spawnT:2,
- sc:1+0.07*i,dmg:1+0.045*i,msg:'',msgT:0};
- A.p={x:AW/2,y:AH*0.7,hp:100,max:100,face:-Math.PI/2,atkT:0,cd:0,combo:0,comboT:0,dashT:0,dashCd:0,sp:0,inv:0,slash:0,spcT:0};
+ sc:1+0.04*i,dmg:1+0.022*i,msg:'',msgT:0};
+ A.p={x:AW/2,y:AH*0.7,hp:CAMP_BAL.php,max:CAMP_BAL.php,face:-Math.PI/2,atkT:0,cd:0,combo:0,comboT:0,dashT:0,dashCd:0,sp:0,inv:0,slash:0,spcT:0};
  const T=m.type;
  if(T==='waves'){A.waves=3+Math.floor(i/5);A.msg='Победи все волны'}
- else if(T==='survive'){A.timer=45+i*2;A.msg='Продержись'}
+ else if(T==='survive'){A.timer=45+i;A.msg='Продержись'}
  else if(T==='collect'){A.goal=8+Math.floor(i/3);A.msg='Собери '+(CP.id==='kratos'?'души и жемчуг':'целебные корни');A.orbT=0}
- else if(T==='protect'){A.timer=40+i*2;A.npc={x:AW/2,y:AH/2,hp:100,max:100};A.p.y=AH/2+60;A.msg='Защити: '+(CP.id==='kratos'?'людей':'обоз и жителей')}
+ else if(T==='protect'){A.timer=40+i;A.npc={x:AW/2,y:AH/2,hp:220,max:220};A.p.y=AH/2+60;A.msg='Защити: '+(CP.id==='kratos'?'людей':'обоз и жителей')}
  else if(T==='trial'){A.waves=3;A.timer=55+i;A.msg='Успей до конца времени · без лечения'}
  else if(T==='rune'){const n=5;A.runes={pts:[],seq:[],at:0,round:0,show:2.2,len:3,rounds:3};for(let k=0;k<n;k++){const a=k/n*TAU-Math.PI/2;A.runes.pts.push({x:AW/2+Math.cos(a)*300,y:AH/2+Math.sin(a)*150,lit:0})}campRuneSeq(A);A.msg='Повтори порядок рун'}
- else if(T==='boss'){const g=GODS[m.boss];A.boss={kind:'boss',id:m.boss,n:g.n,col:g.col,x:AW/2,y:AH*0.28,hp:g.hp*(1+0.03*i),max:g.hp*(1+0.03*i),r:30,spd:70,dmg:16,cd:2,pat:0,act:null,actT:0,phase:1};A.ens.push(A.boss);A.msg=g.n}
+ else if(T==='boss'){const g=GODS[m.boss];A.boss={kind:'boss',id:m.boss,n:g.n,col:g.col,x:AW/2,y:AH*0.28,hp:g.hp*CAMP_BAL.bhp*(1+0.012*i),max:g.hp*CAMP_BAL.bhp*(1+0.012*i),r:30,spd:70,dmg:16,cd:2,pat:0,act:null,actT:0,phase:1};A.ens.push(A.boss);A.msg=g.n}
  CP.A=A;CP.st='play'}
 function campRuneSeq(A){const R=A.runes;R.seq=[];for(let k=0;k<R.len;k++){let n;do{n=(Math.random()*R.pts.length)|0}while(R.seq.length&&R.seq[R.seq.length-1]===n);R.seq.push(n)}R.at=0;R.show=1.2+R.len*0.6}
 function campSpawn(A,kind,x,y){const sc=A.sc,D={grunt:{hp:34,spd:95,dmg:9,r:13},archer:{hp:24,spd:80,dmg:7,r:12},brute:{hp:95,spd:58,dmg:17,r:19}}[kind];
  if(x==null){const s=(Math.random()*4)|0;x=s===0?20:s===1?AW-20:Math.random()*AW;y=s===2?20:s===3?AH-20:Math.random()*AH}
  const e={kind,x,y,hp:D.hp*sc,max:D.hp*sc,spd:D.spd*(1+0.012*A.mi),dmg:D.dmg*A.dmg,r:D.r,cd:1+Math.random(),wind:0,kb:{x:0,y:0},slow:0};A.ens.push(e);return e}
 function campWave(A){A.wave++;const n=3+A.wave+Math.floor(A.mi/3);for(let k=0;k<n;k++)campSpawn(A,k%4===3?'archer':k%6===5&&A.mi>1?'brute':'grunt');if(A.mi>=8&&A.wave===A.waves)campSpawn(A,'brute')}
-function campHurtP(A,d){const p=A.p;if(p.dashT>0||p.inv>0||A.end)return;p.hp-=d;p.inv=0.45;A.fx.push({k:'hit',x:p.x,y:p.y,t:0.3});if(p.hp<=0){p.hp=0;campEnd(A,false)}}
+function campHurtP(A,d){const p=A.p;if(p.dashT>0||p.inv>0||A.end)return;p.hp-=d;p.inv=0.6;A.fx.push({k:'hit',x:p.x,y:p.y,t:0.3});if(p.hp<=0){p.hp=0;campEnd(A,false)}}
 function campHurtE(A,e,d,kx,ky){e.hp-=d;e.kb.x+=kx||0;e.kb.y+=ky||0;A.fx.push({k:'dmg',x:e.x,y:e.y-e.r,t:0.6,v:Math.round(d)});A.p.sp=Math.min(100,A.p.sp+d*0.35)}
 function campAct(b){const A=CP.A;if(!A||A.end||A.paused)return;const p=A.p;
- if(b==='atk'&&p.cd<=0){p.combo=p.comboT>0?(p.combo+1)%3:0;p.comboT=0.7;p.cd=0.32;p.slash=0.18;const big=p.combo===2;const R=big?78:62,arc=big?2.4:1.8,dmg=(CP.id==='kratos'?13:12)*(big?1.7:1)*(A.f2?1.15:1);
+ if(b==='atk'&&p.cd<=0){p.combo=p.comboT>0?(p.combo+1)%3:0;p.comboT=0.7;p.cd=0.32;p.slash=0.18;const big=p.combo===2;const R=big?78:62,arc=big?2.4:1.8,dmg=(CP.id==='kratos'?CAMP_BAL.pdK:CAMP_BAL.pdA)*(big?1.7:1)*(A.f2?1.15:1);
   for(const e of A.ens){const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d>R+e.r)continue;let da=Math.atan2(dy,dx)-p.face;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)>arc/2&&d>e.r+10)continue;campHurtE(A,e,dmg,dx/(d||1)*(big?260:90),dy/(d||1)*(big?260:90))}
   AU.sfx&&0}
  else if(b==='spc'&&p.sp>=50){p.sp-=50;p.spcT=0.5;
-  if(CP.id==='kratos'){for(const e of A.ens){const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d<130+e.r)campHurtE(A,e,32,dx/(d||1)*320,dy/(d||1)*320)}A.fx.push({k:'ring',x:p.x,y:p.y,t:0.5,r:130,col:'#ff8a3a'})}
-  else if(A.f2){for(const e of A.ens){const d=Math.hypot(e.x-p.x,e.y-p.y);if(d<150+e.r){campHurtE(A,e,26,0,0);e.slow=2.5}}A.fx.push({k:'ring',x:p.x,y:p.y,t:0.5,r:150,col:'#9fe8ff'})}
+  if(CP.id==='kratos'){for(const e of A.ens){const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d<130+e.r)campHurtE(A,e,CAMP_BAL.spc,dx/(d||1)*320,dy/(d||1)*320)}A.fx.push({k:'ring',x:p.x,y:p.y,t:0.5,r:130,col:'#ff8a3a'})}
+  else if(A.f2){for(const e of A.ens){const d=Math.hypot(e.x-p.x,e.y-p.y);if(d<150+e.r){campHurtE(A,e,CAMP_BAL.spc*0.85,0,0);e.slow=2.5}}A.fx.push({k:'ring',x:p.x,y:p.y,t:0.5,r:150,col:'#9fe8ff'})}
   else{p.hp=Math.min(p.max,p.hp+(A.type==='trial'?0:22));for(const e of A.ens){const d=Math.hypot(e.x-p.x,e.y-p.y);if(d<100+e.r)campHurtE(A,e,16,0,0)}A.fx.push({k:'ring',x:p.x,y:p.y,t:0.5,r:100,col:'#ffe08a'})}}
- else if(b==='dash'&&p.dashCd<=0){p.dashT=0.24;p.dashCd=0.95}}
+ else if(b==='dash'&&p.dashCd<=0){p.dashT=0.24;p.dashCd=0.95;p.dashAt=A.t}}
 function campEnd(A,win){if(A.end)return;A.end={win,t:0};if(win)campWin(A)}
 function campWin(A){const id=CP.id,d=campData(id),i=A.mi,m=CAMPS[id].M[i];A.end.rw=[];if(i<d.done)return;d.done=i+1;d.today++;
  const rw=[{c:m.rw}];if(m.sk)rw.push({sk:m.sk});if(m.kc)rw.push({kc:m.kc});for(const r of rw){grant(r);A.end.rw.push(r)}if(m.kc)S.stats.v38camp=(S.stats.v38camp||0)+1;save();updCoins&&updCoins()}
@@ -8875,15 +8877,15 @@ function campUpdate(dt){const A=CP.A;if(!A||A.paused)return;if(A.end){A.end.t+=d
  // objectives
  const T=A.type;
  if(T==='waves'||T==='trial'){if(!A.ens.length){if(A.wave>=A.waves)return campEnd(A,true);campWave(A)}if(T==='trial'){A.timer-=dt;if(A.timer<=0)return campEnd(A,false)}}
- else if(T==='survive'||T==='protect'){A.timer-=dt;A.spawnT-=dt;if(A.spawnT<=0){A.spawnT=Math.max(1.1,3.2-A.mi*0.08);campSpawn(A,Math.random()<0.25?'archer':Math.random()<0.12?'brute':'grunt')}if(A.timer<=0)return campEnd(A,true)}
+ else if(T==='survive'||T==='protect'){A.timer-=dt;A.hT=(A.hT==null?14:A.hT)-dt;if(A.hT<=0){A.hT=A.storm?10:14;if(A.orbs.filter(o=>o.heal).length<2)A.orbs.push({x:rnd(80,AW-80),y:rnd(70,AH-70),heal:1,t:0})}A.spawnT-=dt;if(A.spawnT<=0){A.spawnT=Math.max(1.1,3.2-A.mi*0.08)*(A.storm?1.5:1);campSpawn(A,Math.random()<0.25?'archer':Math.random()<0.12?'brute':'grunt')}if(A.timer<=0)return campEnd(A,true)}
  else if(T==='collect'){A.spawnT-=dt;if(A.spawnT<=0){A.spawnT=Math.max(1.4,3.4-A.mi*0.08);campSpawn(A,Math.random()<0.3?'archer':'grunt')}
   if(A.orbs.filter(o=>o.goal).length<2){A.orbs.push({x:60+Math.random()*(AW-120),y:50+Math.random()*(AH-100),goal:1,t:0})}}
  else if(T==='rune'){const R=A.runes;if(R.show>0){R.show-=dt}else{for(let k=0;k<R.pts.length;k++){const q=R.pts[k];q.lit=Math.max(0,q.lit-dt);if(Math.hypot(q.x-p.x,q.y-p.y)<34&&!q.on){q.on=1;if(R.seq[R.at]===k){q.lit=0.6;R.at++;if(R.at>=R.seq.length){R.round++;if(R.round>=R.rounds)return campEnd(A,true);R.len++;campRuneSeq(A);A.msgT=1.5;A.msg='Руна принята! Следующий порядок…'}}else{q.lit=-0.8;R.at=0;R.show=1.2+R.len*0.6;for(let j=0;j<2+Math.floor(A.mi/5);j++)campSpawn(A,'grunt');campHurtP(A,8);A.msgT=1.5;A.msg='Не тот порядок! Стражи проснулись'}}else if(Math.hypot(q.x-p.x,q.y-p.y)>44)q.on=0}}
   A.spawnT-=dt;if(A.spawnT<=0){A.spawnT=Math.max(3,7-A.mi*0.2);campSpawn(A,'grunt')}}
  else if(T==='boss'){campBoss(A,dt);if(A.boss.hp<=0){A.ens=[];return campEnd(A,true)}}
- if(A.storm){A.stT=(A.stT||1.5)-dt;if(A.stT<=0){A.stT=Math.max(0.6,1.4-A.t*0.01);A.zones.push({x:p.x+rnd(-60,60),y:p.y+rnd(-40,40),r:46,t:0.9,dmg:14*A.dmg,col:'#9fc8ff'})}}
+ if(A.storm){A.stT=(A.stT||1.5)-dt;if(A.stT<=0){A.stT=Math.max(1.5,2.0-A.t*0.008);A.zones.push({x:p.x+rnd(-60,60),y:p.y+rnd(-40,40),r:44,t:1.25,dmg:8*A.dmg,col:'#9fc8ff'})}}
  // enemies
- for(const e of A.ens){if(e.kind==='boss')continue;e.slow=Math.max(0,e.slow-dt);const sl=e.slow>0?0.45:1;let tx=p.x,ty=p.y;if(A.npc&&(e.tgtN==null?(e.tgtN=Math.random()<0.55):e.tgtN)){tx=A.npc.x;ty=A.npc.y}
+ for(const e of A.ens){if(e.kind==='boss')continue;e.slow=Math.max(0,e.slow-dt);const sl=e.slow>0?0.45:1;let tx=p.x,ty=p.y;if(A.npc&&e.kind!=='archer'&&(e.tgtN==null?(e.tgtN=Math.random()<0.4):e.tgtN)){tx=A.npc.x;ty=A.npc.y}
   const dx=tx-e.x,dy=ty-e.y,d=Math.hypot(dx,dy)||1;e.cd-=dt;
   if(e.kind==='archer'){const want=d>240?1:d<170?-1:0;e.x+=dx/d*e.spd*want*dt*sl;e.y+=dy/d*e.spd*want*dt*sl;if(e.cd<=0){e.cd=1.9;A.shots.push({x:e.x,y:e.y,vx:dx/d*250,vy:dy/d*250,dmg:e.dmg,r:5,col:'#ffcf5a',t:3})}}
   else if(e.wind>0){e.wind-=dt;if(e.wind<=0){const hd=Math.hypot(tx-e.x,ty-e.y);if(hd<e.r+34){if(tx===p.x)campHurtP(A,e.dmg);else{A.npc.hp-=e.dmg;if(A.npc.hp<=0)return campEnd(A,false)}}e.cd=e.kind==='brute'?1.8:1.1}}
@@ -8896,24 +8898,25 @@ function campUpdate(dt){const A=CP.A;if(!A||A.paused)return;if(A.end){A.end.t+=d
  for(let k=A.zones.length-1;k>=0;k--){const z=A.zones[k];z.t-=dt;if(z.t<=0){if(Math.hypot(z.x-p.x,z.y-p.y)<z.r)campHurtP(A,z.dmg);A.fx.push({k:'ring',x:z.x,y:z.y,t:0.35,r:z.r,col:z.col});A.zones.splice(k,1)}}
  for(let k=A.orbs.length-1;k>=0;k--){const o=A.orbs[k];o.t+=dt;if(Math.hypot(o.x-p.x,o.y-p.y)<26){if(o.goal){A.got++;if(A.got>=A.goal){A.orbs.splice(k,1);return campEnd(A,true)}}else p.hp=Math.min(p.max,p.hp+15);A.orbs.splice(k,1)}else if(o.heal&&o.t>10)A.orbs.splice(k,1)}
  for(let k=A.fx.length-1;k>=0;k--){A.fx[k].t-=dt;if(A.fx[k].t<=0)A.fx.splice(k,1)}
- A.msgT=Math.max(0,A.msgT-dt);if(A.flash>0){A.flash-=dt;if(A.flash<=0){if(!(p.dashT>0)){const lookAway=false;if(!lookAway)campHurtP(A,20*A.dmg)}A.fx.push({k:'white',t:0.4})}}}
-function campBoss(A,dt){const b=A.boss,p=A.p,g=GODS[b.id];if(b.phase===1&&b.hp<b.max*0.5){b.phase=2;A.msgT=2;A.msg=b.n+' в ярости!';for(let k=0;k<2;k++)campSpawn(A,'grunt')}
+ A.msgT=Math.max(0,A.msgT-dt);if(A.flash>0){A.flash-=dt;if(A.flash<=0){if(!(A.t-(p.dashAt==null?-9:p.dashAt)<0.45)){p.inv=0;campHurtP(A,16*A.dmg*CAMP_BAL.bdmg)}A.fx.push({k:'white',t:0.4})}}}
+function campBoss(A,dt){const b=A.boss,p=A.p,g=GODS[b.id];A.hT=(A.hT==null?CAMP_BAL.healEvery:A.hT)-dt;if(A.hT<=0){A.hT=CAMP_BAL.healEvery;if(A.orbs.filter(o=>o.heal).length<2)A.orbs.push({x:rnd(80,AW-80),y:rnd(70,AH-70),heal:1,t:0})}
+ if(b.phase===1&&b.hp<b.max*0.5){b.phase=2;A.msgT=2;A.msg=b.n+' в ярости! Сила восстановлена';p.hp=Math.min(p.max,p.hp+p.max*0.35);for(let k=0;k<2;k++)campSpawn(A,'grunt')}
  const sp=b.phase===2?0.7:1;b.kb={x:0,y:0};
  if(!b.act){b.cd-=dt;const dx=p.x-b.x,dy=p.y-b.y,d=Math.hypot(dx,dy)||1;if(d>90){b.x+=dx/d*b.spd*dt;b.y+=dy/d*b.spd*dt}else if(b.cd<1.5){b.act='slam';b.actT=0.55}
   if(b.cd<=0){const P=g.pat;b.act=P[b.pat%P.length];b.pat++;b.actT={charge:0.7,zones:0.2,ring:0.4,summon:0.5,sweep:0.2,beam:3.2,flash:0.1,heal:1.2}[b.act]||0.4;b.cd=3.2*sp;
    if(b.act==='charge'){b.cx=dx/d;b.cy=dy/d}if(b.act==='beam'){A.beam={a:Math.atan2(dy,dx)+0.9,w:b.phase===2?1.0:0.75,t:3.2,tick:0}}}
   return}
  b.actT-=dt;const k=b.act;
- if(k==='slam'){if(b.actT<=0){if(Math.hypot(p.x-b.x,p.y-b.y)<96)campHurtP(A,b.dmg*A.dmg);A.fx.push({k:'ring',x:b.x,y:b.y,t:0.35,r:96,col:b.col});b.act=null;b.cd=Math.max(b.cd,1.6)}return}
- if(k==='charge'){if(b.actT<=0){b.x+=b.cx*560*dt;b.y+=b.cy*560*dt;if(Math.hypot(p.x-b.x,p.y-b.y)<b.r+14)campHurtP(A,b.dmg*1.2*A.dmg);if(b.actT<-0.5||b.x<30||b.x>AW-30||b.y<30||b.y>AH-30){b.x=clamp(b.x,30,AW-30);b.y=clamp(b.y,30,AH-30);b.act=null}}return}
+ if(k==='slam'){if(b.actT<=0){if(Math.hypot(p.x-b.x,p.y-b.y)<96)campHurtP(A,b.dmg*A.dmg*CAMP_BAL.bdmg);A.fx.push({k:'ring',x:b.x,y:b.y,t:0.35,r:96,col:b.col});b.act=null;b.cd=Math.max(b.cd,1.6)}return}
+ if(k==='charge'){if(b.actT<=0){b.x+=b.cx*560*dt;b.y+=b.cy*560*dt;if(Math.hypot(p.x-b.x,p.y-b.y)<b.r+14)campHurtP(A,b.dmg*1.2*A.dmg*CAMP_BAL.bdmg);if(b.actT<-0.5||b.x<30||b.x>AW-30||b.y<30||b.y>AH-30){b.x=clamp(b.x,30,AW-30);b.y=clamp(b.y,30,AH-30);b.act=null}}return}
  if(b.actT>0&&k!=='beam')return;
- if(k==='zones'){const n=b.phase===2?7:5;for(let i=0;i<n;i++)A.zones.push({x:i===0?p.x:rnd(60,AW-60),y:i===0?p.y:rnd(50,AH-50),r:52,t:1.0+i*0.08,dmg:15*A.dmg,col:b.col})}
- else if(k==='ring'){const n=b.phase===2?18:12,o=Math.random();for(let i=0;i<n;i++){const a=(i+o)/n*TAU;A.shots.push({x:b.x,y:b.y,vx:Math.cos(a)*190,vy:Math.sin(a)*190,dmg:10*A.dmg,r:7,col:b.col,t:4})}}
+ if(k==='zones'){const n=b.phase===2?7:5;for(let i=0;i<n;i++)A.zones.push({x:i===0?p.x:rnd(60,AW-60),y:i===0?p.y:rnd(50,AH-50),r:52,t:1.0+i*0.08,dmg:15*A.dmg*CAMP_BAL.bdmg,col:b.col})}
+ else if(k==='ring'){const n=b.phase===2?18:12,o=Math.random();for(let i=0;i<n;i++){const a=(i+o)/n*TAU;A.shots.push({x:b.x,y:b.y,vx:Math.cos(a)*190,vy:Math.sin(a)*190,dmg:10*A.dmg*CAMP_BAL.bdmg,r:7,col:b.col,t:4})}}
  else if(k==='summon'){for(let i=0;i<(b.phase===2?4:3);i++)campSpawn(A,i===2?'archer':'grunt',b.x+rnd(-60,60),b.y+rnd(-30,30))}
  else if(k==='sweep'){const gap=rnd(80,AH-80);A.sweep={x:0,gap,dir:1,t:0};A.sweep.x=Math.random()<0.5?0:AW;A.sweep.dir=A.sweep.x?-1:1}
- else if(k==='flash'){A.flash=1.3;A.msgT=1.3;A.msg='Вспышка! Сделай «Рывок» в момент удара'}
+ else if(k==='flash'){A.flash=1.3;A.msgT=1.3;A.msg='Вспышка! Сделай «Рывок», когда экран побелеет'}
  else if(k==='heal'){b.hp=Math.min(b.max,b.hp+b.max*0.05);A.fx.push({k:'ring',x:b.x,y:b.y,t:0.5,r:70,col:'#fff0a0'})}
- else if(k==='beam'){const B=A.beam;if(B){B.a+=B.w*dt*(b.phase===2?1.25:1);B.tick-=dt;if(B.tick<=0){const dx=p.x-b.x,dy=p.y-b.y;const along=dx*Math.cos(B.a)+dy*Math.sin(B.a),perp=Math.abs(-dx*Math.sin(B.a)+dy*Math.cos(B.a));if(along>0&&perp<18){campHurtP(A,9*A.dmg);B.tick=0.35}}}if(b.actT<=0){A.beam=null;b.act=null}return}
+ else if(k==='beam'){const B=A.beam;if(B){B.a+=B.w*dt*(b.phase===2?1.25:1);B.tick-=dt;if(B.tick<=0){const dx=p.x-b.x,dy=p.y-b.y;const along=dx*Math.cos(B.a)+dy*Math.sin(B.a),perp=Math.abs(-dx*Math.sin(B.a)+dy*Math.cos(B.a));if(along>0&&perp<18){campHurtP(A,9*A.dmg*CAMP_BAL.bdmg);B.tick=0.35}}}if(b.actT<=0){A.beam=null;b.act=null}return}
  b.act=null}
 function campSweepUpd(A,dt){const s=A.sweep;if(!s)return;s.x+=s.dir*230*dt;const p=A.p;if(Math.abs(p.x-s.x)<14&&Math.abs(p.y-s.gap)>60)campHurtP(A,14*A.dmg);if(s.x<-20||s.x>AW+20)A.sweep=null}
 /* ---------- drawing ---------- */

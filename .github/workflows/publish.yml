@@ -35,34 +35,30 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "829c6a2195be6cb2eb422ac9c97a9e7384abfa4b0ef8af93ffe16e3c7a81ab32" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "f47a18c3f068f4d4db3203020a3be3170679b6f0bd6cb56228e1dacb3b1a034f" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.8 with APK
+      - name: Create release v3.8.1 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.8 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.8.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.8 — Сезон 3 «Остатки прошлого»
+          «Windup Wonderland» 3.8.1 — баланс кампаний
 
-          - **Сезон 2 «Путь меча» завершён.** Все полученные награды остаются; награды уровней, которые ты прошёл, но не забрал, выдаются автоматически.
-          - **Сезон 3 «Остатки прошлого» (50 уровней, без скинов):** монеты на каждом уровне (на 10/20/30/40 — больше), новые главы «Сюжета» об Эхо, Тайлере Олбрайте, Хиппо, буре 1993 года и о том, откуда взялись приказы. Значки и титулы «Помнящий» и «Остаток прошлого», новые пластинки (оригинальная музыка), рамки и баннеры.
-          - **Маска в меню заговорила:** замка больше нет, новые реплики открываются с уровнями пропуска.
-          - **Новые аниматроники:** **Шут** (4★, в магазине) — фальшивые генераторы, коробки-сюрпризы, мячи и галлюцинации; **Эхо** (5★, бесплатно на 25 уровне пропуска) — нити, двойник и тихие зоны.
-          - **Кампании (новый раздел в лобби):** «Путь спартанца» — 20 миссий против богов Олимпа, в конце открывается **Кратос** (фан-трибьют, вдохновлено God of War); «Падение Эльдмара» — 15 миссий с диалогами и выборами, в конце открывается **Артас** с двумя формами и мечом Фростморт (фан-трибьют, вдохновлено Warcraft). Мини-игры — бои с видом сверху, за миссии дают монеты и скины. Кратос и Артас не продаются.
-          - **Озвучка новых персонажей** (временные голоса) с субтитрами.
-          - **Настройки → «Роль в матче»:** можно отказаться от роли убийцы или выжившего на 10 раундов, потом перерыв 24 часа.
-          - Винслоу везде зовут Артур. Прогресс «Сюжета» больше не сбрасывается после перезапуска.
-          - Включено исправление 3.7.4: «Арима Спрингтрап» не пропадает, в магазине не продаётся, возврат монет купившим.
+          - **Бои с боссами сбалансированы:** у героя больше урона (удар и особый приём) и больше здоровья, у боссов меньше здоровья и урона.
+          - **Сферы лечения** появляются во время боёв с боссами и в миссиях на выживание и защиту; когда босс входит в ярость, герой восстанавливает часть сил.
+          - **Честная вспышка Гелиоса:** достаточно сделать «Рывок», когда экран побелеет, — без идеального тайминга.
+          - Гроза бьёт реже и слабее и предупреждает заранее; миссии на выживание и защиту короче, союзник крепче.
+          - Каждый бой проверен симуляцией игрока: средний игрок побеждает любого босса за 1–3 попытки.
 
-          Android 7.0+, versionCode 18 / versionName 3.8. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: 829c6a2195be6cb2eb422ac9c97a9e7384abfa4b0ef8af93ffe16e3c7a81ab32
+          Android 7.0+, versionCode 19 / versionName 3.8.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: f47a18c3f068f4d4db3203020a3be3170679b6f0bd6cb56228e1dacb3b1a034f
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.8 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.8" --notes-file /tmp/notes.md
+          gh release create v3.8.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.8.1" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -73,12 +69,12 @@ jobs:
           git pull -q --ff-only origin main || true
           if [ -f .github/bootstrap/voice.tar.gz.b64 ]; then base64 -d .github/bootstrap/voice.tar.gz.b64 | tar xz; git add voice; fi
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.8 bootstrap payload (APK published in Release v3.8)"
+          git commit -m "Remove v3.8.1 bootstrap payload (APK published in Release v3.8.1)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.8)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.8.1)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
