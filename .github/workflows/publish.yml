@@ -35,29 +35,28 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "c1a8f37ee1014588c374fd4cb98cfa2f86a425b7ad829f3c9193a37338e02b71" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "fafd86fd59fe82a17ca5e0eb06a38bd84fe068516a63073b34bb7df0aa6f04dc" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.9.1 with APK
+      - name: Create release v3.9.2 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.9.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.9.2 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.9.1 — исправления игры по Wi‑Fi
+          «Windup Wonderland» 3.9.2 — срочное исправление
 
-          - **Выбор роли теперь соблюдается:** кто выбрал «Выживший», больше не становится аниматроником. Если аниматроника хотят больше игроков, чем есть мест, честный жребий решает это прямо в комнате, и все видят итог до старта.
-          - **Выбор персонажа и скина соблюдается** (например, Джейсон-выживший). В комнате можно выбрать героя из своих открытых персонажей, у каждого игрока видно его роль и персонажа.
-          - **Рейтинговые матчи по Wi‑Fi:** хост включает «Рейтинг» в комнате. Каждый игрок получает или теряет свои очки ранга по обычным правилам рейтинга, боты — по рангу хоста. Отказ от роли учитывается.
-          - **Монеты пропуска честнее:** 10/15/20/25/30 по уровням, 30 на каждом 5-м уровне (во всех пропусках).
+          - **Монеты больше не сбрасываются повторно.** В 3.9.1 сброс «Революции» по ошибке запускался ещё раз для тех, кто уже обновился до 3.9: монеты снова становились 2100, а «Олимп» выдавался повторно. Теперь сброс не может выполниться дважды.
+          - **Потерянные монеты возвращаются:** если 3.9.1 сбросил монеты, накопленные в 3.9, игра один раз вернёт разницу (монеты, заработанные после этого, сохраняются).
+          - **Рейтинг по Wi‑Fi:** если хост сдался или вышел, рейтинг других игроков не меняется.
 
-          Android 7.0+, versionCode 21 / versionName 3.9.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: c1a8f37ee1014588c374fd4cb98cfa2f86a425b7ad829f3c9193a37338e02b71
+          Android 7.0+, versionCode 22 / versionName 3.9.2. Тот же ключ подписи: ставится поверх, сохранения не теряются.
+          SHA-256: fafd86fd59fe82a17ca5e0eb06a38bd84fe068516a63073b34bb7df0aa6f04dc
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.9.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.9.1" --notes-file /tmp/notes.md
+          gh release create v3.9.2 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.9.2" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -69,12 +68,12 @@ jobs:
           if [ -f .github/bootstrap/voice.tar.gz.b64 ]; then base64 -d .github/bootstrap/voice.tar.gz.b64 | tar xz; git add voice; fi
           git rm -q -r .github/bootstrap
           git rm -q -f --ignore-unmatch voice/a1_*.ogg voice/a2_*.ogg voice/k_*.ogg
-          git commit -m "Remove v3.9.1 bootstrap payload (APK published in Release v3.9.1)"
+          git commit -m "Remove v3.9.2 bootstrap payload (APK published in Release v3.9.2)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.9.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.9.2)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
