@@ -371,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.9.1</div>
+  <div class="ver">v3.9.2</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -8277,7 +8277,7 @@ function v38Voice(k,ev){if(!G||!k||!k.ch)return;const id=k.ch.id;const set=id;co
 {const _h=drawV38HUD;drawV38HUD=function(V){_h(V);const s=G.v38sub;if(!s||s.t<=0)return;s.t-=1/60;const c=ctx,txt=s.who+': «'+s.txt+'»';c.save();c.globalAlpha=Math.min(1,s.t*2);c.font='bold 13px sans-serif';c.textAlign='center';const w=c.measureText(txt).width+20;c.fillStyle='rgba(0,0,0,.6)';c.fillRect(W/2-w/2,46,w,22);c.fillStyle=s.col;c.fillText(txt,W/2,62);c.restore()}}
 
 /* ================= v3.8: Season 3 «Остатки прошлого», говорящая маска, новые главы «Сюжета», Артур Винслоу, версия 3.8 ================= */
-const V38_VERSION='3.9.1',V38_VCODE=21;
+const V38_VERSION='3.9.2',V38_VCODE=22;
 // --- save fix: loadSave() whitelists DEF_SAVE keys, so story progress (S.sg) and v3.8 data were dropped on reload. Restore them from the raw save.
 (function(){try{const raw=rawSave();if(raw&&typeof raw==='object'){
  if(raw.sg&&typeof raw.sg==='object'&&(!S.sg||!(S.sg.seen||[]).length))S.sg=raw.sg;
@@ -8588,20 +8588,30 @@ const V39_TRIBUTE=/Фан-трибьют|вдохновлено|гость|Хэ�
 function wwIsRegularShopChar(c){return !!c&&typeof c.price==='number'&&c.price>0&&!c.event&&!c.gift&&!c.passTier&&!c.camp&&!c.limited&&!V39_TRIBUTE.test(c.title||'')}
 function wwTakeBack(sd,id){const M=sd==='h'?HMAP:KMAP;const c=M[id];if(!wwIsRegularShopChar(c))return false;if(wwClaimedFromPass(id))return false;return true}
 /* ---------- the one-time «Революция» migration ---------- */
-function wwRevolution(){const V=S.v39;if(V.rev)return null;const rep={before:S.coins,refund:0,taken:[],capped:0};
+// v3.9.2: the revolution must NEVER run twice. Any marker of an earlier run (v3.9 or later) blocks it:
+// the flag, its timestamp/report, the «Олимп» banner, or a v39 field already present in the raw save.
+function wwRevDone(){const V=S.v39||{};if(V.rev||V.revAt||V.revRep)return true;
+ try{if(S.own&&Array.isArray(S.own.banners)&&S.own.banners.includes('bn_olymp'))return true}catch(e){}
+ try{const raw=rawSave();if(raw&&isObj(raw.v39)&&(raw.v39.rev||raw.v39.revAt))return true;if(raw&&raw.own&&Array.isArray(raw.own.banners)&&raw.own.banners.includes('bn_olymp'))return true}catch(e){}return false}
+function wwRevolution(){const V=S.v39;if(wwRevDone()){if(!V.rev)V.rev=1;return null}const rep={before:S.coins,refund:0,taken:[],capped:0};
  // 2) purchased regular characters go back to the shop; XP, mastery and skins stay
  for(const sd of ['h','k']){const keep=[];for(const id of S.unl[sd]){if(wwTakeBack(sd,id))rep.taken.push((sd==='h'?HMAP:KMAP)[id].name);else keep.push(id)}S.unl[sd]=keep}
  if(!S.unl.h.includes(S.sel.h))S.sel.h=S.unl.h.includes('marina')?'marina':S.unl.h[0];if(!S.unl.k.includes(S.sel.k))S.sel.k=S.unl.k.includes('chorist')?'chorist':S.unl.k[0];
  // 3) reset every existing player's coins to exactly 2000 (one time, no lasting limit), then the gift; fresh installs keep the normal start
  const fresh=!rawSave();if(!fresh)S.coins=V39_COIN_RESET;
  S.coins+=V39_GIFT;if(!S.own.banners.includes('bn_olymp'))S.own.banners.push('bn_olymp');
- V.rev=1;V.r391=1;V.revAt=Date.now();V.revRep={taken:rep.taken,before:rep.before,after:S.coins,shown:fresh};return rep}
-// v3.9.1: saves already migrated by 3.9 (which only capped coins) get the reset too: exactly 2000 + 100
-function wwRev391(){const V=S.v39;if(!V.rev||V.r391)return false;const before=S.coins;S.coins=V39_COIN_RESET+V39_GIFT;if(!S.own.banners.includes('bn_olymp'))S.own.banners.push('bn_olymp');
- V.r391=1;V.revRep={taken:[],before,after:S.coins,shown:false};return true}
-try{wwPurgeGone();wwRev391();wwRevolution()}catch(e){console.error('v39 migration',e)}
+ V.rev=1;V.r391=1;V.fix392=1;V.revAt=Date.now();V.revRep={taken:rep.taken,before:rep.before,after:S.coins,shown:fresh};return rep}
+/* v3.9.2 repair: v3.9.1 wrongly re-ran the reset on saves already migrated by v3.9 (wwRev391, removed). That step stored the
+   coins it replaced in v39.revRep.before and kept v3.9's revAt (set before v3.9.1 existed). For exactly those saves, give the lost
+   coins back on top of whatever was earned since (coins never go down here). Runs once (v39.fix392). */
+const V392_REL391=1792248603000; // 2026-10-17 14:50:03 UTC: v3.9.1 release; a v3.9 revolution (v3.9 was out 13:47–14:50 UTC) is older, a v3.9.1 one is newer
+function wwFix392(){const V=S.v39;if(!V||V.fix392||!V.rev)return null;V.fix392=1;const R=V.revRep;
+ if(!(V.rev&&V.r391&&isObj(R)&&typeof R.before==='number'&&R.after===V39_COIN_RESET+V39_GIFT&&Array.isArray(R.taken)&&!R.taken.length&&!('refund' in R)&&typeof V.revAt==='number'&&V.revAt<V392_REL391))return null;
+ const add=Math.max(0,Math.floor(R.before)-(V39_COIN_RESET+V39_GIFT));V.fix392Rep={before:R.before,add,coins:S.coins,at:Date.now()};if(add>0)S.coins+=add;R.shown=true;return add}
+let V392_RESTORED=null;
+try{wwPurgeGone();V392_RESTORED=wwFix392();wwRevolution();if(S.v39.rev&&!S.v39.fix392)S.v39.fix392=1}catch(e){console.error('v39 migration',e)}
 save();
-{const _gm=setMode;setMode=function(m){_gm.apply(this,arguments);if(m!=='menu')return;const R=S.v39&&S.v39.revRep;if(!R||R.shown)return;R.shown=true;save();
+{const _gm=setMode;setMode=function(m){_gm.apply(this,arguments);if(m!=='menu')return;if(V392_RESTORED>0){const n=V392_RESTORED;V392_RESTORED=null;setTimeout(()=>{try{rewardPopup('ИСПРАВЛЕНИЕ 3.9.2','Обновление 3.9.1 по ошибке повторно сбросило монеты. Возвращаем потерянное: +'+n+' монет.',[{c:n}]);updCoins()}catch(e){}},700);return}const R=S.v39&&S.v39.revRep;if(!R||R.shown)return;R.shown=true;save();
  setTimeout(()=>{try{let t='Экономика игры обновлена: монеты у всех игроков сброшены до '+V39_COIN_RESET+', и ещё +'+V39_GIFT+' в подарок. Дальше можно копить сколько угодно.';
   if(R.taken&&R.taken.length)t+=' Купленные персонажи вернулись в магазин (опыт, мастерство и скины сохранены): '+R.taken.join(', ')+'.';
   rewardPopup('«РЕВОЛЮЦИЯ»',t,[{c:V39_GIFT},{bn:'bn_olymp'}]);updCoins()}catch(e){console.error(e)}},700)}}
@@ -8894,9 +8904,11 @@ function lanClientUpdate(dt){if(!G||G.over)return;G.t+=dt;if(G.endT<0)G.timer=Ma
 function lanClientEnd(d){if(!G||!G.lan){LAN.inMatch=false;return}if(d.snap)lanApply(d.snap);LAN.ended=true;LAN.inMatch=false;LAN.lastMatch=true;
  if(d.st)for(const k in d.st)if(typeof d.st[k]==='number')G.stats[k]=(G.stats[k]||0)+d.st[k];
  for(const k of ['gens','hits','downs','elims','rescues','revives','stuns','braceT','traps'])if(typeof G.stats[k]!=='number')G.stats[k]=0;
- if(d.why==='host_quit')toast('Хост завершил матч',2400);
+ if(d.why==='host_quit'){toast(G.ranked?'Хост завершил матч — рейтинг не изменён':'Хост завершил матч',2400);lanVoidRank()}
  if(MG)closeMinigame('cancel');if(!G.lanEndDone){G.lanEndDone=true;G.over=true;endRound()}}
-function lanEndLocal(){LAN.inMatch=false;LAN.lastMatch=true;if(!G||G.lanEndDone)return;G.lanEndDone=true;if(MG){try{MG=null;mgEl.classList.add('hidden')}catch(e){}}G.over=true;try{endRound()}catch(e){console.error(e);goMenu()}}
+// v3.9.2: a ranked match the host surrendered or abandoned does not change the clients' rank (0 RP instead of a free escape)
+function lanVoidRank(){if(G&&G.ranked){G.ranked=false;G.lanRankVoid=true}}
+function lanEndLocal(){LAN.inMatch=false;LAN.lastMatch=true;if(!G||G.lanEndDone)return;if(LAN.role!=='host')lanVoidRank();G.lanEndDone=true;if(MG){try{MG=null;mgEl.classList.add('hidden')}catch(e){}}G.over=true;try{endRound()}catch(e){console.error(e);goMenu()}}
 /* ---------- match end / quitting ---------- */
 {const o=endRound;endRound=function(){const lan=G&&G.lan;if(lan&&LAN.role==='host'&&LAN.inMatch){LAN.inMatch=false;LAN.lastMatch=true;clearInterval(LAN.snapT);LAN.snapT=null;
   const snap=lanSnapshot(false);for(const id of LAN.order){const P=LAN.peers[id];if(P&&P.hello)lanTo(id,{k:'end',snap,st:P.stats||{},why:G.surrender?'host_quit':''})}setTimeout(lanHostLobby,300)}
