@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 /** «Заводные Кошмары»: fullscreen landscape WebView wrapper around the offline HTML5 game in assets/index.html. */
 public class MainActivity extends Activity {
     private WebView webView;
+    private LanBridge lan;
 
     // Fullscreen API / orientation lock calls from the page resolve harmlessly:
     // the Activity itself is already fullscreen + landscape.
@@ -58,6 +59,8 @@ public class MainActivity extends Activity {
         s.setDatabaseEnabled(true);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setAllowFileAccess(true);
+        lan = new LanBridge(this);
+        webView.addJavascriptInterface(lan, "WWLan");
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
         s.setSupportZoom(false);
@@ -145,6 +148,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (lan != null) { lan.shutdown(); lan = null; }
         if (webView != null) { webView.destroy(); webView = null; }
         super.onDestroy();
     }
