@@ -35,30 +35,34 @@ jobs:
           ls -l .github/bootstrap
           cat $(ls .github/bootstrap/zavodnye-koshmary.apk.b64.part* | sort -V) | base64 -d > /tmp/p/zavodnye-koshmary.apk
           printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "$(cat .github/bootstrap/zavodnye-koshmary.apk.sha256)" | sha256sum -c -
-          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "f47a18c3f068f4d4db3203020a3be3170679b6f0bd6cb56228e1dacb3b1a034f" | sha256sum -c -
+          printf '%s  /tmp/p/zavodnye-koshmary.apk\n' "279864bd3d4a38f5583b2b010384f8ac7adee08187c0f7cf6bd9c729353531c7" | sha256sum -c -
           ls -l /tmp/p
 
-      - name: Create release v3.8.1 with APK
+      - name: Create release v3.9 with APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test -f /tmp/p/zavodnye-koshmary.apk || exit 0
-          gh release view v3.8.1 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
+          gh release view v3.9 >/dev/null 2>&1 && { printf 'release exists\n'; exit 0; }
           cat > /tmp/notes.md <<'NOTES'
-          «Windup Wonderland» 3.8.1 — баланс кампаний
+          «Windup Wonderland» 3.9 — «Революция»
 
-          - **Бои с боссами сбалансированы:** у героя больше урона (удар и особый приём) и больше здоровья, у боссов меньше здоровья и урона.
-          - **Сферы лечения** появляются во время боёв с боссами и в миссиях на выживание и защиту; когда босс входит в ярость, герой восстанавливает часть сил.
-          - **Честная вспышка Гелиоса:** достаточно сделать «Рывок», когда экран побелеет, — без идеального тайминга.
-          - Гроза бьёт реже и слабее и предупреждает заранее; миссии на выживание и защиту короче, союзник крепче.
-          - Каждый бой проверен симуляцией игрока: средний игрок побеждает любого босса за 1–3 попытки.
+          - **Локальная игра по Wi‑Fi без интернета и серверов:** один телефон создаёт комнату, остальные в той же сети находят её в списке «Комнаты рядом» или входят по коду/IP. Роли, способности, ранения и спасения синхронизируются на всех картах, пустые места занимают боты. Если игрок отключился, его место занимает бот; если хост ушёл, матч корректно завершается.
+          - **Друзья:** у каждого игрока свой ник и постоянный ID. Добавляй игроков в друзья в комнате или после матча (они принимают или отклоняют запрос), смотри, кто из друзей сейчас в сети, и приглашай их в свою комнату. Список хранится на телефоне, друзей можно удалять.
+          - **«Революция» экономики:** награды пропуска 10–30 монет за уровень, монеты за матч уменьшены вдвое, персонажи стоят от 500, следующие пропуска будут стоить 5000. Купленные обычные персонажи вернулись в магазин (опыт, мастерство и скины остались). Пропускные, бесплатные, ивентовые и трибьют-персонажи (Джейсон, Крик, Майкл и другие) остаются у владельцев. Монеты свыше 2000 урезаны, а каждый игрок получает 100 монет и новый баннер «Олимп». Кто купил Ариму и получил её в пропуске, сначала получает возврат 1200.
+          - **Кнопка «Купить уровень»** в пропуске: +1 уровень за 1000 монет.
+          - **Уровни ботов по рангу:** Нуб, Нормальный, Профи или Бог. Чем выше ранг, тем быстрее реакция, точнее удары, умнее тактика и меньше ошибок.
+          - Кампании, Кратос и Артас удалены.
+          - Баннеры пропуска Сезона 3 теперь видны в профиле, и их можно надеть.
+          - Убраны уведомление «Хэллоуин закончился, Крик бесплатно» и бонус +30 секунд выжившим. Боты больше не видят невидимого Фредди.
+          - Исправлено наложение текста на маленьких экранах (568×320).
 
-          Android 7.0+, versionCode 19 / versionName 3.8.1. Тот же ключ подписи: ставится поверх, сохранения не теряются.
-          SHA-256: f47a18c3f068f4d4db3203020a3be3170679b6f0bd6cb56228e1dacb3b1a034f
+          Android 7.0+, versionCode 20 / versionName 3.9. Тот же ключ подписи: ставится поверх старой версии, сохранения не теряются. Новые разрешения нужны только для игры по локальной сети (Wi‑Fi).
+          SHA-256: 279864bd3d4a38f5583b2b010384f8ac7adee08187c0f7cf6bd9c729353531c7
           NOTES
           sed -i 's/^          //' /tmp/notes.md
-          gh release create v3.8.1 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.8.1" --notes-file /tmp/notes.md
+          gh release create v3.9 /tmp/p/zavodnye-koshmary.apk --target main --latest --title "Windup Wonderland v3.9" --notes-file /tmp/notes.md
 
       - name: Remove payload, sync gh-pages with main
         run: |
@@ -69,12 +73,13 @@ jobs:
           git pull -q --ff-only origin main || true
           if [ -f .github/bootstrap/voice.tar.gz.b64 ]; then base64 -d .github/bootstrap/voice.tar.gz.b64 | tar xz; git add voice; fi
           git rm -q -r .github/bootstrap
-          git commit -m "Remove v3.8.1 bootstrap payload (APK published in Release v3.8.1)"
+          git rm -q -f --ignore-unmatch voice/a1_*.ogg voice/a2_*.ogg voice/k_*.ogg
+          git commit -m "Remove v3.9 bootstrap payload (APK published in Release v3.9)"
           git push origin HEAD:main
           MAIN=$(git rev-parse HEAD)
           git fetch origin gh-pages
           git checkout -B gh-pages origin/gh-pages
-          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.8.1)"
+          git merge --no-edit -X theirs "$MAIN" -m "Sync gh-pages with main (v3.9)"
           if ! git diff --quiet "$MAIN" HEAD; then git read-tree --reset -u "$MAIN" && git commit -m "Sync gh-pages tree with main"; fi
           git diff --quiet "$MAIN" HEAD
           git push origin gh-pages
