@@ -371,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v3.7.3</div>
+  <div class="ver">v3.7.4</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -663,7 +663,7 @@ const DEF_SAVE={ver:8,notes:[],coins:0,pumpkins:0,unl:{h:['marina','artem'],k:['
  pass:{season:-1,xp:0,gold:false,cf:[],cg:[]},passHist:{},
  quests:{day:'',list:[]},
  rank:{rp:0,best:0,games:0,wins:0,mode:'casual'},
- shop:{day:'',bought:[]},lastMap:'park'};
+ shop:{day:'',bought:[]},lastMap:'park',fix374:0};
 let S;
 const isObj=o=>o&&typeof o==='object'&&!Array.isArray(o);
 function loadSave(){
@@ -691,6 +691,7 @@ function loadSave(){
   if(isObj(s.skin))Object.keys(s.skin).forEach(k=>{if(typeof s.skin[k]==='string')d.skin[k]=s.skin[k]});
   if(isObj(s.mast))Object.keys(s.mast).forEach(k=>{const m=s.mast[k];if(isObj(m)&&typeof m.xp==='number'&&typeof m.lvl==='number')d.mast[k]={xp:Math.max(0,m.xp),lvl:clamp(Math.floor(m.lvl),0,50)}});
   if(typeof s.lastMap==='string')d.lastMap=s.lastMap;
+  if(typeof s.fix374==='number')d.fix374=s.fix374;
   if(isObj(s.passHist))Object.keys(s.passHist).forEach(k=>{const v=s.passHist[k];if(isObj(v)&&typeof v.season==='number'&&typeof v.xp==='number'&&Array.isArray(v.cf)&&Array.isArray(v.cg))d.passHist[k]={season:v.season,xp:v.xp,gold:!!v.gold,cf:v.cf.filter(n=>typeof n==='number'),cg:v.cg.filter(n=>typeof n==='number')}});
   d.prof.badges=d.prof.badges.filter(b=>d.own.badges.includes(b)).slice(0,2);
   if(!d.own.frames.includes(d.prof.frame))d.prof.frame='none';
@@ -6739,7 +6740,7 @@ function drawBanner(cv,id,t){const c=cv.getContext('2d'),w=cv.width,h=cv.height;
  c.fillStyle='rgba(255,240,215,.85)';c.font='bold '+Math.round(h*0.16)+'px serif';c.textAlign='left';c.fillText(side==='s'?FULLNAME(ch):ch.name,w*0.04,h*0.88)}
 
 /* ================= v3.6 UI & META: buttons, menus, collection (stars, teasers, confirm), profile (titles/avatar/banner), promo codes, pumpkin record, fixes ================= */
-const WW_VERSION='3.7.3';
+const WW_VERSION='3.7.4';
 const TELEGRAM_URL=''; // TODO: Telegram link of Luntik_pvp (pending) — leave empty to hide
 const REPO_URL='https://github.com/LuntikVisuals/zavodnye-koshmary';
 /* ---------- clock-exploit mitigation: the game clock never goes backwards from the latest time ever seen ---------- */
@@ -6757,9 +6758,12 @@ function wwSanitize(){const num=(v,lo,hi,def)=>typeof v==='number'&&isFinite(v)?
  for(const id in S.mast){const m=S.mast[id];if(!HMAP[id]&&!KMAP[id]){delete S.mast[id];continue}m.xp=num(m.xp,0,1e5,0);m.lvl=Math.floor(num(m.lvl,0,50,0))}
  S.pass.xp=num(S.pass.xp,0,PASS_TIERS*PASS_XP,0);S.rank.rp=Math.floor(num(S.rank.rp,0,1e5,0));S.rank.best=Math.floor(num(S.rank.best,0,1e5,0));
  ['snd','mus','sens','bright'].forEach(k=>S.set[k]=num(S.set[k],0,2,DEF_SAVE.set[k]));S.set.diff=Math.floor(num(S.set.diff,0,3,1));
- S.own.skins=S.own.skins.filter(id=>SKINS[id]);S.own.frames=S.own.frames.filter(id=>FRMAP[id]);S.own.badges=S.own.badges.filter(id=>BADGES[id]);
  S.own.banners=(S.own.banners||[]).filter(x=>typeof x==='string'&&/^bn_[a-z0-9_]+$/.test(x));S.own.promo=(S.own.promo||[]).filter(x=>typeof x==='string'&&/^[0-9a-f]{16}$/.test(x));
  if(typeof S.prof.avatar!=='string'||!/^(|[hk]:[a-z0-9]+)$/.test(S.prof.avatar))S.prof.avatar='';if(!S.own.banners.includes(S.prof.banner))S.prof.banner=''}
+/* v3.7.4: skins/frames/badges are filtered only after ALL modules registered their content (called from n_boot.js) —
+   before, the Arima skin (registered later in z9_v37art.js) was stripped from every save at load */
+function wwSanitizeOwn(){S.own.skins=S.own.skins.filter(id=>SKINS[id]);S.own.frames=S.own.frames.filter(id=>FRMAP[id]);S.own.badges=S.own.badges.filter(id=>BADGES[id]);
+ if(!S.own.frames.includes(S.prof.frame))S.prof.frame='none';S.prof.badges=S.prof.badges.filter(b=>S.own.badges.includes(b)).slice(0,2)}
 let _saveErrShown=0;
 save=function(){try{localStorage.setItem(SKEY,JSON.stringify(S));return true}catch(e){if(Date.now()-_saveErrShown>20000){_saveErrShown=Date.now();try{toast('Не удалось сохранить прогресс: память устройства заполнена или недоступна',3200)}catch(x){}}return false}};
 /* ---------- notes n16-n20 survive reloads (they are registered after the first loadSave) ---------- */
@@ -7913,7 +7917,20 @@ function e1FinishNow(){if(!G||G.over)return;const open=!!G.power||G.gates.some(g
  G.timeScale=1;$('finishBtn').classList.add('hidden');G.over=true;endRound()}
 {const _er=endRound;endRound=function(){const b=$('finishBtn');if(b)b.classList.add('hidden');return _er.apply(this,arguments)}}
 
+/* ================= v3.7.4: «Арима Спрингтрап» — only from Season 2 pass (gold lvl 45); refund for shop buyers; re-grant to pass claimers ================= */
+const ARIMA_ID='x_springtrap_arima',ARIMA_REFUND=1200;
+if(SKINS[ARIMA_ID]){SKINS[ARIMA_ID].src='pass';delete SKINS[ARIMA_ID].price}
+function wwArimaPassClaimed(){const c=p=>isObj(p)&&p.season===1&&Array.isArray(p.cg)&&p.cg.includes(45);return c(S.pass)||c(S.passHist&&S.passHist[1])}
+function wwArimaFix(){if(!S||!SKINS[ARIMA_ID])return;const own=S.own.skins.includes(ARIMA_ID),claimed=wwArimaPassClaimed();
+ if(!S.fix374){// one-time: the skin is in the save (not yet stripped) or today's shop log has it, and the pass reward was never claimed -> it was bought
+  const shopRec=Array.isArray(S.shop.bought)&&S.shop.bought.includes('sk:'+ARIMA_ID);
+  if(!claimed&&(own||shopRec)){S.coins+=ARIMA_REFUND;S.own.skins=S.own.skins.filter(x=>x!==ARIMA_ID);if(S.skin.springtrap===ARIMA_ID)delete S.skin.springtrap;S.fix374=2;
+   setTimeout(()=>{try{toast('«Арима Спрингтрап» теперь только в Сезоне 2 (ур. 45). Возвращено '+ARIMA_REFUND+' монет',4500);updCoins()}catch(e){}},1500)}
+  else S.fix374=1}
+ if(claimed&&!S.own.skins.includes(ARIMA_ID))S.own.skins.push(ARIMA_ID)}
+
 /* ---- boot ---- */
+wwArimaFix();wwSanitizeOwn();save();
 loadMap('pizza',eventActive());checkSeason();checkQuests();checkShopDay();
 addEventListener('resize',()=>{resize();joyHome()});
 resize();setMode('menu');updCoins();joyHome();
