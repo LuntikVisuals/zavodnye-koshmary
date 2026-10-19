@@ -371,7 +371,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#eee;font
   </div>
   <div class="topbar"><button class="recBtn" id="recBtn" title="Проигрыватель" aria-label="Проигрыватель"><canvas id="recBtnCv" width="64" height="64"></canvas></button><div class="pchip" id="menuChip"><canvas id="chipCv" width="72" height="72"></canvas><div><b id="chipName"></b><span id="chipLvl"></span></div></div><span class="coins"><span class="coin-ico"></span><span class="cval">0</span></span><span class="pumps"><span class="pump-ico"></span><span class="pval">0</span></span></div>
   <div class="credit" id="menuCredit"></div>
-  <div class="ver">v4.0</div>
+  <div class="ver">v4.0.1</div>
 </div>
 
 <div id="lobby" class="screen hidden">
@@ -1024,8 +1024,8 @@ Object.assign(DEF_SAVE.stats,{v38boxes:0,v38balls:0,v38fake:0,v38threads:0,v38sw
 /* ================= v4.0 DATA (loaded before b2_meta so mastery/mainstone skins and badges are generated):
    Артур Винслоу (survivor, Territory park rating 10), Утопленник (Season 4 animatronic, shop).
    All art is drawn in code; all text is original. ================= */
-const ARTHUR_DESC='Артур Винслоу построил Windup Wonderland своими руками — от первой карусели до труб аквапарка. Он не убийца. На закрытом испытании аквапарка он бросился спасать ночного техника, и «Утопленник» раздавил ему руку. Историю замяли, аквапарк законсервировали, руку заменили железной. Но вина держит крепче любых болтов: душа Артура привязана к парку. Каждую ночь он возвращается, чтобы разрушить то, что построил.';
-const DROWNED_DESC='Утопленник — талисман аквапарка Windup Wonderland: весёлый водолаз с круглым шлемом, который должен был махать детям у горок. Аквапарк так и не открылся. На закрытом испытании он утащил под воду ночного техника — того самого, кто когда-то сделал страшную ставку. С тех пор костюм проржавел, шлем помутнел, а в бассейнах по ночам кто-то булькает. Он ждёт в воде. Он помнит каждый всплеск.';
+const ARTHUR_DESC='Артур Винслоу построил Windup Wonderland своими руками — от первой карусели до труб аквапарка. Он не убийца. На закрытом испытании аквапарка он бросился спасать ночного техника, не зная, что тот виновен в смерти сына священника, и «Утопленник» раздавил ему руку. Руку заменили железной, а аквапарк Артур законсервировал, так и не открыв. Но вина держит крепче любых болтов: душа Артура привязана к парку. Каждую ночь он возвращается, чтобы разрушить то, что построил.';
+const DROWNED_DESC='Утопленник — робот-аниматроник, талисман аквапарка Windup Wonderland: весёлый водолаз в медном шлеме, который должен был махать детям у горок. Аквапарк так и не открылся. На закрытом ночном испытании он утащил под воду ночного техника — того самого, кто когда-то поспорил с сыном священника на двести долларов у пасти 001. Это была расплата. С тех пор корпус проржавел, шлем помутнел, а в бассейнах по ночам что-то булькает. Он ждёт в воде. Он помнит каждый всплеск.';
 HUNTERS.push({id:'arthur',name:'Артур',nick:'',sur:'Винслоу',full:'Артур Винслоу',title:'Основатель парка',cls:'Строитель',price:0,terrUnlock:true,col:'#3a4a5c',col2:'#c8a052',hair:'#e8d088',skin:'#e6c2a2',spd:1,sta:1,rep:1.15,stealth:1,light:1.05,item:'tool',eye:'#9fd0ff',glasses:true,
  abil:{name:'Ключ владельца',cd:45,desc:'Открывает любую закрытую дверь рядом и запирает её за собой: аниматроник не может открыть или выломать её 8 секунд.'},
  abilB:{name:'Железная рука',cd:60,desc:'Бьёт железной рукой аниматроника, который держит или несёт выжившего рядом: оглушение 2 секунды, пойманный вырывается.'},
@@ -5929,7 +5929,7 @@ function mastHTML(id){const m=mastOf(id);const need=mastNeed(m.lvl);const nx=Mat
   '<span style="font-size:10.5px;color:#cba">Награды: 25 монет за уровень, +150 на 5/15/25/35/45. Каждые 10 уровней — <b style="color:#ffd24a">Мейнстоун</b> (всего 6): значок + 300 монет. Мейнстоун I дарит тематический скин персонажа, а каждый следующий улучшает его.'+(m.lvl<MAST_MAX?' Следующий Мейнстоун '+ROMAN[nx/10]+' на '+nx+' ур.':'')+'</span><div class="skrow" id="skRow"></div></div>'}
 function fillSkinRow(id,side){const row=$('skRow');if(!row)return;row.innerHTML='';const list=[''].concat(Object.values(SKINS).filter(s=>s.ch===id&&(!s.anime||animeOn()||S.own.skins.includes(s.id))).map(s=>s.id));const cur=curSkin(id);
  for(const sid of list){const own=!sid||S.own.skins.includes(sid);const d=el('div','sk'+(cur===sid?' on':'')+(own?'':' lk'));const c=mkCv(72);portrait(c,side,id,{skin:sid||undefined,noTag:1});d.appendChild(c);const sk=SKINS[sid];d.appendChild(el('div','',sid?esc(sk.name.replace(' · ',' ')):'Обычный'));
-  d.onclick=()=>{AU.click();if(!own){const how=sk.src==='mast'?'Мастерство '+sk.tier*10:sk.src==='shop'?'Магазин, '+sk.price+' монет':sk.src==='pass'?'Пропуск':sk.src==='event'?'Тыквенная лавка, '+sk.pump+' тыкв':'';toast('«'+sk.name+'» — '+how,1800);return}S.skin[id]=sid;save();renderColl()};row.appendChild(d)}}
+  d.onclick=()=>{AU.click();if(!own){const how=sk.src==='mast'?'Мастерство '+sk.tier*10:sk.src==='oldms'?'Магазин → «Мейнстоуны», '+sk.price+' монет'+(v401OldMsUnlocked(sk.id)?'':' (нужен мейнстоун '+sk.tier+')'):sk.src==='shop'?'Магазин, '+sk.price+' монет':sk.src==='pass'?'Пропуск':sk.src==='event'?'Тыквенная лавка, '+sk.pump+' тыкв':'';toast('«'+sk.name+'» — '+how,1800);return}S.skin[id]=sid;save();renderColl()};row.appendChild(d)}}
 /* ---- round progression (XP, mastery, pass, quests, achievements, ranked RP) ---- */
 function progressRound(o){
  const st=G.stats,role=G.role,you=G.you,ch=you.ch,cid=(ch.base||ch).id;
@@ -7881,7 +7881,7 @@ Object.assign(KMAP.e001,{title:'Первый эндоскелет',beta:false,
  pow2:{name:'Укус 34',cd:0,desc:'Один раз за матч: укус вплотную сразу выводит выжившего из игры. Нельзя укусить того, кого сейчас лечат, поднимают или спасают.'},
  pow3:{name:'Бег',cd:E1S.CD,desc:'5 с бежит со скоростью бегущего выжившего (разгон не действует), но громко топает и оставляет следы — выжившие слышат и видят, куда он побежал.'},
  pas:'«Не устаёт»: чем дольше гонится, тем быстрее (до +10%); после удара замедляется. Раненые им выжившие истекают кровью.',
- desc:'Самый первый эндоскелет Артур Винслоу, прототип 1985 года с инвентарным номером «001». Лёгкий, без костюма, бегает как человек. Тот самый, о котором говорит Father Maxim: однажды в парке сын Максима сунул голову ему в пасть, и челюсти сомкнулись. Этот укус в документах парка записан как «случай 34». После этого 001 убрали в подсобку, но доделать не успели.',
+ desc:'Самый первый эндоскелет Артур Винслоу, прототип 1985 года с инвентарным номером «001». Лёгкий, без костюма, бегает как человек. Тот самый, о котором говорит Father Maxim. Молодой ночной техник знал, что челюсти 001 иногда смыкаются сами, и всё равно поспорил с сыном Максима на 200 долларов, что тот не продержит голову в пасти минуту. Мальчика не стало. В документах парка это записано как «случай 34», вину свалили на машину, и 001 убрали в подсобку, но доделать не успели.',
  stars:4});
 STARS.e001=4;
 SVG.leap='<svg viewBox="0 0 24 24"><path d="M3 19c3-9 8-13 15-13" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 2"/><path d="M15 3l5 3-4 4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 21h6" stroke="currentColor" stroke-width="2"/></svg>';
@@ -9157,10 +9157,10 @@ const AQUA_NOTES=['n40a','n40b','n40c','n40d','n40e','n40f'];
 NOTES.push(
  {id:'n40a',aqua:1,t:'Чертёж: аквапарк «Windup Aqua», лист 1',b:'Подпись внизу: А. Винслоу, 1992. Волновой бассейн, две горки, тоннель, детская зона. На полях карандашом: «Открыть к лету. Пусть у парка будет вода — дети любят воду». Летом аквапарк так и не открылся.'},
  {id:'n40b',aqua:1,t:'Памятка спасателя',b:'Не заходить в главный бассейн после закрытия. Не включать волны без инженера. Если в воде у горок что-то шевелится — это фильтр. Наверное. Свет в тоннеле горок не чинить: заявка подана в 1993 году.'},
- {id:'n40c',aqua:1,t:'Накладная склада',b:'Талисман аквапарка «Утопленник» — 1 шт. Водонепроницаемый корпус, медный шлем, жаберные фильтры. Запрограммирован «искать детей в воде и помогать им выбраться». Пометка инженера: «Слово "помогать" прошивка понимает странно».'},
+ {id:'n40c',aqua:1,t:'Накладная склада',b:'Талисман аквапарка «Утопленник» — 1 шт. Водонепроницаемый корпус, медный шлем, жаберные фильтры. Запрограммирован «искать детей в воде и помогать им выбраться». Пометка инженера: «Слово "помогать" прошивка понимает странно. Он запоминает, кто и кому сделал больно в воде и рядом с ней».'},
  {id:'n40d',aqua:1,t:'Расписание открытия',b:'Открытие аквапарка: 1 июня. Перенос: 1 июля. Перенос: «после проверки талисмана». Ниже кто-то дописал маркером: «Никогда». Билеты на первый сеанс так и лежат в кассе — 500 штук, все с синей печатью.'},
- {id:'n40e',aqua:1,t:'Журнал закрытого испытания',b:'Ночь испытаний. Талисман «Утопленник» сошёл с площадки у горок и утащил ночного техника под воду главного бассейна. Мистер Винслоу прыгнул следом, пытался его вытащить. Аниматроник раздавил ему руку. Техника не нашли. Испытание признано неудачным.'},
- {id:'n40f',aqua:1,t:'Последняя страница журнала',b:'Случай замят. Аквапарк законсервирован, воду не спускать, вход заварить. Мистеру Винслоу поставили железную руку. Он приходит сюда по ночам и смотрит на воду. Говорит, что парк забрал у него руку — как и обещала та молитва.'});
+ {id:'n40e',aqua:1,t:'Журнал закрытого испытания',b:'Ночь испытаний. Талисман «Утопленник» сошёл с площадки у горок, прошёл мимо всех и направился прямо к ночному технику. Утащил его под воду главного бассейна. Мистер Винслоу прыгнул следом, пытался его вытащить. Аниматроник раздавил ему руку. Техника не нашли. Испытание признано неудачным. В шкафчике техника нашли конверт с двумястами долларами.'},
+ {id:'n40f',aqua:1,t:'Последняя страница журнала',b:'Случай замят. Аквапарк законсервирован, воду не спускать, вход заварить. Мистеру Винслоу поставили железную руку. Он приходит сюда по ночам и смотрит на воду. Говорит, что парк взял с него свою цену, а с техника — свою. Как и просила та молитва.'});
 for(const n of NOTES.slice(-6))NOTEMAP[n.id]=n;
 {const _sn=startNight;startNight=function(role,opt){const r=_sn.apply(this,arguments);try{if(G&&G.notes&&G.notes.length){const used=new Set(G.notes.map(n=>n.id));
   if(isAqua()){const al=shuffle(AQUA_NOTES.filter(id=>!S.notes.includes(id)));for(const n of G.notes){if(NOTEMAP[n.id]&&NOTEMAP[n.id].aqua)continue;const id=al.find(x=>!used.has(x));if(id){used.delete(n.id);used.add(id);n.id=id}}}
@@ -9170,12 +9170,12 @@ for(const n of NOTES.slice(-6))NOTEMAP[n.id]=n;
 // every chapter of the old «Сюжет» (base + Season 3 «Эхо») becomes a readable page, so no plot is lost
 try{for(const ch of SG_CH){const p=[];for(const b of (ch.beats||[])){if(b.txt)p.push('<b>'+esc(b.who||'')+':</b> '+esc(b.txt));else if(b.cap)p.push(esc(b.cap))}if(p.length)LORE.push({t:'Сюжет · '+ch.t,p})}}catch(e){console.error('v40 lore',e)}
 LORE.push(
- {t:'Ночной техник',p:['Летом 1993 года, перед открытием аквапарка, талисман «Утопленник» должен был пройти ночное испытание у горок. Остаться с ним на ночь согласился только один человек — молодой ночной техник парка.','Он не боялся аниматроников и лишь посмеивался над сторожами. Работу он взял не ради зарплаты: у него был спор.']},
- {t:'Спор на 200 долларов',p:['Сторожа поспорили с техником на 200 долларов, что он не просидит у бассейна до утра рядом с новым талисманом. Техник ударил по рукам и забрал фонарик.','Выигрыш так никто и не забрал. Двести долларов до сих пор лежат в конверте в ящике сторожки, а на конверте написано: «Отдать, когда вернётся».']},
- {t:'Молитва Максима',p:['Священник Максим долго молился за парк, в котором его сын мечтал побывать, — чтобы аниматроники больше никого не тронули и чтобы тот, кто построил их, однажды заплатил за свои машины.','Парк услышал молитву по-своему. Колонки до сих пор повторяют её ночами — медленнее, ниже, с чужими паузами. Артур Винслоу уверен: то, что случилось с ним в аквапарке, и было ответом на эту молитву.']},
+ {t:'Ночной техник',p:['Молодой ночной техник парка знал машины лучше всех — и знал, что эндоскелет «001» неисправен: челюсти иногда смыкались сами. Об этом он не сказал никому.','Однажды днём он сам подвёл к 001 сына священника Максима. Мальчик погиб, вину записали на машину, и 001 убрали в подсобку. Техник остался на работе, как будто ничего не случилось.']},
+ {t:'Спор на 200 долларов',p:['«Спорим на двести долларов, что ты не продержишь голову в пасти у 001 целую минуту?» — так техник сказал сыну Максима. Мальчик был смелым и согласился. Минуты не прошло.','Двести долларов так и остались у техника. Он хранил их в конверте в ящике сторожки и никому не показывал. Тайну он унёс с собой — под воду главного бассейна.']},
+ {t:'Молитва Максима',p:['Священник Максим не знал, кто подвёл его сына к 001. Он долго молился за парк, где сын мечтал побывать, — чтобы аниматроники больше никого не тронули и чтобы виновный однажды ответил за смерть мальчика.','Парк услышал молитву по-своему. Колонки до сих пор повторяют её ночами — медленнее, ниже, с чужими паузами. Артур Винслоу уверен: то, что случилось в аквапарке, и было ответом на эту молитву.']},
  {t:'Аквапарк «Windup Aqua»',p:['В 1992 году Артур Винслоу начал строить рядом с парком крытый аквапарк: волновой бассейн, две горки, тоннель и детскую зону. Открыть его хотели к лету.','Парк закрылся раньше. Бассейны так и не наполнили до конца, плитка потрескалась, а в трубах между залами до сих пор стоит вода.']},
- {t:'Утопленник',p:['Талисман аквапарка: водонепроницаемый корпус, медный водолазный шлем, жаберные фильтры. Его запрограммировали «искать детей в воде и помогать им выбраться», но слово «помогать» прошивка поняла по-своему.','В ночь испытания он сошёл с площадки у горок и утянул ночного техника под воду главного бассейна. Техника так и не нашли. Аквапарк законсервировали, а Утопленник остался у воды. Теперь он ныряет в одной воде и выныривает в другой — в бассейнах, а на других картах в лужах.']},
- {t:'Железная рука Артура',p:['Когда Утопленник утянул техника под воду, Артур Винслоу прыгнул в бассейн следом и пытался его вытащить. Аниматроник раздавил ему руку. Техника спасти не удалось.','Артуру поставили железную руку. Он приходит в аквапарк по ночам и смотрит на воду: говорит, что парк забрал у него руку — как и обещала та молитва. Этой рукой он теперь разжимает хватку любого робота, а на связке у него ключ от каждой двери парка.']},
+ {t:'Утопленник',p:['Талисман аквапарка — робот-аниматроник в медном водолазном шлеме: водонепроницаемый корпус, жаберные фильтры. Его запрограммировали «искать детей в воде и помогать им выбраться». Человеком он не был никогда.','Летом 1993 года, на закрытом ночном испытании, он сошёл с площадки у горок, нашёл в темноте ночного техника — того самого, кто поспорил с сыном Максима, — и утянул его под воду главного бассейна. Это была не поломка, а расплата. Техника так и не нашли. Теперь Утопленник ныряет в одной воде и выныривает в другой — в бассейнах, а на других картах в лужах.']},
+ {t:'Железная рука Артура',p:['Когда Утопленник утянул техника под воду, Артур Винслоу прыгнул в бассейн следом: он спасал человека, даже не зная, что тот сделал. Аниматроник раздавил ему руку. Техника спасти не удалось.','Артуру поставили железную руку, а аквапарк он законсервировал, так и не открыв. Артур не убийца, но вина держит его в парке: ночами он смотрит на воду. Железной рукой он теперь разжимает хватку любого робота, а на связке у него ключ от каждой двери парка.']},
  {t:'Территория',p:['Участок за оградой парка, где Винслоу когда-то хотел разбить сад для гостей. Теперь он твой: грядки для звёздных семян, скамейки, фонари, клумбы и фонтан.','Чем лучше выглядит твой парк, тем выше его рейтинг. Говорят, если он станет лучшим, Артур Винслоу сам придёт посмотреть — и останется на смену.']});
 
 /* ================= v4.0 ART: Ennard redraw (humanoid), Утопленник, Артур Винслоу, staged Mainstone skins,
@@ -9483,9 +9483,6 @@ const V40_TIPS=['Утопленник ныряет только из воды: �
  '«Железная рука» Артура освобождает пойманного выжившего.','Трубы в Аквапарке — короткие пути и для выживших, и для аниматроников.','Звёздные семена сажай на грядках «Территории».','Рейтинг парка 10 на «Территории» откроет Артура Винслоу.','Заходи каждый день: серия входов дарит жемчуг.',
  'Каждые 10 уровней мастерства Мейнстоун-скин персонажа становится эффектнее.','В новом сезоне рейтинг мягко опускается на одну ступень.','В воде выжившие медленнее, а Утопленник — быстрее.'];
 const v40Tip=()=>V40_TIPS[Math.floor(Math.random()*V40_TIPS.length)];
-(function(){if(window.__noLoad)return;const d=document.createElement('div');d.id='v40load';d.innerHTML='<div class="ttl">WINDUP WONDERLAND</div><div style="color:#7fd8ff;font-size:12px;margin-top:4px">Сезон 4 · «Глубина»</div><div class="bar"><i></i></div><div class="tip"></div>';document.body.appendChild(d);
- d.querySelector('.tip').textContent='Совет: '+v40Tip();const bar=d.querySelector('.bar i');let p=0;const iv=setInterval(()=>{p=Math.min(100,p+18+Math.random()*14);bar.style.width=p+'%';if(p>=100){clearInterval(iv);setTimeout(()=>{d.style.opacity='0';d.style.pointerEvents='none';setTimeout(()=>d.remove(),450)},250)}},110);
- d.addEventListener('pointerdown',()=>{p=100;bar.style.width='100%'})})();
 {const _sm=setMode;setMode=function(m){const r=_sm.apply(this,arguments);try{if(m==='reveal'||m==='game'){const rv=$('reveal');if(rv&&m==='reveal'){let t=rv.querySelector('.v40tip');if(!t){t=document.createElement('div');t.className='v40tip';rv.appendChild(t)}t.textContent='Совет: '+v40Tip()}}}catch(e){}return r}}
 /* ---------- Топ-100 рейтинга (сезонная таблица; соперники — участники «Ночной лиги» парка, игра работает без сервера) ---------- */
 const LB_A=['Ночной','Тихий','Ржавый','Стальной','Ловкий','Сонный','Мокрый','Хитрый','Звёздный','Тёмный','Быстрый','Заводной'],LB_B=['Сторож','Механик','Лис','Кот','Ныряльщик','Монтёр','Охотник','Призрак','Винтик','Фонарь','Ключ','Ворон'];
@@ -9509,6 +9506,103 @@ function v40KillBurst(k,s){if(!k||!k.ch||k.ch.fx!=='ms')return;const E=g40();if(
 /* ---------- pops on the menu: migrations, season end, streak ---------- */
 function v40ShowPops(){try{const st=v40Streak();if(st)V40_POPS.push(['СЕРИЯ ВХОДОВ: ДЕНЬ '+st.n,'Заходи каждый день — на 7-й день жемчуг и семена. Пропуск дня начинает серию заново.',[st.rw]]);
  while(V40_POPS.length){const [t,s,items]=V40_POPS.shift();if(items&&items.length)rewardPopup(t,s,items);else toast(t+': '+s,4200)}}catch(e){console.error(e)}}
+
+/* v4.0.1: snapshot of the save exactly as it was on disk before any v4.x migration of this launch writes it (used by zg_v401_ms.js) */
+try{window.__v401raw=rawSave()}catch(e){window.__v401raw=null}
+/* zg_v401_load.js — v4.0.1 loading screen (replaces the v4.0 DOM bar).
+   v4.0 bugs: (1) tablets: the old overlay + boot ran while the WebView still reported a 0×0 / transitional viewport, the
+   game's resize() then built its buffers for a 1×1 window (VS≈0.002) and rebuilt them again on every rotation step, and the
+   overlay itself had no failsafe — any exception left a frozen, input-eating screen; (2) phones: it vanished after ~0.7 s.
+   This version: own canvas with a hard pixel budget, 0-size guard, rAF-coalesced resizes, try/catch per frame, a watchdog
+   that always removes the overlay, minimum display time 2.6 s with a smooth bar, auto-continue. Original art, drawn in code. */
+const V401L={MIN:2600,MAX:9000,FADE:380,PX:2.2e6};
+function v401Load(){
+ if(window.__noLoad||(navigator.webdriver&&!window.__forceLoad))return null; // automated suites keep the old instant start; __forceLoad tests it
+ const st={t0:performance.now(),done:false,shown:0,err:0,frames:0,maxBuf:0,tipI:0};window.__v40load=st;
+ const ov=document.createElement('div');ov.id='v40load';
+ ov.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:200;background:#07040d;transition:opacity .38s;touch-action:none;overflow:hidden;display:block;padding:0';
+ const cv=document.createElement('canvas');cv.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;display:block';ov.appendChild(cv);
+ (document.body||document.documentElement).appendChild(ov);
+ const c=cv.getContext('2d',{alpha:false});const TIPS=V40_TIPS.slice();for(let i=TIPS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[TIPS[i],TIPS[j]]=[TIPS[j],TIPS[i]]}const tips=TIPS.slice(0,3);
+ let w=0,h=0,dpr=1,need=true,raf=0,lastDraw=0,stars=[];
+ function size(){const iw=ov.clientWidth||innerWidth||0,ih=ov.clientHeight||innerHeight||0;if(iw<16||ih<16)return false; // WebView not laid out yet
+  w=iw;h=ih;let d=Math.min(devicePixelRatio||1,2);if(w*h*d*d>V401L.PX)d=Math.max(0.75,Math.sqrt(V401L.PX/(w*h)));dpr=d;
+  const bw=Math.max(1,Math.round(w*d)),bh=Math.max(1,Math.round(h*d));if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh}st.maxBuf=Math.max(st.maxBuf,bw*bh);
+  const R=mulberry?mulberry(777):Math.random;stars=[];const n=Math.round(clamp(w*h/5000,40,220));for(let i=0;i<n;i++)stars.push([R(),R()*0.62,0.4+R()*1.3,R()*6.28]);need=false;return true}
+ const onRs=()=>{need=true};addEventListener('resize',onRs);addEventListener('orientationchange',onRs);
+ const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
+ function wrap(t,maxW){const ws=t.split(' ');const L=[];let cur='';for(const x of ws){const tr=cur?cur+' '+x:x;if(c.measureText(tr).width>maxW&&cur){L.push(cur);cur=x}else cur=tr}if(cur)L.push(cur);return L}
+ function key(x,y,s,a,col){c.save();c.translate(x,y);c.rotate(a);c.fillStyle=col;c.strokeStyle=col;c.lineWidth=s*0.16;
+  for(let i=0;i<2;i++){c.save();c.rotate(i*Math.PI);c.beginPath();c.ellipse(-s*0.62,0,s*0.42,s*0.3,0,0,6.283);c.stroke();c.restore()}
+  c.beginPath();c.arc(0,0,s*0.2,0,6.283);c.fill();c.fillRect(-s*0.07,0,s*0.14,s*0.85);c.restore()}
+ function draw(now){const T=(now-st.t0)/1000;const u=Math.min(w,h)/400,port=h>w;
+  c.setTransform(dpr,0,0,dpr,0,0);
+  let g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#05030b');g.addColorStop(0.55,'#1a0f2e');g.addColorStop(0.8,'#2a1430');g.addColorStop(1,'#0a0509');c.fillStyle=g;c.fillRect(0,0,w,h);
+  for(const s of stars){c.globalAlpha=0.35+0.45*Math.abs(Math.sin(T*0.9+s[3]));c.fillStyle='#e8dcff';c.fillRect(s[0]*w,s[1]*h,s[2],s[2])}c.globalAlpha=1;
+  const mx=w*(port?0.8:0.91),my=h*(port?0.08:0.12),mr=u*(port?24:20);g=c.createRadialGradient(mx,my,mr*0.5,mx,my,mr*4);g.addColorStop(0,'rgba(255,214,170,0.22)');g.addColorStop(1,'rgba(255,214,170,0)');c.fillStyle=g;c.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
+  c.fillStyle='#f3dcc0';c.beginPath();c.arc(mx,my,mr,0,6.283);c.fill();c.fillStyle='#1a0f2e';c.beginPath();c.arc(mx+mr*0.38,my-mr*0.12,mr*0.88,0,6.283);c.fill();
+  const gy=h*(port?0.68:0.7),sil='#0b0610';
+  // Ferris wheel
+  const fx=w*(port?0.24:0.2),fr=Math.min(w*(port?0.2:0.15),h*0.27),fy=gy-fr-u*8,ang=T*0.12;
+  c.strokeStyle=sil;c.lineWidth=Math.max(2,u*2.4);c.beginPath();c.moveTo(fx-fr*0.55,gy);c.lineTo(fx,fy);c.lineTo(fx+fr*0.55,gy);c.stroke();
+  c.beginPath();c.arc(fx,fy,fr,0,6.283);c.stroke();c.lineWidth=Math.max(1,u);c.beginPath();c.arc(fx,fy,fr*0.86,0,6.283);c.stroke();
+  for(let i=0;i<12;i++){const a=ang+i/12*6.283,cx=fx+Math.cos(a)*fr,cy=fy+Math.sin(a)*fr;c.strokeStyle=sil;c.beginPath();c.moveTo(fx,fy);c.lineTo(cx,cy);c.stroke();
+   c.fillStyle=sil;c.fillRect(cx-u*5,cy,u*10,u*8);const on=Math.sin(T*7+i*2.1)>-0.6&&!(i===4&&Math.sin(T*23)>0.2);c.fillStyle=on?'rgba(255,190,90,0.95)':'rgba(120,60,30,0.6)';c.beginPath();c.arc(cx,cy,u*1.7,0,6.283);c.fill()}
+  // carousel tent
+  const kx=w*(port?0.8:0.8),kw=Math.min(w*(port?0.34:0.22),h*0.4),kt=gy-kw*0.78;c.fillStyle=sil;c.beginPath();c.moveTo(kx-kw*0.5,gy-kw*0.42);c.lineTo(kx,kt);c.lineTo(kx+kw*0.5,gy-kw*0.42);c.closePath();c.fill();
+  c.fillRect(kx-kw*0.46,gy-kw*0.44,kw*0.92,kw*0.07);for(let i=0;i<5;i++)c.fillRect(kx-kw*0.42+i*kw*0.21,gy-kw*0.4,Math.max(2,u*2),kw*0.4);c.fillRect(kx-u,kt-u*12,u*2,u*12);
+  for(let i=0;i<9;i++){const on=(Math.floor(T*6)+i)%3!==0;c.fillStyle=on?'rgba(255,120,150,0.9)':'rgba(90,30,50,0.6)';c.beginPath();c.arc(kx-kw*0.46+i*kw*0.115,gy-kw*0.41,u*1.4,0,6.283);c.fill()}
+  const hx=kx+Math.sin(T*1.2)*kw*0.3;c.fillStyle='#160c1c';c.fillRect(hx-u*7,gy-kw*0.2+Math.sin(T*3)*u*3,u*14,u*7);
+  // ground + gate
+  c.fillStyle='#07040a';c.fillRect(0,gy,w,h-gy);g=c.createLinearGradient(0,gy-u*30,0,gy);g.addColorStop(0,'rgba(80,30,90,0)');g.addColorStop(1,'rgba(80,30,90,0.25)');c.fillStyle=g;c.fillRect(0,gy-u*30,w,u*30);
+  const ax=w*(port?0.53:0.5),aw=Math.min(w*(port?0.3:0.24),h*0.36),ah=aw*0.5;c.fillStyle=sil;c.fillRect(ax-aw*0.5,gy-ah,aw*0.07,ah);c.fillRect(ax+aw*0.43,gy-ah,aw*0.07,ah);
+  c.strokeStyle=sil;c.lineWidth=Math.max(3,u*5);c.beginPath();c.arc(ax,gy-ah,aw*0.47,Math.PI,0);c.stroke();key(ax,gy-ah-aw*0.47-u*4,Math.max(u*9,aw*0.07),Math.sin(T*1.5)*0.4,sil);
+  for(let i=0;i<7;i++){const a=Math.PI+(i+0.5)/7*Math.PI,on=Math.sin(T*5+i)>-0.3;c.fillStyle=on?'rgba(255,200,110,0.9)':'rgba(90,50,20,0.6)';c.beginPath();c.arc(ax+Math.cos(a)*aw*0.47,gy-ah+Math.sin(a)*aw*0.47,u*1.6,0,6.283);c.fill()}
+  // animatronic eyes in the dark
+  const E=[[0.07,0.3,0],[0.93,0.4,1.7],[0.37,0.15,3.1],[0.64,0.25,4.4]];for(const e of E){const ph=(T+e[2])%5;if(ph>4.2)continue;const ex=w*e[0],ey=gy-u*3+(port?h*0.06:h*0.05)*e[1],a=ph<0.4?ph/0.4:ph>3.8?(4.2-ph)/0.4:1;
+   c.fillStyle='rgba(255,40,30,'+(0.85*a).toFixed(3)+')';c.shadowColor='#ff3020';c.shadowBlur=u*6;const blink=Math.abs(Math.sin(T*0.7+e[2]))<0.05?0.15:1;
+   for(const dx of [-u*4,u*4]){c.beginPath();c.ellipse(ex+dx,ey,u*1.9,u*1.6*blink,0,0,6.283);c.fill()}c.shadowBlur=0}
+  // title
+  const tsz=Math.min(w/(port?9:15),h/(port?12:7.5),96);const ty=port?h*0.2:h*0.17;c.textAlign='center';c.textBaseline='middle';
+  c.font='bold '+Math.round(tsz)+'px Georgia,"Times New Roman",serif';const flick=Math.sin(T*31)>0.97?0.55:1;
+  c.shadowColor='rgba(255,150,60,'+(0.8*flick)+')';c.shadowBlur=tsz*0.35;c.fillStyle='#ffe2b0';
+  if(port){c.fillText('Windup',w/2,ty-tsz*0.55);c.fillText('Wonderland',w/2,ty+tsz*0.55)}else c.fillText('Windup Wonderland',w/2,ty);c.shadowBlur=0;
+  c.font=Math.round(tsz*0.26)+'px sans-serif';c.fillStyle='#c9a8e8';c.fillText('Сезон 4 · «Глубина»',w/2,ty+(port?tsz*1.35:tsz*0.75));
+  // progress gauge with a turning wind-up key
+  const P=st.p;const bw=Math.min(w*0.62,u*300),bh=Math.max(8,u*7),bx=(w-bw)/2,by=port?h*0.79:h*0.8;
+  c.fillStyle='#1b1020';c.strokeStyle='#b8894a';c.lineWidth=Math.max(1.5,u*1.4);c.beginPath();c.roundRect?c.roundRect(bx,by,bw,bh,bh/2):c.rect(bx,by,bw,bh);c.fill();c.stroke();
+  if(P>0){g=c.createLinearGradient(bx,0,bx+bw,0);g.addColorStop(0,'#c0602a');g.addColorStop(1,'#ffcf6a');c.fillStyle=g;c.beginPath();const fw=Math.max(bh,bw*P);c.roundRect?c.roundRect(bx,by,fw,bh,bh/2):c.rect(bx,by,fw,bh);c.fill()}
+  for(let i=1;i<10;i++){c.fillStyle='rgba(20,8,20,0.5)';c.fillRect(bx+bw*i/10,by+1,1,bh-2)}
+  key(bx-bh*2.2,by+bh/2,bh*1.25,Math.PI/2+P*6.283*3,'#d9a85a');
+  c.font='bold '+Math.round(Math.max(11,u*9))+'px sans-serif';c.fillStyle='#ffdca0';c.textAlign='left';c.fillText(Math.round(P*100)+'%',bx+bw+bh,by+bh/2);c.textAlign='center';
+  // tip (rotates)
+  const ti=Math.min(tips.length-1,Math.floor((now-st.t0)/1500));if(ti!==st.tipI)st.tipI=ti;const tf=((now-st.t0)%1500)/1500,ta=ti<tips.length-1?Math.min(1,tf*6,(1-tf)*6):Math.min(1,tf*6);
+  const fs=Math.round(clamp(u*8,11,22));c.font=fs+'px sans-serif';c.fillStyle='rgba(220,200,240,'+ta.toFixed(3)+')';const L=wrap('Совет: '+tips[ti],Math.min(w*0.86,fs*34));
+  L.slice(0,3).forEach((s,i)=>c.fillText(s,w/2,by+bh+fs*1.9+i*fs*1.3));
+  if(P>=1){c.fillStyle='rgba(255,220,160,'+(0.5+0.5*Math.sin(T*6)).toFixed(3)+')';c.font=Math.round(fs*0.95)+'px sans-serif';c.fillText('Заводим парк…',w/2,by-fs*1.1)}
+ }
+ st.p=0;
+ function finish(){if(st.done)return;st.done=true;st.shown=Math.round(performance.now()-st.t0);ov.style.opacity='0';ov.style.pointerEvents='none';
+  removeEventListener('resize',onRs);removeEventListener('orientationchange',onRs);setTimeout(()=>{try{ov.remove()}catch(e){};cancelAnimationFrame(raf);try{dispatchEvent(new Event('v40loaddone'))}catch(e){}},V401L.FADE)}
+ const watchdog=setTimeout(finish,V401L.MAX); // whatever happens, the overlay can never stay forever
+ function tick(now){if(st.done)return;raf=requestAnimationFrame(tick);
+  try{const el=now-st.t0;const ready=!!window.ZK;const target=ease(el/V401L.MIN)*(ready?1:0.9);st.p=Math.max(st.p,Math.min(1,target));
+   if(need&&!size())return;if(now-lastDraw>=30){lastDraw=now;draw(now);st.frames++}
+   if(st.p>=1&&el>=V401L.MIN+250){clearTimeout(watchdog);finish()}}
+  catch(e){st.err++;console.warn('v401 load',e);if(st.err>3){clearTimeout(watchdog);finish()}}}
+ raf=requestAnimationFrame(tick);return st}
+try{v401Load()}catch(e){console.warn('v401 load init',e);try{const o=document.getElementById('v40load');if(o)o.remove()}catch(_){}}
+
+/* game resize() guard: Android WebView can report innerWidth/innerHeight = 0 during the first layout and mid-rotation.
+   v4.0 then sized everything for a 1×1 window (VS≈0.002) and rebuilt the 2–6 MP map canvas on the next event. Fall back to the
+   document/screen size and re-run once the real viewport is known. */
+{const _rz=resize;let pend=false;resize=function(){const bad=!(innerWidth>=16&&innerHeight>=16);
+ if(bad){if(!pend){pend=true;requestAnimationFrame(()=>{pend=false;resize()})}if(W>16&&H>16)return}
+ if(!bad)return _rz.apply(this,arguments);
+ const de=document.documentElement,fw=(de&&de.clientWidth)||screen.width||800,fh=(de&&de.clientHeight)||screen.height||450;
+ const d1=Object.getOwnPropertyDescriptor(window,'innerWidth'),d2=Object.getOwnPropertyDescriptor(window,'innerHeight');
+ try{Object.defineProperty(window,'innerWidth',{value:Math.max(16,fw),configurable:true});Object.defineProperty(window,'innerHeight',{value:Math.max(16,fh),configurable:true});return _rz.apply(this,arguments)}
+ finally{try{if(d1)Object.defineProperty(window,'innerWidth',d1);else delete window.innerWidth;if(d2)Object.defineProperty(window,'innerHeight',d2);else delete window.innerHeight}catch(e){}}}}
 
 /* ================= v4.0 «Территория»: свой кусочек парка. Грядки и звёздные семена (бывшие тыквы 1:1), урожай,
    украшения, рейтинг парка 0–10. Рейтинг 10 открывает Артура Винслоу + рамку и значок «Лучший парк».
@@ -10046,6 +10140,1268 @@ function frPoll(){const N=lanNative();if(!N||!N.presence)return;try{N.startPrese
 {const o=window.__gameBack;window.__gameBack=function(){if(!$('frPanel').classList.contains('hidden')){frClosePanel();return true}return o?o.apply(this,arguments):false}}
 window.ZK_FR={FR,frMyId,frList,frAdd,frRemove,frRequest,frInvite,frPoll,frOpen};
 
+/* zg_v401_changelog.js — «Список обновлений»: generated by /workspace/v401/gen_changelog.py from README «Что нового», GitHub Releases and v401/notes.md. Real data only. */
+const CHLOG=[
+{
+"v": "4.0.1",
+"title": "Экран загрузки, Мейнстоуны и список обновлений",
+"date": "19 октября 2026",
+"src": "v401/notes.md",
+"notes": [
+"Сборка Android: versionCode 24 / versionName 4.0.1."
+],
+"items": [
+{
+"g": "new",
+"t": "<b>Новый экран загрузки</b>: ночной парк аттракционов, нарисованный кодом.",
+"sub": [
+"колесо обозрения с мигающими огоньками, карусель, арка ворот с заводным ключом, луна и звёзды",
+"светящиеся глаза аниматроников в темноте",
+"название «Windup Wonderland» и подпись сезона"
+]
+},
+{
+"g": "new",
+"t": "<b>Полоска загрузки — заводной ключ</b>: ключ крутится, полоска заполняется плавно, рядом проценты. Советы меняются по ходу загрузки (все прежние советы на месте).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>«Список обновлений»</b> в Настройках: все версии игры от 1.0 до 4.0.1 с подробными изменениями, каждую можно развернуть.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Превью скина Мейнстоуна</b> в «Персонажах»: видно следующую стадию тематического скина (рисунок, название, частицы, свет и эффект поимки). Можно листать все 6 стадий, закрытые отмечены 🔒 и уровнем мастерства.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Старые скины Мейнстоунов вернулись</b> (вкладка магазина «Мейнстоуны»): «Ржавый», «Неоновый», «Призрачный», «Золотой» и «Кошмарный» для 33 персонажей, всего 165 скинов.",
+"sub": [
+"цены: I — 80, II — 100, III — 120, IV — 150, V — 180 монет",
+"скин Мейнстоуна N можно купить только после того, как у персонажа есть Мейнстоун N; до этого он отмечен «Нужен мейнстоун N»"
+]
+},
+{
+"g": "rew",
+"t": "<b>Michael Myers</b>: сложность теперь 4 звезды (было 3).",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>«Золотая» линия пропуска Сезона 4</b> стоит 3000 монет вместо 5000.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Экран загрузки виден не меньше ~2,6 секунды</b> и сам плавно переходит в меню, нажимать ничего не нужно.",
+"sub": [
+"на телефонах он больше не мелькает на долю секунды"
+]
+},
+{
+"g": "rew",
+"t": "Экран загрузки правильно масштабируется на телефонах и планшетах в обеих ориентациях.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Вылет на планшетах при запуске</b>: экран загрузки рисуется с ограничением памяти, а если WebView сообщает размер 0×0 или экран поворачивается во время запуска, игра больше не ломается.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Компенсация за Мейнстоуны до 4.0:</b> кто дошёл до Мейнстоуна N на персонаже до 4.0, бесплатно получает его старые скины Мейнстоунов 1…N. Это происходит один раз, при запуске показывается уведомление со списком.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Возврат 2000 монет</b> тем, кто уже купил «Золотую» линию Сезона 4 за 5000. Один раз, с уведомлением.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Исправлена история Утопленника и ночного техника.",
+"sub": [
+"«Ночной техник», «Спор на 200 долларов», «Молитва Максима», «Утопленник», «Железная рука Артура», записки аквапарка, описания Утопленника, Артура Винслоу и 001"
+]
+},
+{
+"g": "fix",
+"t": "Экран загрузки всегда закрывается сам, даже если при отрисовке произошла ошибка.",
+"sub": []
+}
+]
+},
+{
+"v": "4.0",
+"title": "Сезон 4 «Глубина»",
+"date": "19 октября 2026",
+"src": "README «Что нового в 4.0»",
+"items": [
+{
+"g": "new",
+"t": "<b>Сезон 4 «Глубина»</b> (с 19 октября, 30 дней): новый пропуск. В бесплатной линии — аниматроник Утопленник, скин «Альтрон» для 001, рамки, жемчуг и звёздные семена. В «Золотой» — скин «Иллидан» для Рюка, баннеры и жемчуг. Награды Сезона 3, которые ты открыл, но не забрал, выдаются автоматически.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новая карта «Аквапарк»</b> (64×40) с настоящими бассейнами, горками и трубами-проходами. Есть в обычной ротации и в игре по Wi‑Fi.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новый аниматроник «Утопленник»</b> играется на всех картах:",
+"sub": [
+"«Нырок» переносит его из воды в другую воду ближе к выжившим;",
+"«Водоворот» затягивает выживших;",
+"«Долгий вдох» даёт +10% к скорости в воде;",
+"выжившие оставляют мокрые следы, которые видит только он."
+]
+},
+{
+"g": "new",
+"t": "<b>Новый выживший «Артур Винслоу»</b>, основатель парка. «Ключ владельца» запирает дверь за ним на 8 с, «Железная рука» вырывает друга из рук аниматроника. Открывается за «Рейтинг парка 10» на «Территории» вместе с рамкой «Лучший парк».",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>«Территория»</b>: твой собственный парк. Сажай звёздные семена на грядки, собирай урожай, ставь украшения и поднимай рейтинг парка.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Жемчуг</b>, новая валюта: даётся за пропуск, рейтинговые победы, серию входов и промокоды. В «Лавке жемчуга» продаются рамки, значки и баннеры.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Серия входов</b>: награда каждый день, на 7-й день — жемчуг и семена.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Вкладка магазина «Глубина»</b>:",
+"sub": [
+"скин «Водный Джейсон» — 10000 монет, только в магазине;",
+"наборы;",
+"Лавка жемчуга."
+]
+},
+{
+"g": "new",
+"t": "<b>Мейнстоуны до 60 уровня</b>: у каждого персонажа один тематический скин, который меняется на каждом из 6 Мейнстоунов (свои частицы, свет и эффект поимки).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новые ранги</b>:",
+"sub": [
+"от «Посетителя» до «Кошмара» (0–999 RP);",
+"«Легенда парка» (1000+ RP);",
+"«Владелец парка» (1600+ RP)."
+]
+},
+{
+"g": "new",
+"t": "<b>Топ-100</b> в профиле (таблица сезона на телефоне, без сервера).",
+"sub": []
+},
+{
+"g": "new",
+"t": "Экран загрузки с советами. Анимированные портреты в «Персонажах» и на карточках «Ночной смены».",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Эннард перерисован в человекоподобный облик. Скин «Марионетка» для Эхо (вдохновлено FNAF) получают в подарок все, кто прошёл «Сюжет».",
+"sub": []
+},
+{
+"g": "new",
+"t": "5 промокодов: GLUBINA, WINSLOW, ECHOFLASH, AQUAPARK, ZHEMCHUG.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Майкл Майерс</b> стал чуть медленнее, общего выпада больше нет.",
+"sub": [
+"«???» — облик души до 20 с: невидим, проходит сквозь стены, может делать рывок. Если выйти из облика рядом с выжившим, тот получает «Испуг» (оглушение 5 с). Перезарядка 45 с.",
+"«Схватить» — 6-секундный поединок, во время которого Майкла нельзя оглушить. Если выживший вырвался, Майкл бросает его; при попадании в другого выжившего оба замедлены на 30 с. Если победил Майкл: у стены выживший ранен и его нельзя унести, вдали от стены — задыхается за 10 с.",
+"Во время «Выслеживания» Майкла нельзя оглушить."
+]
+},
+{
+"g": "rew",
+"t": "<b>Джейсон</b>:",
+"sub": [
+"«Озеро» — прятаться в воде до 10 с;",
+"«Затянуть» — оглушает аниматроника рядом на 2 с и отправляет его на сцену (перезарядка 60 с);",
+"«Мачете» — замедляет и блокирует способности на 3 с, его нужно подобрать (перезарядка 40 с)."
+]
+},
+{
+"g": "fix",
+"t": "<b>Wi‑Fi:</b> после выигранного матча клиент больше не получает поражение и потерю рейтинга в следующем. Проверено 7 матчей подряд.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Планшеты:</b> больше нет белого экрана и некликабельных кнопок. Проверены 1280×800, 1920×1200, 2560×1600 и 2048×1536 в обеих ориентациях.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Вернулись имена «Артур Винслоу», «Винслоу» и «Дом Винслоу».",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Режим «Сюжет» убран: все его главы теперь можно прочитать в «Истории» вместе с новыми (ночной техник, спор на 200 долларов, молитва Максима, Утопленник, железная рука Артура, аквапарк, «Территория»). Записки на всех картах остались, в Аквапарке есть 6 новых. Собранные записки видны во вкладке «Записки».",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Хэллоуин завершён: тыквы обменяны 1:1 на звёздные семена.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Включает все исправления 3.9.2: повторного сброса монет нет, потерянные монеты возвращаются.",
+"sub": []
+}
+],
+"notes": [
+"В Аквапарке он ныряет через бассейны (и «Нырок» перезаряжается на 20% быстрее). На остальных картах в начале матча появляются 4 лужи, до которых можно дойти.",
+"Твой RP переведён на новую шкалу: ранг остаётся прежним. В начале каждого сезона рейтинг мягко опускается на одну ступень, а за лучший ранг сезона дают значок."
+]
+},
+{
+"v": "3.9.2",
+"title": "Монеты больше не сбрасываются",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.9.2»",
+"items": [
+{
+"g": "fix",
+"t": "<b>Монеты больше не сбрасываются повторно.</b> В 3.9.1 сброс «Революции» по ошибке запускался ещё раз для тех, кто уже обновился до 3.9: монеты снова становились 2100, а «Олимп» выдавался повторно. Теперь сброс не может выполниться дважды.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Потерянные монеты возвращаются:</b> если 3.9.1 сбросил монеты, накопленные в 3.9, игра один раз вернёт разницу (монеты, заработанные после этого, сохраняются).",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Рейтинг по Wi‑Fi:</b> если хост сдался или вышел, рейтинг других игроков не меняется.",
+"sub": []
+}
+],
+"notes": [
+"APK 3.9.2 отдельно не выпускался — эти исправления вошли в 4.0."
+]
+},
+{
+"v": "3.9.1",
+"title": "Роли и рейтинг по Wi‑Fi",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.9.1»",
+"items": [
+{
+"g": "fix",
+"t": "<b>Выбор роли по Wi‑Fi соблюдается:</b> кто выбрал «Выживший», больше не становится аниматроником. Если аниматроника хотят больше игроков, чем есть мест, честный жребий решает это прямо в комнате, и все видят итог до старта.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Выбор персонажа и скина соблюдается</b> (например, Джейсон-выживший). В комнате можно выбрать героя из своих открытых персонажей; у каждого игрока видно его роль и персонажа.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Рейтинговые матчи по Wi‑Fi:</b> хост включает «Рейтинг» в комнате. Каждый игрок получает или теряет свои очки ранга по обычным правилам рейтинга, боты подбираются по рангу хоста. Отказ от роли учитывается.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Монеты пропуска честнее:</b> 10/15/20/25/30 по уровням, 30 на каждом 5-м уровне (во всех пропусках).",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.9",
+"title": "Wi‑Fi, друзья и «Революция» экономики",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.9»",
+"items": [
+{
+"g": "new",
+"t": "<b>Локальная игра по Wi‑Fi без интернета и серверов:</b> один телефон создаёт комнату, остальные в той же сети находят её в списке «Комнаты рядом» или входят по коду/IP. Роли, способности, ранения и спасения синхронизируются на всех картах, пустые места занимают боты. Если игрок отключился, его место занимает бот; если хост ушёл, матч корректно завершается.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Друзья:</b> у каждого игрока свой ник и постоянный ID. Добавляй игроков в друзья в комнате или после матча (они принимают или отклоняют запрос), смотри, кто из друзей сейчас в сети, и приглашай их в свою комнату. Список хранится на телефоне, друзей можно удалять.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>«Революция» экономики:</b> награды пропуска 10–30 монет за уровень, монеты за матч уменьшены вдвое, персонажи стоят от 500, следующие пропуска будут стоить 5000. Купленные обычные персонажи вернулись в магазин (опыт, мастерство и скины остались). Пропускные, бесплатные, ивентовые и трибьют-персонажи (Джейсон, Крик, Майкл и другие) остаются у владельцев. Монеты свыше 2000 урезаны, а каждый игрок получает 100 монет и новый баннер «Олимп». Кто купил Ариму и получил её в пропуске, сначала получает возврат 1200.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Кнопка «Купить уровень»</b> в пропуске: +1 уровень за 1000 монет.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Уровни ботов по рангу:</b> Нуб, Нормальный, Профи или Бог. Чем выше ранг, тем быстрее реакция, точнее удары, умнее тактика и меньше ошибок.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Кампании, Кратос и Артас удалены.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Баннеры пропуска Сезона 3 теперь видны в профиле, и их можно надеть.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Убраны уведомление «Хэллоуин закончился, Крик бесплатно» и бонус +30 секунд выжившим. Боты больше не видят невидимого Фредди.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Исправлено наложение текста на маленьких экранах (568×320).",
+"sub": []
+}
+],
+"notes": [
+"Как играть по Wi‑Fi: все телефоны в одной сети → «По Wi‑Fi» в меню → один нажимает «Создать комнату», остальные выбирают её в списке «Комнаты рядом» или вводят код. Веб-версия не может быть хостом, но может подключиться к телефону-хосту по коду/IP (если открыта не по https). Друзья — кнопка «Друзья» в том же окне."
+]
+},
+{
+"v": "3.8.1",
+"title": "Баланс кампаний",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.8.1»",
+"items": [
+{
+"g": "rew",
+"t": "<b>Бои с боссами сбалансированы:</b> у героя больше урона (удар и особый приём) и больше здоровья, у боссов меньше здоровья и урона.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Сферы лечения</b> появляются во время боёв с боссами и в миссиях на выживание и защиту; когда босс входит в ярость, герой восстанавливает часть сил.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Честная вспышка Гелиоса:</b> достаточно сделать «Рывок», когда экран побелеет, — без идеального тайминга.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Гроза бьёт реже и слабее и предупреждает заранее; миссии на выживание и защиту короче, союзник крепче.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Каждый бой проверен симуляцией игрока: средний игрок побеждает любого босса за 1–3 попытки.",
+"sub": []
+}
+],
+"notes": [
+"Версия Android: versionCode 19 / versionName 3.8.1."
+]
+},
+{
+"v": "3.8",
+"title": "Сезон 3 «Остатки прошлого»",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.8»",
+"items": [
+{
+"g": "rew",
+"t": "<b>Сезон 2 «Путь меча» завершён.</b> Все полученные награды остаются; награды уровней, которые ты прошёл, но не забрал, выдаются автоматически.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Сезон 3 «Остатки прошлого» (50 уровней, без скинов):</b> монеты на каждом уровне (на 10/20/30/40 — больше), новые главы «Сюжета» об Эхо, Тайлере Олбрайте, Хиппо, буре 1993 года и о том, откуда взялись приказы. Значки и титулы «Помнящий» и «Остаток прошлого», новые пластинки (оригинальная музыка), рамки и баннеры.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Маска в меню заговорила:</b> замка больше нет, новые реплики открываются с уровнями пропуска.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новые аниматроники:</b> <b>Шут</b> (4★, в магазине) — фальшивые генераторы, коробки-сюрпризы, мячи и галлюцинации; <b>Эхо</b> (5★, бесплатно на 25 уровне пропуска) — нити, двойник и тихие зоны.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Кампании (новый раздел в лобби):</b> «Путь спартанца» — 20 миссий против богов Олимпа, в конце открывается <b>Кратос</b> (фан-трибьют, вдохновлено God of War); «Падение Эльдмара» — 15 миссий с диалогами и выборами, в конце открывается <b>Артас</b> с двумя формами и мечом Фростморт (фан-трибьют, вдохновлено Warcraft). Мини-игры — бои с видом сверху, за миссии дают монеты и скины. Кратос и Артас не продаются.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Озвучка новых персонажей</b> (временные голоса) с субтитрами.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Настройки → «Роль в матче»:</b> можно отказаться от роли убийцы или выжившего на 10 раундов, потом перерыв 24 часа.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Винслоу везде зовут Артур. Прогресс «Сюжета» больше не сбрасывается после перезапуска.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Включено исправление 3.7.4: «Арима Спрингтрап» не пропадает, в магазине не продаётся, возврат монет купившим.",
+"sub": []
+}
+],
+"notes": [
+"Кратос и Артас — неофициальные фан-трибьюты (вдохновлено God of War и Warcraft); весь текст кампаний и графика — оригинальные. Версия Android: versionCode 18 / versionName 3.8."
+]
+},
+{
+"v": "3.7.4",
+"title": "Исправление «Аримы»",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.7.4» + GitHub Release v3.7.4",
+"items": [
+{
+"g": "fix",
+"t": "<b>Скин «Арима Спрингтрап» больше не пропадает после перезапуска игры.</b> Раньше игра при загрузке удаляла его из сохранения (и купленный, и полученный в пропуске), потому что проверка сохранения выполнялась раньше, чем скин успевал загрузиться. Теперь проверка идёт только после загрузки всего контента; выбранный скин тоже остаётся надетым.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Кто уже получил «Ариму» на 45 уровне «Золотой» линии Сезона 2, но потерял его, — получит скин обратно</b> автоматически при запуске.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>«Арима Спрингтрап» убран из магазина:</b> теперь он только награда 45 уровня «Золотой» линии пропуска Сезона 2.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Возврат монет:</b> если игра видит, что скин был куплен в магазине (он ещё есть в сохранении или в журнале покупок дня, а награда пропуска не забиралась), — один раз возвращается 1200 монет, а скин снимается. Если из-за ошибки скин уже исчез из сохранения и записей о покупке не осталось, игра не может определить покупку автоматически.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.7.3",
+"title": "001 доделан",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.7.3» + GitHub Release v3.7.3",
+"items": [
+{
+"g": "new",
+"t": "<b>001 доделан — больше не бета.</b> Метка «БЕТА» снята, сложность ★★★★. Пассивка «Не устаёт» осталась: чем дольше погоня, тем быстрее, но теперь максимум +10%.",
+"sub": [
+"<b>Прыжок</b> (перезарядка 40 с): 001 пригибается и рычит (0,5 с), потом прыгает вперёд до половины карты. На кого приземлится — того рвёт когтями (это удар).",
+"<b>Кровь:</b> 001 — первый, кто оставляет кровь на выживших. На растерзанном видны следы крови и капли, пока его не вылечат.",
+"<b>«Укус 34»:</b> один раз за матч укус вплотную сразу выводит выжившего из игры. Нельзя укусить того, кого прямо сейчас лечат, поднимают или спасают. В описании — история того самого укуса, о котором говорит Father Maxim.",
+"<b>Бег</b> (5 с, перезарядка 24 с): 001 бежит со скоростью бегущего выжившего, но громко топает и оставляет следы. Выжившие слышат его и видят, куда он побежал.",
+"Новое описание, новые значки умений. Боты-аниматроники умеют пользоваться всеми умениями 001."
+]
+},
+{
+"g": "rew",
+"t": "<b>Матч заканчивается сразу,</b> если все выжившие пойманы, упали или на сцене и спасать их больше некому. Больше не нужно ждать.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Кнопка «Закончить сейчас»:</b> если ты сбежал раньше ботов, можно сразу закончить матч. Оставшихся ботов игра рассчитает честно (выход открыт — здоровые почти наверняка сбегут, упавшие и пойманные — нет). «Ускорить ×5» осталась для тех, кто хочет досмотреть.",
+"sub": []
+}
+],
+"notes": [
+"Остальные персонажи и режимы не менялись."
+]
+},
+{
+"v": "3.7.2",
+"title": "Режим «Сюжет»",
+"date": "17 октября 2026",
+"src": "README «Что нового в 3.7.2» + GitHub Release v3.7.2",
+"items": [
+{
+"g": "new",
+"t": "<b>Новое: режим «Сюжет».</b> Кнопка «Сюжет» в главном меню (и в лобби «Ночная смена»). Короткие кат-сцены прямо в игре: нарисованные сцены, диалоги на русском. Тап — следующая реплика, «Пропустить» — пропустить главу. Главы открываются по порядку, и их можно пересматривать.",
+"sub": [
+"<b>Глава 1. «Ночь 13 ноября».</b> Brunville, Огайо, 1993 год. Буря, сбой, «режим охраны» — и пожар: сирены, дым и силуэты аниматроников в огне. Утром центр закрывают.",
+"<b>Глава 2. «Могила».</b> Вечер на кладбище Brunville. Разговор Винслоу с сыном у старой могилы. Имя на камне не прочесть.",
+"<b>Глава 3. «Остатки прошлого».</b> Тизер 3 сезона. Пепелище, мешковинная маска Шута в золе, тихий смешок и сломанная мелодия шкатулки. <b>Сезон 3. Остатки прошлого. Скоро…</b>"
+]
+},
+{
+"g": "new",
+"t": "<b>Награда:</b> 50 монет, если посмотреть все главы целиком, без пропуска (один раз).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>История → Хроника:</b> новая страница «У могилы» с диалогом из 2 главы.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "В кат-сценах только звуки окружения (дождь, гром, огонь, сирена, ветер, вороны). Без пения и голосов.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.7.1",
+"title": "Анимация превью",
+"date": "16 октября 2026",
+"src": "README «Что нового в 3.7.1» + GitHub Release v3.7.1",
+"items": [
+{
+"g": "fix",
+"t": "<b>Магазин и карточки персонажей: превью скинов снова анимируются.</b> Раньше превью было неподвижным, а при быстром переключении скинов кадры анимации «прыгали». Теперь выбранный скин и скины с эффектами анимируются плавно и без остановки, а переключение сразу показывает готовое превью: кадры заранее подгружаются, старые анимации останавливаются.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.7",
+"title": "Сезон 2 «Путь меча»",
+"date": "16 октября 2026",
+"src": "README «Что нового в 3.7» + GitHub Release v3.7",
+"items": [
+{
+"g": "new",
+"t": "<b>Сезон 2 «Путь меча» начался!</b> 1 сезон и Хэллоуин закончились. Тыквенные предметы остаются у тех, кто их получил. В конце пропуска — блок 2 сезона с таймером до конца. Mikami Teru — в бесплатной линии на 48 уровне.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Подарок — Крик</b> (вдохновлено Scream), бесплатно для всех. Умения: «Звонок», «Из тени», «Любимый фильм ужасов?», пассивка «Он позирует».",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новый выживший — Пьер Микликанто</b>, повар. Собирает ингредиенты и варит в котле 3 супа. Аниматроник может сломать котёл. Пьер медленный и быстро устаёт, зато падает только после 4 ударов.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новый аниматроник — Сузуя</b> (фан-трибьют, вдохновлено Tokyo Ghoul), 1200 монет. 4 кровавых кинжала: раненые видны на всей карте, а Сузуя ускоряется до +20%. Кинжал может вытащить союзник с аптечкой. Два рывка и скачущий бег.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>001 — БЕТА:</b> пока работает только пассивка, умения появятся позже.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Springtrap</b> получил метательный нож.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новый скин «Арима Спрингтрап»:</b> меч вместо ножа, свои фразы и эффекты. Награда «Золотой» линии пропуска Сезона 2 (ур. 45); с 3.7.4 в магазине не продаётся.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Заставка перед матчем</b> у каждого аниматроника, у Аримы — своя. Тап — пропустить.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Исправлено:</b> при перевязке аптечкой показывалась молитва священника. Теперь у аптечки своя полоска «Перевязка…», у ящика с инструментами — своя.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.6.2",
+"title": "Предметы на вес золота",
+"date": "16 октября 2026",
+"src": "README «Что нового в 3.6.2» + GitHub Release v3.6.2",
+"items": [
+{
+"g": "rew",
+"t": "<b>Сезон 2 «Путь меча»</b> стартует 17 октября в 16:00 МСК. В этот момент заканчиваются 1 сезон и Хэллоуин. Предметы, которые были только в 1 сезоне, остаются у тех, кто их получил.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Хэллоуинские украшения убраны</b> со всех карт.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Предметы на вес золота:</b>",
+"sub": [
+"на карте их стало заметно меньше;",
+"аптечку нужно вскрыть и перевязаться: 4,5 с на месте, движение или удар прерывают;",
+"ящик с инструментами одноразовый и открывается 2,5 с;",
+"стробоскоп редкий и с одним зарядом, зато слепит дольше;",
+"хлопушка встречается чаще остальных предметов."
+]
+},
+{
+"g": "rew",
+"t": "Выжившие-боты умеют перевязываться и чинят чуть быстрее, баланс матчей сохранён.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Исправлены невидимые препятствия:</b> в тыквенном режиме Хэллоуина на месте генераторов оставались невидимые блоки.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Новый промокод, который приносит тыквы. Тыквы и после Хэллоуина можно тратить на пластинки.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.6.1",
+"title": "Исправления пропуска и профиля",
+"date": "16 октября 2026",
+"src": "README «Что нового в 3.6.1» + GitHub Release v3.6.1",
+"items": [
+{
+"g": "fix",
+"t": "<b>Пропуск:</b> вернулись задания и блок «Сезон 2» с таймером в конце пропуска (в 3.6 экран пропуска падал и не дорисовывался).",
+"sub": []
+},
+{
+"g": "fix",
+"t": "<b>Профиль:</b> баннер теперь подложка за именем и уровнем и не занимает место. Сетки «Рамки», «Значки», «Титулы», «Аватар», «Баннер» снова видны целиком.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Персонажи:</b> карточки «Скоро» того же размера, что и обычные: тёмный силуэт и «?».",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Mikami Teru</b> больше не продаётся за монеты. Теперь он награда пропуска 2 сезона (бесплатная линия, уровень 48). Кто уже купил его в 3.6, оставляет его себе.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.6",
+"title": "Ennard, Mikami Teru и «Шкатулка»",
+"date": "16 октября 2026",
+"src": "README «Что нового в 3.6» + GitHub Release v3.6",
+"items": [
+{
+"g": "new",
+"t": "<b>Ennard</b> (аниматроник, 1100 монет). Клубок проводов под чужими масками.",
+"sub": [
+"«Мимик»: выбери выжившего и на минуту стань им. Кто видел превращение, запомнит; на месте остаётся праздничный колпак.",
+"«Черви»: два проволочных червя ползут к выжившим, залезают даже в укрытия. Стряхнуть: 5 с кружиться на месте. Фонарь их сжигает.",
+"«Люки»: выбери на карте, из какого люка вылезти."
+]
+},
+{
+"g": "new",
+"t": "<b>Mikami Teru</b> (убийца; с 3.6.1 — награда пропуска 2 сезона).",
+"sub": [
+"«Приговор»: 25 с выживший виден сквозь стены.",
+"«Пиксельный меч»: широкий взмах.",
+"«Удалить»: приговорённый в тупике удаляется сразу.",
+"«Он же человек»: оглушения действуют на него дольше."
+]
+},
+{
+"g": "new",
+"t": "<b>Скоро:</b> карточки «?» для 001, Диктора, Пьера Микликанто, Ноли, гостя из Tokyo Ghoul и Шута (Сезон 3 «Остатки прошлого»).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Награда за спасение:</b> +30 опыта и +25 монет за каждого снятого со сцены тиммейта (+20/+15 за поднятого). Видно во всплывашке и в итогах матча, идёт в прогресс пропуска.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новый этап ремонта — «Шкатулка»:</b> крути ручку по часовой, но не слишком быстро, иначе пружина заклинит. Этапы ремонта чередуются: провода, аркада, шкатулка. Боты тоже её заводят. А если завести идеально, без единой ошибки… проверь сам.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Умнее боты:</b> каждый замечает убийцу в свете своего фонаря, помнит, где его видел, не бежит в тупики и не сбивается в кучу.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Баланс 2v6 в Доме Винслоу:</b> раньше погибали почти все, теперь в среднем около половины.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Звёзды сложности (1–5) у каждого персонажа.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Титул за финальную веху мастерства у каждого персонажа (например, Michael — «Сталкер», Freddy — «Шеф пиццерии»).",
+"sub": []
+},
+{
+"g": "new",
+"t": "Аватар: портрет любого персонажа.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Баннеры: за 3 вехи мастерства одного персонажа и в магазине.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Промокоды</b> в магазине: каждый срабатывает один раз на сохранение, регистр не важен. Где искать? Внимательно смотри трейлер 😉",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Тыквенная пластинка</b> «Заведи меня перед закрытием» (150 тыкв). Оригинальный трек Luntik_pvp, вдохновлено Jack Stauber.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Цитата Мусаси о мечте в его описании.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Freddy больше не пропадает из виду.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Списки пластинок прокручиваются.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Записки 16–20 не теряются.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Джойстик не залипает.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Нижний текст меню не наезжает на кнопки на маленьких экранах.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Награды пропуска для новых сезонов.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Секретная ссылка для разблокировки персонажей отключена.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Перевод часов назад больше не продлевает события.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Подтверждение покупки.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Защита сохранения от повреждений и сообщение об ошибке записи.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Подсказка про дверь больше не повторяется.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Кнопка «Сдаться» не перекрывается.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Мелкие правки внешнего вида на маленьких экранах.",
+"sub": []
+},
+{
+"g": "fix",
+"t": "Musashi, Jason, скины снаряжения и рамка Сезона 1 остаются недоступными после своего сезона, но у владельцев сохраняются.",
+"sub": []
+}
+],
+"notes": [
+"Трейлер 3.6 — с пасхалками. Музыка трейлера: «Заведи меня перед закрытием» (Luntik_pvp) и «Waltz of the Carnies» (Kevin MacLeod, incompetech.com, CC BY 4.0)."
+]
+},
+{
+"v": "3.5",
+"title": "Маска, Michael Myers и пластинки",
+"date": "12 октября 2026",
+"src": "README «Что нового в 3.5» + GitHub Release v3.5",
+"items": [
+{
+"g": "new",
+"t": "<b>Маска на стене главного меню.</b> Рот заперт на замок и зашит, глаза тускло светятся и следят за пальцем, замок иногда дёргается сам. Над маской табличка «Остатки прошлого». Нажми на неё — узнаешь, что будет.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Подарок маски (один раз):</b> первое касание маски дарит бесплатного аниматроника <b>Michael Myers</b> (фан-трибьют фильма «Хэллоуин» Джона Карпентера и Дебры Хилл), значок профиля <b>«Подарок от шута!»</b> и достижение <b>«Шутки шутками, а подарки дарит!»</b>.",
+"sub": [
+"<b>Он всегда встаёт</b> (пассивно) — оглушения на нём вдвое короче.",
+"<b>Слежка</b> (вкл/выкл) — идёт на 20% медленнее, зато пока выжившие у него в конусе зрения, наполняется шкала «Зла»; во время слежки он тише — стук сердца у выживших начинается гораздо ближе.",
+"<b>Зло во плоти</b> — когда шкала полна: 15 с ярости — быстрее, бьёт чаще, а удар сразу роняет выжившего. Потом шкала обнуляется. Боты-аниматроники тоже пользуются обеими силами. По симуляциям ботов Michael в среднем ловит около 2 из 4 выживших, как и остальные аниматроники."
+]
+},
+{
+"g": "new",
+"t": "<b>Проигрыватель в главном меню</b> (кнопка-пластинка рядом с профилем): выбор пластинки, ▶/❚❚, ⏮/⏭ и громкость (это та же настройка «Атмосфера и музыка»). Музыка звучит <b>только в меню и лобби</b>: перед матчем она затихает и возвращается после него.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Пластинки в магазине</b> (новая вкладка «Пластинки», 100–300 монет, можно послушать перед покупкой). «Заводная шкатулка» — бесплатно. Три пластинки — оригинальные процедурные мелодии игры, шесть — записи Kevin MacLeod по лицензии CC BY 4.0 (см. «Музыка»).",
+"sub": []
+}
+],
+"notes": [
+"<b>3.5:</b> на стене главного меню — старая маска с замком на рту, подарок за первое касание (аниматроник Michael Myers, значок «Подарок от шута!» и достижение), проигрыватель пластинок в меню и новая вкладка «Пластинки» в магазине."
+]
+},
+{
+"v": "3.4",
+"title": "Дом Винслоу",
+"date": "11 октября 2026",
+"src": "README «Что нового в 3.4» + GitHub Release v3.4",
+"items": [
+{
+"g": "new",
+"t": "<b>Новая карта «Дом Винслоу»</b> — жуткий трёхэтажный особняк на окраине Brunville. Доступна сразу: в выборе карты в лобби и в чередовании карт.",
+"sub": [
+"<b>Три этажа и лестницы.</b> Главная лестница из холла и чёрная лестница у кухни ведут на второй этаж, две узкие лестницы — на чердак. Видно только свой этаж: остальные этажи — отдельные затемнённые слои, на границе подписано «▲ Этаж 2» / «▼ Этаж 1». В углу экрана — индикатор <b>«Этаж N»</b>, а шаги на соседних этажах показываются значками «▲ шаги сверху» / «▼ шаги снизу».",
+"<b>1 этаж:</b> холл, гостиная с камином, столовая, кухня и кабинет Винслоу с чертежами на столе. <b>2 этаж:</b> спальни, детская с жуткими куклами на полке, ванная, библиотека и портретная галерея. <b>Чердак:</b> кладовая с накрытыми простынями запчастями аниматроников, мастерская и <b>запертая комната</b> — она открывается, когда запущены генераторы, или раньше, если найти в доме две записки.",
+"7 генераторов, 2 выхода (парадная дверь и чёрный ход), 20 шкафов, кровати (можно спрятаться под кровать), столы, лазы и вентиляция. Дом большой, поэтому рассвет здесь наступает на 30 секунд позже.",
+"Боты-выжившие и боты-аниматроники ходят по всем этажам.",
+"<b>Пять новых записок</b> (16–20) — их можно найти только в доме — и новая страница «Истории» о доме Винслоу."
+]
+},
+{
+"g": "new",
+"t": "<b>У отца Максима появился девиз</b> — «Истинному воину меч не нужен.» Он показан в карточке персонажа в коллекции.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 3.3 и старше переносятся автоматически (перед переносом сохраняется резервная копия).",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.3",
+"title": "Хэллоуин и пропуск",
+"date": "11 октября 2026",
+"src": "README «Что нового в 3.3» + GitHub Release v3.3",
+"items": [
+{
+"g": "new",
+"t": "<b>Первый сезон пропуска «Заводной Хэллоуин» и событие «Хэллоуин» идут до 21 октября 2026, 00:00</b> (по времени устройства). На экране пропуска — живой обратный отсчёт до конца сезона.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "После 21 октября кнопка «🎃 Хэллоуин» исчезает из меню, но тыквы, скины, рамки и значки события остаются у тебя навсегда. Прогресс первого сезона сохраняется, следующие сезоны длятся по 30 дней.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>В конце трека пропуска (после 50-го уровня) появилась карточка-анонс:</b> «Новое обновление через N дней» с обратным отсчётом и рисованной заставкой.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Следующее обновление — 21 октября.</b> Подробности — в самой игре, когда отсчёт дойдёт до нуля.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 3.2 и старше переносятся автоматически (перед переносом сохраняется резервная копия).",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.2",
+"title": "Father Maxim",
+"date": "11 октября 2026",
+"src": "README «Что нового в 3.2» + GitHub Release v3.2",
+"items": [
+{
+"g": "new",
+"t": "<b>Новый выживший — Father Maxim, «Священник»</b> (1000 монет — самый дорогой персонаж). 25 лет, светловолосый, небритый, в сутане, с усталым, сломленным взглядом.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Три силы (кнопки силы 1–3, клавиши Q, R и T):",
+"sub": [
+"<b>Крест</b> — Maxim 10 с ставит большой крест (стоит на месте, удар или движение прерывают установку). Крест освещает всю комнату. Пока аниматроник внутри света креста, он не может навредить ни одному выжившему: удар ловят светлые призрачные руки. Но крест можно сломать: 5 прочности, каждый пойманный удар тоже откалывает 1. Одновременно стоит только один крест — 60 с",
+"<b>Молитва</b> — 5 + 3 = 8 с молитвы на месте (на экране шкала и текст молитвы). Потом лечит всех выживших, включая самого Maxim, и поднимает упавших. Пойманных на сцене и выбывших не возвращает. Удар или движение прерывают молитву — 80 с",
+"<b>Святая вода</b> — +35% к скорости на 6 с — 40 с"
+]
+},
+{
+"g": "rew",
+"t": "Медленный, плохо прячется, но выдерживает <b>3 удара</b> (как Jason). Начинает с фонарём.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Страница «Священник» в «Истории». На карте «Парк» появился эндоскелет «001».",
+"sub": []
+},
+{
+"g": "new",
+"t": "Мастерство до 50 с Мейнстоунами (скины и значки), два скина в магазине, боты-священники пользуются всеми тремя силами, боты-аниматроники ломают крест.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 3.1 и старше переносятся автоматически; старое сохранение остаётся резервной копией.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "3.1",
+"title": "Режим «2 на 6»",
+"date": "11 октября 2026",
+"src": "README «Что нового в 3.1» + GitHub Release v3.1",
+"items": [
+{
+"g": "new",
+"t": "<b>Новый режим «2 на 6»</b> (переключатель «Режим» в лобби, работает в «Обычном» и в «Рейтинге»): 2 аниматроника против 6 выживших. Сторона по-прежнему выпадает случайно: либо ты аниматроник с ботом-напарником, либо выживший с 5 ботами-союзниками. Нужно починить 5 генераторов, до рассвета на минуту больше (6:00), на сцене пойманный держится 50 с вместо 40. Победа аниматроников — 4 выбывших из 6, ничья — 3.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>5 новых аниматроников:</b> Hippo, Котопес (Catdog), Spinner, Grimy и Dolly — у каждого 2–3 силы, свой рисунок, мастерство до 50 с Мейнстоунами и боты, которые пользуются силами.",
+"sub": [
+"<b>Hippo</b> — первый аниматроник парка, бегемот-певец, открывавший Windup Wonderland в 1986 году. Его заменили и убрали в подсобку, теперь он вернулся за местью. К серверу он не подключён. Тогда что им движет? — <b>Метание топора</b> (перезарядка 12 с) — топор летит по прямой и ранит выжившего. <b>Счастливый день</b> (55 с) — маленький полосатый шатёр с гирляндой, один за раз, стоит 45 с. Кто войдёт в шатёр (или кого Hippo занесёт внутрь), проходит лабиринт и убегает от маленьких бегемотиков. Поймали — выбывает без спасения (без крови, просто экран «Выбыл»). Нашёл выход — свободен, шатёр складывается. Шатёр нельзя ставить у сцены, ворот и рядом с выжившими; боты его обходят — 550",
+"<b>Котопес (Catdog)</b> — пёс и кошка из зоомагазина парка. Именинникам дарили кошку и собаку бесплатно. Когда парк закрылся, у кошки не стало глаз, а у пса — ушей — Два тела на карте. Ты играешь за пса, вторая половина — ИИ. <b>Сменить</b> — управление пёс ↔ кошка. <b>Приказ</b> — «За мной», «Охраняй» (стережёт пойманных), «Патруль тут». Пёс <b>глухой</b>: не слышит шум и сбои генераторов, нет значков шума. Кошка <b>слепая</b>: видит только вплотную, но слышит каждый шаг и видит все значки шума. <b>Соединение</b> (50 с) — на 10 с сливаются в одно тело, которое видит и слышит нормально — 700",
+"<b>Spinner</b> — восьмирукий робот-паук. Его нет в списке аниматроников, которых покупал Винслоу, но его нашли висящим под потолком в «Комнате кошмаров» — <b>Паутина на сцене</b> (пассивно): пойманного заматывает в паутину, спасателю сначала нужно 6 с снимать её, и Spinner сразу получает сигнал. <b>Паутинный кокон</b> (22 с) — комок паутины, попавший обездвижен на 3 с. <b>Паутина</b> (6 с) — до 3 паутин, только в дверных проёмах: вошедший застревает в коконе на 4 с, Spinner получает сигнал — 650",
+"<b>Grimy</b> — пропавший аниматроник, найденный в грязи у Freddy Fazbear's Pizza. Похожа на лису, но она оранжевая, а лис у Freddy's был только один, и тот красный… Грязь стала частью её тела и понемногу отваливается кусками — <b>Грязный след</b> (пассивно) замедляет выживших. <b>Грязевая лужа</b> (9 с) — до 2 луж, лужа замедляет сильнее. <b>Сквозь грязь</b> — стоя в одной луже, ныряет и выныривает из другой — 600",
+"<b>Dolly</b> — фарфоровая кукла. Её история засекречена ФБР; по легенде, внутри неё дочь Винслоу — <b>Шёпот</b> (пассивно): рядом с Dolly детский голос зовёт выжившего по имени, но значок звука показывает не ту сторону. <b>Игра в прятки</b> (35 с) — закрывает глаза и считает до 5 (выжившие рядом видят счёт). Кто двигается, когда она откроет глаза, виден ей 8 с: прячься или замри. <b>Кукольный домик</b> — до 2 домиков. Когда выживший подходит, играет шкатулка, Dolly получает сигнал и может переместиться к домику — 750"
+]
+},
+{
+"g": "new",
+"t": "<b>2 новые выжившие:</b> Rosa «Mop» Delgado (уборщица) и Cassidy (портал).",
+"sub": [
+"Rosa «Mop» Delgado — уборщица, мыла полы в Windup Wonderland с 1990 года — <b>Генеральная уборка</b> (40 с) — сразу убирает все ловушки рядом — убирает ловушки в 4 раза быстрее (капканы Ranger, паутину Spinner, лужи Grimy, домики Dolly; паутину на сцене снимает за 3 с) и получает <b>+5 монет</b> за каждую ловушку — 500",
+"Cassidy — ассистентка фокусника из шоу «Исчезающий ящик» — <b>Портал</b> (55 с) — пара порталов: здесь и в самой дальней части карты. Через 10 с исчезают. <b>Аниматроники тоже могут пройти!</b> — чуть быстрее ходит — 550"
+]
+},
+{
+"g": "new",
+"t": "<b>Вторая и третья кнопки силы</b> у новых аниматроников (клавиши R и T).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>«История»:</b> страницы про Hippo, Котопеса, Spinner, Grimy, Dolly (дело ФБР с вымаранными строками) и новых выживших; <b>5 новых записок</b> — теперь их 15.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 3.0 и старше переносятся автоматически (монеты, персонажи, мастерство, записки, рейтинг, пропуск); старое сохранение остаётся резервной копией.",
+"sub": []
+}
+],
+"notes": [
+"Grimy — оригинальный персонаж автора игры. Упоминание Freddy Fazbear's Pizza — отсылка к Five Nights at Freddy's; все права на FNAF принадлежат Скотту Коутону (Scott Cawthon)."
+]
+},
+{
+"v": "3.0",
+"title": "Профиль, пропуск, рейтинг, «Парк»",
+"date": "11 октября 2026",
+"src": "README «Что нового в 3.0» + GitHub Release v3.0",
+"items": [
+{
+"g": "new",
+"t": "<b>Двери можно держать.</b> У закрытой двери зажми «Действие» — персонаж упирается в дверь. Аниматроник уже не выбьет её с одного толчка: ему приходится ломать дверь несколько секунд (дверь трясётся, полоска показывает, сколько осталось). Держать дверь тяжело — тратится выносливость. Если силы кончатся или ты отпустишь кнопку, дверь можно снова открыть. Аниматроник может проломить дверь (держащего отбрасывает) или пойти в обход. Боты тоже держат двери, когда за ними гонятся.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Новая карта «Парк»</b> — парк аттракционов вокруг пиццерии: колесо обозрения, карусель, автодром, дом страха, кассы у ворот, фуд-корт, тир, мастерская и техтоннели. 7 генераторов, шкафчики, записки и двое ворот. В лобби выбирается карта: «Пиццерия», «Парк» или «Чередовать».",
+"sub": []
+},
+{
+"g": "rew",
+"t": "<b>Записки легче найти:</b> они слабо светятся в темноте, а на краю экрана появляется значок записки поблизости. За ночь выжившего на карте лежит 2–3 ненайденные записки. На экране — счётчик «Записки N/10».",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Профиль:</b> имя, уровень игрока (опыт за каждую ночь), титул, рамка и до 2 значков.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Достижения</b> с наградами (монеты, значки, рамки, титулы).",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Магазин:</b> скины, рамки и персонажи за монеты; 4 предложения дня со скидкой 30%.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Пропуск</b> на 30 дней: 50 уровней, опыт за ночи и ежедневные задания, бесплатная линия и «Золотая» линия. «Золотая» открывается <b>только за монеты из игры</b> (1500), никаких настоящих денег.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Рейтинг:</b> отдельный режим с рангами. За победы даются очки рейтинга (RP), за поражения отнимаются; чем выше ранг, тем умнее и быстрее боты. «Обычный» режим остался.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Мастерство персонажей</b> до 50 уровня у каждого выжившего и аниматроника. Каждые 10 уровней — <b>Мейнстоун</b>: эксклюзивный скин и значок.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Событие «Хэллоуин»</b> (1 — 21 октября 2026): тёмный парк, собирай тыквы и прячься от Джейсона Вурхиза. Тыквы меняются в тыквенной лавке на Jason (выживший класса «Боец»), скины «Тыква Фредди» и «Тыква Спрингтрап» и другое. Карты украшены к Хэллоуину.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 2.1, 2.0 и 1.0 переносятся автоматически (монеты, открытые персонажи, записки, настройки, статистика); старое сохранение остаётся резервной копией.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "2.1",
+"title": "«Windup Wonderland»",
+"date": "11 октября 2026",
+"src": "README «Что нового в 2.1» + GitHub Release v2.1",
+"items": [
+{
+"g": "rew",
+"t": "Игра переименована в <b>«Windup Wonderland»</b> (раньше — «Заводные Кошмары»). Пакет, репозиторий и ссылки прежние.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Новое место действия: американский семейный центр развлечений «Windup Wonderland». Меньше мистики, больше реальной техники: распознавание лиц, «режим охраны», магнитные замки, сервер под сценой.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Персонажи получили английские имена (способности, характеристики, цены и внешность прежние).",
+"sub": []
+},
+{
+"g": "new",
+"t": "Раздел <b>«История»</b> в главном меню: 8 коротких страниц хроники.",
+"sub": []
+},
+{
+"g": "new",
+"t": "<b>Записки на карте:</b> 10 записок (памятки, накладные, журналы охраны, дневник Винслоу, письмо подрядчика). Подбирай их за выживших — за раунд на карте появляется до 2 ещё не найденных. Найденные сохраняются и читаются в «Истории», ненайденные показаны как «???». Боты записки не трогают.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 2.0 и 1.0 переносятся автоматически.",
+"sub": []
+}
+],
+"notes": []
+},
+{
+"v": "2.0",
+"title": "Большое обновление персонажей",
+"date": "11 октября 2026",
+"src": "GitHub Release v2.0",
+"items": [
+{
+"g": "rew",
+"t": "Стороны переименованы: <b>Выжившие</b> и <b>Аниматроники</b> (меню, лобби, раскрытие роли, итоги, статистика).",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Все персонажи переработаны в серьёзном жутком стиле. Выжившие: Марина «Искра» Ершова (электрик), Артём «Курьер» Белов (курьер), Лидия «Док» Корнеева (фельдшер), Глеб «Тень» Тихонов (взломщик), Ксения «Объектив» Орлова (журналистка), Павел «Батя» Громов (ночной охранник). Аниматроники: Хорист, Егерь, Диктор, Полуночница, Молох — повреждённые машины со своими историями. Способности и баланс прежние.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Новые играбельные аниматроники (фан-трибьют): <b>Спрингтрап</b> — «Вентиляция»: ныряет в решётку и вылезает у последнего шума или генератора, скрежет в трубах выдаёт его; умеет пролезать в лазы. <b>Фредди</b> — «Шоу во тьме»: 8 секунд невидим в темноте, слышна лишь мелодия шкатулки, вне луча фонаря быстрее. Открываются за 500 монет.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Экран «Об игре» и подпись о фан-игре в главном меню.",
+"sub": []
+},
+{
+"g": "rew",
+"t": "Сохранения 1.0 переносятся автоматически: монеты, статистика и открытые персонажи сохраняются.",
+"sub": []
+}
+],
+"notes": [
+"«Заводные Кошмары» 2.0 — большое обновление персонажей.",
+"Неофициальная бесплатная фан-игра. Без доната и рекламы. Спрингтрап и Фредди взяты из Five Nights at Freddy's; все права на них принадлежат Скотту Коутону (Scott Cawthon). Игра не связана со Скоттом Коутоном и не одобрена им.",
+"Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 2 / versionName 2.0. Подписан тем же ключом, что и 1.0, — ставится поверх."
+]
+},
+{
+"v": "1.0",
+"title": "Первая версия «Заводных Кошмаров»",
+"date": "11 октября 2026",
+"src": "GitHub Release v1.0",
+"items": [
+{
+"g": "new",
+"t": "Роль выпадает случайно каждый раунд: Охотник (ты + 3 бота против аниматроника) или Убийца (ты против 4 ботов-охотников).",
+"sub": []
+},
+{
+"g": "new",
+"t": "Охотники: почини 5 из 7 генераторов, запитай ворота и сбеги до рассвета. Бег с выносливостью, шкафчики и столы для пряток, предметы (стробоскоп, инструменты, аптечка, хлопушка), спасение и подъём друзей.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Ремонт генератора — две мини-игры: «Провода» и «Автомат» (8-битный аркадный лабиринт). Мир не останавливается, а ошибка шумит и привлекает аниматроника.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Убийца: удар (2 удара — охотник падает), рывок, уникальная сила у каждого аниматроника, унеси упавших на сцену.",
+"sub": []
+},
+{
+"g": "new",
+"t": "6 охотников и 5 аниматроников (свои, оригинальные персонажи), монеты и открытие персонажей, статистика, 3 уровня сложности.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Темнота с фонариком, туман войны, мигающие лампы, синтезированные звуки и сердцебиение. Без крови — только мурашки.",
+"sub": []
+},
+{
+"g": "new",
+"t": "Работает без интернета, прогресс сохраняется на устройстве.",
+"sub": []
+}
+],
+"notes": [
+"«Заводные Кошмары» 1.0 — первая версия асимметричного хоррора про ночь в заброшенном пицца-парке.",
+"Android 7.0+, пакет com.luntikvisuals.zavodnyekoshmary, versionCode 1, альбомная ориентация."
+]
+}
+];
+
+/* zg_v401_chlogui.js — Settings → «Список обновлений» (data: zg_v401_changelog.js → CHLOG). Native overflow scrolling (drag + fling). */
+(function(){try{
+ const css=document.createElement('style');css.textContent=
+ '#chlog{position:fixed;inset:0;z-index:150;display:flex;background:rgba(4,2,6,.82);padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}'+
+ '#chlog.hidden{display:none}#chlog .panel{width:min(100%,860px);height:100%;max-height:100%;display:flex;flex-direction:column;text-align:left;overflow:hidden;padding:10px 12px}'+
+ '#chlog .row{display:flex;align-items:center;gap:8px;flex:0 0 auto}#chlog .sp{flex:1}#chlog h2{margin:0;font-size:clamp(17px,2.6vmin + 8px,30px)}'+
+ '#chSub{font-size:clamp(11px,1.2vmin + 7px,16px);color:#b9a2a8;margin:2px 0 6px}'+
+ '#chList{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding-right:4px;scroll-behavior:auto}'+
+ '.chv{border:1px solid #4a2230;border-radius:10px;margin:0 0 8px;background:linear-gradient(#1d141c,#110b10)}.chv.open{border-color:#8a3040}'+
+ '.chh{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none;min-height:44px;box-sizing:border-box}'+
+ '.chh .vn{font-family:Impact,"Arial Black",sans-serif;color:#ffd9b0;font-size:clamp(16px,1.6vmin + 10px,24px);letter-spacing:1px;flex:0 0 auto}'+
+ '.chh .tt{flex:1;min-width:0;color:#f3e4d0;font-weight:bold;font-size:clamp(13px,1.2vmin + 8px,18px);overflow-wrap:anywhere}.chh .dt{color:#a99;font-size:clamp(11px,1vmin + 7px,15px);flex:0 0 auto;text-align:right}'+
+ '.chh .ar{color:#d86;flex:0 0 auto;transition:transform .2s;font-size:14px}.chv.open .ar{transform:rotate(90deg)}'+
+ '.chb{display:none;padding:0 14px 10px;font-size:clamp(13px,1.1vmin + 8.5px,18px);line-height:1.42;color:#e8dcd2;overflow-wrap:anywhere}.chv.open .chb{display:block}'+
+ '.chb h4{margin:10px 0 4px;font-size:1em;letter-spacing:1px;text-transform:uppercase}.chb h4.new{color:#7fe0a0}.chb h4.rew{color:#ffc870}.chb h4.fix{color:#7fc8ff}'+
+ '.chb ul{margin:0;padding-left:1.2em}.chb li{margin:3px 0}.chb ul ul{margin-top:2px;color:#cbbfb6}.chb .nt{color:#a99;font-style:italic;margin:8px 0 0;font-size:.92em}.chb b{color:#ffe9c9}';
+ document.head.appendChild(css);
+ const ov=document.createElement('div');ov.id='chlog';ov.className='hidden';
+ ov.innerHTML='<div class="panel"><div class="row"><h2>СПИСОК ОБНОВЛЕНИЙ</h2><div class="sp"></div><button class="btn alt small" id="chBack">Назад</button></div><div id="chSub"></div><div id="chList"></div></div>';
+ document.body.appendChild(ov);
+ const G={new:'Новое',rew:'Переработки',fix:'Исправления'};
+ function body(e){let h='';for(const g of ['new','rew','fix']){const L=e.items.filter(i=>i.g===g);if(!L.length)continue;h+='<h4 class="'+g+'">'+G[g]+'</h4><ul>';
+   for(const i of L)h+='<li>'+i.t+(i.sub&&i.sub.length?'<ul>'+i.sub.map(s=>'<li>'+s+'</li>').join('')+'</ul>':'')+'</li>';h+='</ul>'}
+  for(const n of (e.notes||[]))h+='<div class="nt">'+n+'</div>';return h}
+ let built=false;function build(){if(built)return;built=true;const L=$('chList');let h='';
+  CHLOG.forEach((e,k)=>{h+='<div class="chv" data-v="'+e.v+'"><div class="chh"><span class="ar">▶</span><span class="vn">'+e.v+'</span><span class="tt">'+e.title+'</span><span class="dt">'+e.date+'</span></div><div class="chb"></div></div>'});
+  L.innerHTML=h;$('chSub').textContent='Все версии игры — от '+CHLOG[CHLOG.length-1].v+' до '+CHLOG[0].v+' ('+CHLOG.length+'). Нажми на версию, чтобы развернуть.';
+  L.querySelectorAll('.chv').forEach((d,k)=>{const hd=d.querySelector('.chh');let sx=0,sy=0,mv=false;
+   hd.addEventListener('pointerdown',ev=>{sx=ev.clientX;sy=ev.clientY;mv=false});hd.addEventListener('pointermove',ev=>{if(Math.abs(ev.clientY-sy)>8||Math.abs(ev.clientX-sx)>8)mv=true});
+   hd.addEventListener('click',()=>{if(mv)return;chToggle(k)})})}
+ window.chToggle=function(k,force){const d=$('chList').querySelectorAll('.chv')[k];if(!d)return;const b=d.querySelector('.chb');if(!b.innerHTML)b.innerHTML=body(CHLOG[k]);
+  const on=force===undefined?!d.classList.contains('open'):!!force;d.classList.toggle('open',on);try{AU.click()}catch(e){}};
+ window.openChlog=function(){build();ov.classList.remove('hidden');if(!$('chList').querySelector('.open'))chToggle(0,true);$('chList').scrollTop=0};
+ window.closeChlog=function(){ov.classList.add('hidden')};
+ $('chBack').addEventListener('click',()=>{try{AU.click()}catch(e){}closeChlog()});
+ // the global touchmove guard blocks scrolling while a match is paused; scrolling inside the list is always allowed
+ $('chList').addEventListener('touchmove',e=>e.stopPropagation(),{passive:true});
+ const set=document.querySelector('#settings .panel');if(set&&!$('sChlog')){const r=document.createElement('div');r.className='row';r.style.justifyContent='center';r.style.marginTop='6px';
+  r.innerHTML='<button class="btn small" id="sChlog">Список обновлений</button>';const last=[...set.children].filter(c=>c.classList.contains('row')).pop();set.insertBefore(r,last);
+  $('sChlog').addEventListener('click',()=>{try{AU.click()}catch(e){}openChlog()})}
+ {const o=window.__gameBack;window.__gameBack=function(){if(!ov.classList.contains('hidden')){closeChlog();return true}return o?o.apply(this,arguments):false}}
+ {const _sm=setMode;setMode=function(){if(!ov.classList.contains('hidden'))closeChlog();return _sm.apply(this,arguments)}}
+}catch(e){console.error('v401 chlog',e)}})();
+
 /* zg_v40z_final.js */
 /* ================= v4.0 final pass: everything is registered now ================= */
 (function(){try{const raw=rawSave()||{};const ro=raw.own||{};
@@ -10062,6 +11418,89 @@ window.ZK_FR={FR,frMyId,frList,frAdd,frRemove,frRequest,frInvite,frPoll,frOpen};
 try{v40Migrate()}catch(e){console.error('v40 migrate',e)}})();
 
 setTimeout(()=>{try{v40ShowPops()}catch(e){}},950);
+
+/* zg_v401_ms.js — v4.0.1 Mainstones:
+   (1) preview of the evolving Mainstone skin (all 6 stages, locked ones marked) in «Персонажи»;
+   (2) the pre-4.0 Mainstone skins m_<id>_<1..5> (Ржавый/Неоновый/Призрачный/Золотой/Кошмарный, removed in 4.0) are back in the shop,
+       buyable only after reaching that Mainstone in the current system;
+   (3) one-time compensation: Mainstone N reached before 4.0 → old skins 1..N free. */
+const V401_MS_CH=['announcer','artem','cassidy','catdog','chorist','dolly','e001','echo','ennard','freddy','gleb','grimy','hippo86','huntsman','jason','jester','krik','ksenia','lida','marina','michael','midnight','mikami','moloch','musashi','pavel','pierre','priest','rosa','ryuk','spinner','springtrap','suzuya']; // characters that had m_ skins in 3.9.2
+const V401_MS_PRICE=[0,80,100,120,150,180];
+(function(){for(const [side,c] of ALLCH()){if(!V401_MS_CH.includes(c.id))continue;
+ MAST_FX.forEach((fx,t)=>{const id='m_'+c.id+'_'+(t+1);if(!SKINS[id])addSkin(id,side,c.id,fx,'oldms',{tier:t+1,price:V401_MS_PRICE[t+1],name:SKIN_FX[fx].name+' · Мейнстоун '+ROMAN[t+1]})})}})();
+function v401MsReached(id){const m=S.mast&&S.mast[id];return Math.max(0,Math.min(6,Math.floor(((m&&m.lvl)||0)/10)))}
+function v401OldMsUnlocked(sk){const s=SKINS[sk];return !!s&&s.src==='oldms'&&v401MsReached(s.ch)>=s.tier}
+/* purchase rule: blocked before the Mainstone, never twice */
+{const _b=buyCoins;buyCoins=function(r,price,onBuy){const s=r&&r.sk&&SKINS[r.sk];
+ if(s&&s.src==='oldms'){if(S.own.skins.includes(s.id)){toast('Уже есть');return}if(!v401OldMsUnlocked(s.id)){toast('Нужен мейнстоун '+s.tier+' ('+(s.tier*10)+' ур. мастерства)',1800);return}price=s.price}
+ return _b.call(this,r,price,onBuy)}}
+/* shop tab «Мейнстоуны» */
+(function(){const tabs=document.querySelector('#shop .tabs');if(!tabs||$('stOldMs'))return;const t=document.createElement('div');t.className='tab';t.id='stOldMs';t.textContent='Мейнстоуны';tabs.appendChild(t);
+ t.addEventListener('click',()=>{shopTab='oldms';AU.click();renderShop()})})();
+{const _rs=renderShop;renderShop=function(){const tb=$('stOldMs');if(shopTab!=='oldms'){if(tb)tb.classList.remove('on');return _rs.apply(this,arguments)}
+ document.querySelectorAll('#shop .tabs .tab').forEach(e=>e.classList.toggle('on',e===tb));const g=$('shopGrid');g.innerHTML='';
+ const hd=el('div','','<div style="font-size:12px;color:#cba">Старые скины Мейнстоунов (до 4.0). Скин Мейнстоуна N можно купить, когда у персонажа есть Мейнстоун N (каждые 10 ур. мастерства).</div>');hd.style.gridColumn='1/-1';g.appendChild(hd);
+ for(const [side,c] of ALLCH()){if(!V401_MS_CH.includes(c.id)||!chVisible(c.id))continue;const n=v401MsReached(c.id);
+  const h=el('div','v401msh','<b style="color:#ffd24a">'+esc(side==='h'?FULLNAME(c):c.name)+'</b> <span style="color:#a99;font-size:11px">· Мейнстоун '+(n?ROMAN[n]:'—')+' (мастерство '+((S.mast[c.id]&&S.mast[c.id].lvl)|0)+')</span>');h.style.cssText='grid-column:1/-1;font-size:13px;margin-top:6px;text-align:left';g.appendChild(h);
+  for(let t=1;t<=5;t++){const id='m_'+c.id+'_'+t,s=SKINS[id];if(!s)continue;const it=shopItem({sk:id},s.price);it.dataset.sk=id;
+   if(!S.own.skins.includes(id)&&!v401OldMsUnlocked(id)){it.classList.add('v401lk');const b=it.querySelector('button');if(b)b.remove();const l=el('div','v401need','🔒 Нужен мейнстоун '+t);it.appendChild(l);it.onclick=()=>toast('Нужен мейнстоун '+t+' ('+(t*10)+' ур. мастерства)',1600)}
+   g.appendChild(it)}}}}
+(function(){const st=document.createElement('style');st.textContent='.it.v401lk canvas{filter:grayscale(.75) brightness(.6)}.v401need{font-size:11px;color:#ffb070;font-weight:bold;margin-top:4px}'+
+ '.v401ms{margin-top:8px;padding:8px;border:1px solid #5a3a20;border-radius:10px;background:rgba(40,24,10,.35);text-align:left;font-size:11.5px;color:#e8dcd2}.v401ms .r{display:flex;gap:10px;align-items:flex-start}.v401ms canvas{width:96px;height:96px;flex:0 0 auto;border-radius:8px}'+
+ '.v401pips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.v401pips div{min-width:34px;padding:4px 6px;border:1px solid #6a4a2a;border-radius:7px;text-align:center;cursor:pointer;font-weight:bold;color:#ffd9b0;background:#1a1012}.v401pips div.lk{color:#887;border-color:#443}.v401pips div.on{outline:2px solid #ffd24a}'+
+ '.v401ms ul{margin:4px 0 0;padding-left:1.1em}.v401ms li{margin:1px 0}';document.head.appendChild(st)})();
+/* evolving-skin preview */
+const V401_MOTIF={shadow:'тени',circuit:'схемы',flame:'язычки пламени',frost:'снежинки инея',bloom:'цветы',storm:'молнии',abyss:'пузыри',light:'лучи',star:'звёзды'};
+function v401StageInfo(id,st){const T=msTheme(id),mo=V401_MOTIF[T.motif]||'символы';const L=[];
+ L.push('Окраска в цвета темы «'+esc(T.name)+'» (насыщенность '+(25+st*10)+'%)');
+ L.push(st>=2?'Частицы на портрете: '+mo+' ×'+(3*st):'Тонкий светящийся ободок портрета');
+ if(st>=3)L.push('Светящаяся аура и глаза цвета темы; в матче — свет темы вокруг тебя');
+ if(st>=4)L.push('Кружащие символы вокруг портрета ('+((st-3)*2)+'), волосы в цвет темы');
+ if(st>=5)L.push('Светящаяся корона над головой');
+ if(st>=6)L.push('Бегущий блик по портрету и двойное кольцо в матче');
+ L.push('В матче: кольцо и '+Math.min(st,5)+' '+mo+' вокруг персонажа');
+ L.push('Эффект поимки: вспышка из '+(4+st*2)+' символов ('+mo+')');return L}
+let V401PV={id:null,st:1};
+function v401FillMsPreview(id,side){const box=$('v401ms');if(!box)return;const sk=SKINS['ms_'+id];if(!sk){box.innerHTML='';return}
+ const got=v401MsReached(id);if(V401PV.id!==id){V401PV={id,st:Math.min(6,Math.max(1,got+1))}}const st=V401PV.st,lock=st>got;const T=msTheme(id);
+ box.innerHTML='<b style="color:#ffd24a">Скин Мейнстоуна: '+esc(T.name)+'</b> <span style="color:#a99">· '+(got>=6?'все стадии открыты':'следующая стадия: '+ROMAN[Math.min(6,got+1)]+' на '+Math.min(6,got+1)*10+' ур.')+'</span>'+
+  '<div class="r"><canvas width="192" height="192" id="v401msCv"></canvas><div><div style="font-weight:bold;color:#ffe9c9">'+esc(T.name)+' · Мейнстоун '+ROMAN[st]+' '+(lock?'<span style="color:#ffb070">🔒 '+st*10+' ур. мастерства</span>':'<span style="color:#7fff9a">✔ открыто</span>')+'</div><ul>'+v401StageInfo(id,st).map(x=>'<li>'+x+'</li>').join('')+'</ul></div></div>'+
+  '<div class="v401pips">'+[1,2,3,4,5,6].map(i=>'<div data-st="'+i+'" class="'+(i>got?'lk':'')+(i===st?' on':'')+'">'+(i>got?'🔒':'')+ROMAN[i]+'</div>').join('')+'</div>';
+ const cv=$('v401msCv');regAnim(cv,()=>{if(cv.isConnected)portrait(cv,side,id,{skin:'ms_'+id+'_s'+st,noTag:1})});if(lock)cv.style.filter='grayscale(.35) brightness(.8)';
+ box.querySelectorAll('.v401pips div').forEach(d=>d.onclick=()=>{AU.click();V401PV.st=+d.dataset.st;v401FillMsPreview(id,side)})}
+{const _mh=mastHTML;mastHTML=function(id){return _mh.apply(this,arguments).replace(/<\/div>$/,'<div class="v401ms" id="v401ms"></div></div>')}}
+{const _fs=fillSkinRow;fillSkinRow=function(id,side){const r=_fs.apply(this,arguments);try{v401FillMsPreview(id,side)}catch(e){console.error('v401 ms preview',e)}return r}}
+/* every launch: loadSave() drops skin ids that are not registered yet (these are registered later), so restore owned/equipped m_ skins from the raw save */
+(function(){try{const raw=window.__v401raw;if(!raw||!isObj(raw))return;const ro=raw.own&&Array.isArray(raw.own.skins)?raw.own.skins:[];let nch=0;
+ for(const id of ro)if(typeof id==='string'&&/^m_/.test(id)&&SKINS[id]&&SKINS[id].src==='oldms'&&!S.own.skins.includes(id)){S.own.skins.push(id);nch++;(window.__v401rest=window.__v401rest||[]).push(id)}
+ if(isObj(raw.skin))for(const [ch,sid] of Object.entries(raw.skin))if(typeof sid==='string'&&/^m_/.test(sid)&&SKINS[sid]&&SKINS[sid].ch===ch&&S.own.skins.includes(sid)&&(!S.skin[ch]||S.skin[ch]==='')){S.skin[ch]=sid;nch++}
+ if(nch)save()}catch(e){console.error('v401 ms restore',e)}})();
+/* one-time compensation for pre-4.0 Mainstones */
+function v401MsMigrate(){const V=V40();if(!isObj(V.v401))V.v401={};const W=V.v401;if(W.msGrant)return W.msGrant;
+ const raw=window.__v401raw!==undefined?window.__v401raw:rawSave();const res={at:Date.now(),list:[],src:'fresh'};
+ if(raw&&isObj(raw)){const pre40=!(isObj(raw.v40)&&raw.v40.ver>=40);res.src=pre40?'pre40':'v40';
+  // pre-4.0 save: mastery levels in the save are exactly the old ones. 4.0 save: 4.0 kept S.mast unchanged, so the current level is used (it may include progress made in 4.0)
+  const mast=pre40?(isObj(raw.mast)?raw.mast:{}):S.mast;const rown=raw.own&&Array.isArray(raw.own.skins)?raw.own.skins:[];
+  for(const id of V401_MS_CH){const m=mast[id];const lv=m&&typeof m.lvl==='number'?m.lvl:0;let N=Math.max(0,Math.min(5,Math.floor(lv/10)));
+   for(let t=1;t<=5;t++)if(rown.includes('m_'+id+'_'+t))N=Math.max(N,t); // owned before 4.0 (old saves): Mainstone t was reached
+   for(let t=1;t<=N;t++){const sk='m_'+id+'_'+t;if(SKINS[sk]&&!S.own.skins.includes(sk)){S.own.skins.push(sk);res.list.push(sk)}}}}
+ res.restored=(window.__v401rest||[]).slice();W.msGrant=res;save();const shown=[...new Set(res.restored.concat(res.list))];
+ if(shown.length)V40_POPS.push(['СТАРЫЕ СКИНЫ МЕЙНСТОУНОВ','Твои Мейнстоуны до 4.0 сохранены: '+shown.length+' старых скинов мастерства снова твои (бесплатно): '+shown.map(x=>SKINS[x].name+' · '+((HMAP[SKINS[x].ch]||KMAP[SKINS[x].ch]).name)).join(', ')+'.',shown.map(sk=>({sk}))]);
+ return res}
+try{v401MsMigrate()}catch(e){console.error('v401 ms migrate',e)}
+
+/* zg_v401_pass.js — v4.0.1: «Золотая» линия Сезона 4 «Глубина» стоит 3000 монет вместо 5000 (V39_GOLD_PRICE остаётся 5000 для других сезонов).
+   Кто уже купил её за 5000 (в 4.0) — один раз получает возврат 2000. */
+const V401_S4_IDX=3,V401_GOLD_S4=3000,V401_GOLD_REFUND=2000;
+wwGoldPrice=function(){return seasonIdx()===V401_S4_IDX?V401_GOLD_S4:V39_GOLD_PRICE};
+try{window.WW39.wwGoldPrice=wwGoldPrice}catch(e){}
+function v401GoldRefund(){const V=V40();if(!isObj(V.v401))V.v401={};const W=V.v401;if(W.goldRefund)return W.goldRefund;
+ // only purchases made before 4.0.1 exist at this point (the flag is written on the first 4.0.1 launch), and every S4 purchase before 4.0.1 cost 5000
+ const bought=!!(S.pass&&S.pass.season===V401_S4_IDX&&S.pass.gold);const r={at:Date.now(),amt:bought?V401_GOLD_REFUND:0};
+ if(bought){S.coins=(S.coins|0)+V401_GOLD_REFUND;V40_POPS.push(['ВОЗВРАТ ЗА «ЗОЛОТУЮ» ЛИНИЮ','«Золотая» линия Сезона 4 теперь стоит 3000 монет. Ты купил её за 5000 — возвращаем разницу.',[{c:V401_GOLD_REFUND}]])}
+ W.goldRefund=r;save();return r}
+try{v401GoldRefund()}catch(e){console.error('v401 gold refund',e)}
+STARS.michael=4; // v4.0.1: Michael Myers difficulty 3 → 4 stars
 
 /* ---- boot ---- */
 loadMap('pizza',eventActive());checkSeason();checkQuests();checkShopDay();
