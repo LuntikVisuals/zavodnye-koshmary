@@ -9,8 +9,8 @@ android {
         applicationId 'com.luntikvisuals.zavodnyekoshmary'
         minSdk 24
         targetSdk 34
-        versionCode 23
-        versionName '4.0'
+        versionCode 24
+        versionName '4.0.1'
     }
     signingConfigs {
         release {
