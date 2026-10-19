@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 
         webView = new WebView(this);
         webView.setBackgroundColor(Color.rgb(8, 4, 10));
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        // v4.0: no forced hardware layer (blank/white WebView on large tablets: layer exceeded GPU limits)
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
